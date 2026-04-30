@@ -2,6 +2,7 @@ from rest_framework import viewsets, status, permissions
 from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.authtoken.models import Token
 from django.db.models import Sum, Q, F
 from django.contrib.auth import login, logout
 from django.utils import timezone
@@ -34,14 +35,16 @@ class CSRFTokenView(APIView):
 class LoginView(APIView):
     """Login endpoint for clerks"""
     permission_classes = [permissions.AllowAny]
-    
+
     def post(self, request):
         serializer = LoginSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.validated_data['user']
             login(request, user)
+            token, _ = Token.objects.get_or_create(user=user)
             return Response({
                 'user': UserSerializer(user).data,
+                'token': token.key,
                 'message': 'Login successful'
             }, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -50,8 +53,12 @@ class LoginView(APIView):
 class LogoutView(APIView):
     """Logout endpoint"""
     permission_classes = [permissions.IsAuthenticated]
-    
+
     def post(self, request):
+        try:
+            request.user.auth_token.delete()
+        except Exception:
+            pass
         logout(request)
         return Response({'message': 'Logout successful'}, status=status.HTTP_200_OK)
 
