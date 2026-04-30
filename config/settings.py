@@ -119,6 +119,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Media (uploaded files)
 MEDIA_URL = '/media/'
@@ -148,6 +149,7 @@ REST_FRAMEWORK = {
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    "https://tarabaelection.vercel.app",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -157,6 +159,7 @@ CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
     "https://electionportal.pythonanywhere.com",
+    "https://tarabaelection.vercel.app",
 ]
 
 # Disable CSRF for API endpoints (DRF handles this)
