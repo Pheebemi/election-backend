@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure--=8ydf7p-5%srlpe!9b8)45@chgrw(&yiq6b4q8r+@1lulw_5+'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['electionportal.pythonanywhere.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -156,6 +156,7 @@ CORS_ALLOW_CREDENTIALS = True
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    "https://electionportal.pythonanywhere.com",
 ]
 
 # Disable CSRF for API endpoints (DRF handles this)
