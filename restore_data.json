@@ -1,0 +1,5730 @@
+[
+{
+  "model": "election.localgovernmentarea",
+  "pk": 1,
+  "fields": {
+    "name": "Jalingo",
+    "code": "07",
+    "created_at": "2025-12-11T17:46:29.810Z",
+    "updated_at": "2025-12-11T17:46:29.810Z"
+  }
+},
+{
+  "model": "election.localgovernmentarea",
+  "pk": 2,
+  "fields": {
+    "name": "Ardo-kola",
+    "code": "01",
+    "created_at": "2025-12-11T17:48:20.561Z",
+    "updated_at": "2025-12-11T17:48:20.561Z"
+  }
+},
+{
+  "model": "election.localgovernmentarea",
+  "pk": 3,
+  "fields": {
+    "name": "Bali",
+    "code": "02",
+    "created_at": "2025-12-11T17:48:39.904Z",
+    "updated_at": "2025-12-11T17:48:39.904Z"
+  }
+},
+{
+  "model": "election.localgovernmentarea",
+  "pk": 4,
+  "fields": {
+    "name": "DONGA",
+    "code": "03",
+    "created_at": "2025-12-12T08:29:13.179Z",
+    "updated_at": "2025-12-12T08:29:13.179Z"
+  }
+},
+{
+  "model": "election.localgovernmentarea",
+  "pk": 5,
+  "fields": {
+    "name": "GASHAKA",
+    "code": "04",
+    "created_at": "2025-12-12T08:30:28.313Z",
+    "updated_at": "2025-12-12T08:30:28.313Z"
+  }
+},
+{
+  "model": "election.localgovernmentarea",
+  "pk": 6,
+  "fields": {
+    "name": "GASSOL",
+    "code": "05",
+    "created_at": "2025-12-12T08:30:44.283Z",
+    "updated_at": "2025-12-12T08:30:44.283Z"
+  }
+},
+{
+  "model": "election.localgovernmentarea",
+  "pk": 7,
+  "fields": {
+    "name": "IBI",
+    "code": "06",
+    "created_at": "2025-12-12T08:30:57.344Z",
+    "updated_at": "2025-12-12T08:30:57.344Z"
+  }
+},
+{
+  "model": "election.localgovernmentarea",
+  "pk": 8,
+  "fields": {
+    "name": "KARIM LAMIDO",
+    "code": "08",
+    "created_at": "2025-12-12T08:31:14.622Z",
+    "updated_at": "2025-12-12T08:31:14.622Z"
+  }
+},
+{
+  "model": "election.localgovernmentarea",
+  "pk": 9,
+  "fields": {
+    "name": "KURMI",
+    "code": "09",
+    "created_at": "2025-12-12T08:31:30.345Z",
+    "updated_at": "2025-12-12T08:31:52.219Z"
+  }
+},
+{
+  "model": "election.localgovernmentarea",
+  "pk": 10,
+  "fields": {
+    "name": "LAU",
+    "code": "010",
+    "created_at": "2025-12-12T08:32:07.175Z",
+    "updated_at": "2025-12-12T08:32:07.177Z"
+  }
+},
+{
+  "model": "election.localgovernmentarea",
+  "pk": 11,
+  "fields": {
+    "name": "SARDAUNA",
+    "code": "011",
+    "created_at": "2025-12-12T08:32:22.341Z",
+    "updated_at": "2025-12-12T08:32:22.341Z"
+  }
+},
+{
+  "model": "election.localgovernmentarea",
+  "pk": 12,
+  "fields": {
+    "name": "TAKUM",
+    "code": "012",
+    "created_at": "2025-12-12T08:32:45.705Z",
+    "updated_at": "2025-12-12T08:32:45.705Z"
+  }
+},
+{
+  "model": "election.localgovernmentarea",
+  "pk": 13,
+  "fields": {
+    "name": "USSA",
+    "code": "013",
+    "created_at": "2025-12-12T08:32:57.074Z",
+    "updated_at": "2025-12-12T08:32:57.074Z"
+  }
+},
+{
+  "model": "election.localgovernmentarea",
+  "pk": 14,
+  "fields": {
+    "name": "WUKARI",
+    "code": "014",
+    "created_at": "2025-12-12T08:33:09.984Z",
+    "updated_at": "2025-12-12T08:33:09.984Z"
+  }
+},
+{
+  "model": "election.localgovernmentarea",
+  "pk": 15,
+  "fields": {
+    "name": "YORRO",
+    "code": "015",
+    "created_at": "2025-12-12T08:33:34.336Z",
+    "updated_at": "2025-12-12T08:33:34.336Z"
+  }
+},
+{
+  "model": "election.localgovernmentarea",
+  "pk": 16,
+  "fields": {
+    "name": "ZING",
+    "code": "016",
+    "created_at": "2025-12-12T08:33:47.316Z",
+    "updated_at": "2025-12-12T08:33:47.316Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 1,
+  "fields": {
+    "name": "ABBARE YELWA",
+    "lga": 1,
+    "code": "01",
+    "created_at": "2025-12-11T17:50:24.111Z",
+    "updated_at": "2025-12-12T08:44:25.892Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 2,
+  "fields": {
+    "name": "ALIM GORA",
+    "lga": 2,
+    "code": "01",
+    "created_at": "2025-12-11T17:50:42.446Z",
+    "updated_at": "2025-12-12T08:42:24.114Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 3,
+  "fields": {
+    "name": "BADAKOSHI",
+    "lga": 3,
+    "code": "01",
+    "created_at": "2025-12-11T17:51:08.186Z",
+    "updated_at": "2025-12-12T08:43:15.938Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 4,
+  "fields": {
+    "name": "AKATE",
+    "lga": 4,
+    "code": "01",
+    "created_at": "2025-12-12T08:49:00.642Z",
+    "updated_at": "2025-12-12T08:49:00.642Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 5,
+  "fields": {
+    "name": "GALUMJINA",
+    "lga": 5,
+    "code": "01",
+    "created_at": "2025-12-12T08:50:04.677Z",
+    "updated_at": "2025-12-12T08:50:04.677Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 6,
+  "fields": {
+    "name": "GASSOL",
+    "lga": 6,
+    "code": "01",
+    "created_at": "2025-12-12T08:50:20.111Z",
+    "updated_at": "2025-12-12T08:50:20.111Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 7,
+  "fields": {
+    "name": "DAMPAR I",
+    "lga": 7,
+    "code": "01",
+    "created_at": "2025-12-12T08:51:16.382Z",
+    "updated_at": "2025-12-12T08:51:16.382Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 8,
+  "fields": {
+    "name": "AMAR",
+    "lga": 8,
+    "code": "01",
+    "created_at": "2025-12-12T08:53:12.608Z",
+    "updated_at": "2025-12-12T08:53:12.608Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 9,
+  "fields": {
+    "name": "ABONG",
+    "lga": 9,
+    "code": "01",
+    "created_at": "2025-12-12T08:55:00.821Z",
+    "updated_at": "2025-12-12T08:55:00.821Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 10,
+  "fields": {
+    "name": "ABBARE I",
+    "lga": 10,
+    "code": "01",
+    "created_at": "2025-12-12T08:55:36.696Z",
+    "updated_at": "2025-12-12T08:55:36.696Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 11,
+  "fields": {
+    "name": "GEMBU 'A'",
+    "lga": 11,
+    "code": "01",
+    "created_at": "2025-12-12T08:56:18.471Z",
+    "updated_at": "2025-12-12T08:56:18.471Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 12,
+  "fields": {
+    "name": "BETE",
+    "lga": 12,
+    "code": "01",
+    "created_at": "2025-12-12T08:57:14.326Z",
+    "updated_at": "2025-12-12T08:57:14.326Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 13,
+  "fields": {
+    "name": "BIKA",
+    "lga": 13,
+    "code": "01",
+    "created_at": "2025-12-12T08:58:00.184Z",
+    "updated_at": "2025-12-12T08:58:00.184Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 14,
+  "fields": {
+    "name": "AKWANA",
+    "lga": 14,
+    "code": "01",
+    "created_at": "2025-12-12T08:58:30.792Z",
+    "updated_at": "2025-12-12T08:58:40.574Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 15,
+  "fields": {
+    "name": "BIKASSA I",
+    "lga": 15,
+    "code": "01",
+    "created_at": "2025-12-12T08:59:37.660Z",
+    "updated_at": "2025-12-12T08:59:37.660Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 16,
+  "fields": {
+    "name": "BITAKO",
+    "lga": 16,
+    "code": "01",
+    "created_at": "2025-12-12T09:02:31.394Z",
+    "updated_at": "2025-12-12T09:02:31.394Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 17,
+  "fields": {
+    "name": "ARDO KOLA",
+    "lga": 2,
+    "code": "02",
+    "created_at": "2025-12-12T14:54:06.340Z",
+    "updated_at": "2025-12-12T14:54:06.340Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 18,
+  "fields": {
+    "name": "IWARE",
+    "lga": 2,
+    "code": "03",
+    "created_at": "2025-12-12T14:54:06.354Z",
+    "updated_at": "2025-12-12T14:54:06.354Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 19,
+  "fields": {
+    "name": "JAURO YINU",
+    "lga": 2,
+    "code": "04",
+    "created_at": "2025-12-12T14:54:06.366Z",
+    "updated_at": "2025-12-12T14:54:06.366Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 20,
+  "fields": {
+    "name": "LAMIDO BORNO",
+    "lga": 2,
+    "code": "05",
+    "created_at": "2025-12-12T14:54:06.373Z",
+    "updated_at": "2025-12-12T14:54:06.373Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 21,
+  "fields": {
+    "name": "MAYO RANEWO",
+    "lga": 2,
+    "code": "06",
+    "created_at": "2025-12-12T14:54:06.385Z",
+    "updated_at": "2025-12-12T14:54:06.385Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 22,
+  "fields": {
+    "name": "SARKIN DUTSE",
+    "lga": 2,
+    "code": "07",
+    "created_at": "2025-12-12T14:54:06.395Z",
+    "updated_at": "2025-12-12T14:54:06.395Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 23,
+  "fields": {
+    "name": "SUNKANI",
+    "lga": 2,
+    "code": "08",
+    "created_at": "2025-12-12T14:54:06.404Z",
+    "updated_at": "2025-12-12T14:54:06.404Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 24,
+  "fields": {
+    "name": "TAU",
+    "lga": 2,
+    "code": "09",
+    "created_at": "2025-12-12T14:54:06.416Z",
+    "updated_at": "2025-12-12T14:54:06.416Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 25,
+  "fields": {
+    "name": "ZONGON KOMBI",
+    "lga": 2,
+    "code": "10",
+    "created_at": "2025-12-12T14:54:06.427Z",
+    "updated_at": "2025-12-12T14:54:06.427Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 26,
+  "fields": {
+    "name": "BALI A",
+    "lga": 3,
+    "code": "02",
+    "created_at": "2025-12-12T14:56:33.326Z",
+    "updated_at": "2025-12-12T14:56:33.326Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 27,
+  "fields": {
+    "name": "BALI B",
+    "lga": 3,
+    "code": "03",
+    "created_at": "2025-12-12T14:56:33.336Z",
+    "updated_at": "2025-12-12T14:56:33.337Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 28,
+  "fields": {
+    "name": "GANG DOLE",
+    "lga": 3,
+    "code": "04",
+    "created_at": "2025-12-12T14:56:33.341Z",
+    "updated_at": "2025-12-12T14:56:33.341Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 29,
+  "fields": {
+    "name": "GANGLARI",
+    "lga": 3,
+    "code": "05",
+    "created_at": "2025-12-12T14:56:33.351Z",
+    "updated_at": "2025-12-12T14:56:33.351Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 30,
+  "fields": {
+    "name": "GANGTIBA",
+    "lga": 3,
+    "code": "06",
+    "created_at": "2025-12-12T14:56:33.356Z",
+    "updated_at": "2025-12-12T14:56:33.356Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 31,
+  "fields": {
+    "name": "GANG MATA",
+    "lga": 3,
+    "code": "07",
+    "created_at": "2025-12-12T14:56:33.364Z",
+    "updated_at": "2025-12-12T14:56:33.364Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 32,
+  "fields": {
+    "name": "KAIGAMA",
+    "lga": 3,
+    "code": "08",
+    "created_at": "2025-12-12T14:56:33.371Z",
+    "updated_at": "2025-12-12T14:56:33.371Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 33,
+  "fields": {
+    "name": "MAIHULA",
+    "lga": 3,
+    "code": "09",
+    "created_at": "2025-12-12T14:56:33.375Z",
+    "updated_at": "2025-12-12T14:56:33.375Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 34,
+  "fields": {
+    "name": "SUNTAI",
+    "lga": 3,
+    "code": "10",
+    "created_at": "2025-12-12T14:56:33.385Z",
+    "updated_at": "2025-12-12T14:56:33.385Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 35,
+  "fields": {
+    "name": "TAKALAFIYA",
+    "lga": 3,
+    "code": "11",
+    "created_at": "2025-12-12T14:56:33.390Z",
+    "updated_at": "2025-12-12T14:56:33.390Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 36,
+  "fields": {
+    "name": "ASIBITI",
+    "lga": 4,
+    "code": "02",
+    "created_at": "2025-12-12T14:59:24.439Z",
+    "updated_at": "2025-12-12T14:59:24.439Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 37,
+  "fields": {
+    "name": "FADA",
+    "lga": 4,
+    "code": "03",
+    "created_at": "2025-12-12T14:59:24.458Z",
+    "updated_at": "2025-12-12T14:59:24.458Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 38,
+  "fields": {
+    "name": "GAYAMA",
+    "lga": 4,
+    "code": "04",
+    "created_at": "2025-12-12T14:59:24.467Z",
+    "updated_at": "2025-12-12T14:59:24.468Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 39,
+  "fields": {
+    "name": "GINDIN DUTSE",
+    "lga": 4,
+    "code": "05",
+    "created_at": "2025-12-12T14:59:24.475Z",
+    "updated_at": "2025-12-12T14:59:24.475Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 40,
+  "fields": {
+    "name": "GYATTA AURE",
+    "lga": 4,
+    "code": "06",
+    "created_at": "2025-12-12T14:59:24.491Z",
+    "updated_at": "2025-12-12T14:59:24.491Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 41,
+  "fields": {
+    "name": "BIKADARKO",
+    "lga": 4,
+    "code": "07",
+    "created_at": "2025-12-12T14:59:24.506Z",
+    "updated_at": "2025-12-12T14:59:24.506Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 42,
+  "fields": {
+    "name": "MARARRABA",
+    "lga": 4,
+    "code": "08",
+    "created_at": "2025-12-12T14:59:24.515Z",
+    "updated_at": "2025-12-12T14:59:24.515Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 43,
+  "fields": {
+    "name": "NYITA",
+    "lga": 4,
+    "code": "09",
+    "created_at": "2025-12-12T14:59:24.524Z",
+    "updated_at": "2025-12-12T14:59:24.524Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 44,
+  "fields": {
+    "name": "SUNTAI",
+    "lga": 4,
+    "code": "10",
+    "created_at": "2025-12-12T14:59:24.549Z",
+    "updated_at": "2025-12-12T14:59:24.549Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 45,
+  "fields": {
+    "name": "GANGUMI",
+    "lga": 5,
+    "code": "02",
+    "created_at": "2025-12-12T15:01:40.629Z",
+    "updated_at": "2025-12-12T15:01:40.629Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 46,
+  "fields": {
+    "name": "GARBABI",
+    "lga": 5,
+    "code": "03",
+    "created_at": "2025-12-12T15:01:40.640Z",
+    "updated_at": "2025-12-12T15:01:40.640Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 47,
+  "fields": {
+    "name": "GASHAKA",
+    "lga": 5,
+    "code": "04",
+    "created_at": "2025-12-12T15:01:40.645Z",
+    "updated_at": "2025-12-12T15:01:40.645Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 48,
+  "fields": {
+    "name": "GAYAM",
+    "lga": 5,
+    "code": "05",
+    "created_at": "2025-12-12T15:01:40.657Z",
+    "updated_at": "2025-12-12T15:01:40.657Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 49,
+  "fields": {
+    "name": "JAMTARI",
+    "lga": 5,
+    "code": "06",
+    "created_at": "2025-12-12T15:01:40.664Z",
+    "updated_at": "2025-12-12T15:01:40.664Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 50,
+  "fields": {
+    "name": "MAI-IDANU",
+    "lga": 5,
+    "code": "07",
+    "created_at": "2025-12-12T15:01:40.678Z",
+    "updated_at": "2025-12-12T15:01:40.678Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 51,
+  "fields": {
+    "name": "MAYO SELBE",
+    "lga": 5,
+    "code": "08",
+    "created_at": "2025-12-12T15:01:40.693Z",
+    "updated_at": "2025-12-12T15:01:40.693Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 52,
+  "fields": {
+    "name": "SERTI 'A'",
+    "lga": 5,
+    "code": "09",
+    "created_at": "2025-12-12T15:01:40.718Z",
+    "updated_at": "2025-12-12T15:01:40.718Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 53,
+  "fields": {
+    "name": "SERTI 'B'",
+    "lga": 5,
+    "code": "10",
+    "created_at": "2025-12-12T15:01:40.739Z",
+    "updated_at": "2025-12-12T15:01:40.739Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 54,
+  "fields": {
+    "name": "GUNDUMA",
+    "lga": 6,
+    "code": "02",
+    "created_at": "2025-12-12T15:04:10.487Z",
+    "updated_at": "2025-12-12T15:04:10.487Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 55,
+  "fields": {
+    "name": "MUTUM BIYU I",
+    "lga": 6,
+    "code": "03",
+    "created_at": "2025-12-12T15:04:10.497Z",
+    "updated_at": "2025-12-12T15:04:10.497Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 56,
+  "fields": {
+    "name": "MUTUM BIYU II",
+    "lga": 6,
+    "code": "04",
+    "created_at": "2025-12-12T15:04:10.508Z",
+    "updated_at": "2025-12-12T15:04:10.508Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 57,
+  "fields": {
+    "name": "NAM NAI",
+    "lga": 6,
+    "code": "05",
+    "created_at": "2025-12-12T15:04:10.524Z",
+    "updated_at": "2025-12-12T15:04:10.524Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 58,
+  "fields": {
+    "name": "SABON GIDA",
+    "lga": 6,
+    "code": "06",
+    "created_at": "2025-12-12T15:04:10.532Z",
+    "updated_at": "2025-12-12T15:04:10.532Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 59,
+  "fields": {
+    "name": "SARKIN SHIRA",
+    "lga": 6,
+    "code": "07",
+    "created_at": "2025-12-12T15:04:10.543Z",
+    "updated_at": "2025-12-12T15:04:10.543Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 60,
+  "fields": {
+    "name": "SENDIRDE",
+    "lga": 6,
+    "code": "08",
+    "created_at": "2025-12-12T15:04:10.545Z",
+    "updated_at": "2025-12-12T15:04:10.545Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 61,
+  "fields": {
+    "name": "TUTARE",
+    "lga": 6,
+    "code": "09",
+    "created_at": "2025-12-12T15:04:10.552Z",
+    "updated_at": "2025-12-12T15:04:10.552Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 62,
+  "fields": {
+    "name": "WUROJAM",
+    "lga": 6,
+    "code": "10",
+    "created_at": "2025-12-12T15:04:10.562Z",
+    "updated_at": "2025-12-12T15:04:10.562Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 63,
+  "fields": {
+    "name": "WURYO",
+    "lga": 6,
+    "code": "11",
+    "created_at": "2025-12-12T15:04:10.568Z",
+    "updated_at": "2025-12-12T15:04:10.568Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 64,
+  "fields": {
+    "name": "YARIMA",
+    "lga": 6,
+    "code": "12",
+    "created_at": "2025-12-12T15:04:10.577Z",
+    "updated_at": "2025-12-12T15:04:10.577Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 65,
+  "fields": {
+    "name": "DAMPAR II",
+    "lga": 7,
+    "code": "02",
+    "created_at": "2025-12-12T15:05:32.694Z",
+    "updated_at": "2025-12-12T15:05:32.695Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 66,
+  "fields": {
+    "name": "DAMPAR III",
+    "lga": 7,
+    "code": "03",
+    "created_at": "2025-12-12T15:05:32.729Z",
+    "updated_at": "2025-12-12T15:05:32.729Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 67,
+  "fields": {
+    "name": "IBI NWONYO I",
+    "lga": 7,
+    "code": "04",
+    "created_at": "2025-12-12T15:05:32.761Z",
+    "updated_at": "2025-12-12T15:05:32.761Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 68,
+  "fields": {
+    "name": "IBI NWONYO II",
+    "lga": 7,
+    "code": "05",
+    "created_at": "2025-12-12T15:05:32.793Z",
+    "updated_at": "2025-12-12T15:05:32.793Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 69,
+  "fields": {
+    "name": "IBI RIMI UKU I",
+    "lga": 7,
+    "code": "06",
+    "created_at": "2025-12-12T15:05:32.814Z",
+    "updated_at": "2025-12-12T15:05:32.814Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 70,
+  "fields": {
+    "name": "IBI RIMI UKU II",
+    "lga": 7,
+    "code": "07",
+    "created_at": "2025-12-12T15:05:32.839Z",
+    "updated_at": "2025-12-12T15:05:32.839Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 71,
+  "fields": {
+    "name": "SARKIN KUDU I",
+    "lga": 7,
+    "code": "08",
+    "created_at": "2025-12-12T15:05:32.860Z",
+    "updated_at": "2025-12-12T15:05:32.860Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 72,
+  "fields": {
+    "name": "SARKIN KUDU II",
+    "lga": 7,
+    "code": "09",
+    "created_at": "2025-12-12T15:05:32.884Z",
+    "updated_at": "2025-12-12T15:05:32.884Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 73,
+  "fields": {
+    "name": "SARKIN KUDU III",
+    "lga": 7,
+    "code": "10",
+    "created_at": "2025-12-12T15:05:32.915Z",
+    "updated_at": "2025-12-12T15:05:32.915Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 74,
+  "fields": {
+    "name": "BARADE",
+    "lga": 1,
+    "code": "02",
+    "created_at": "2025-12-12T15:07:16.391Z",
+    "updated_at": "2025-12-12T15:07:16.391Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 75,
+  "fields": {
+    "name": "KACHALLA SEMBE",
+    "lga": 1,
+    "code": "03",
+    "created_at": "2025-12-12T15:07:16.402Z",
+    "updated_at": "2025-12-12T15:07:16.402Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 76,
+  "fields": {
+    "name": "KONA",
+    "lga": 1,
+    "code": "04",
+    "created_at": "2025-12-12T15:07:16.409Z",
+    "updated_at": "2025-12-12T15:07:16.409Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 77,
+  "fields": {
+    "name": "MAJIDADI",
+    "lga": 1,
+    "code": "05",
+    "created_at": "2025-12-12T15:07:16.416Z",
+    "updated_at": "2025-12-12T15:07:16.416Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 78,
+  "fields": {
+    "name": "MAYO GOI",
+    "lga": 1,
+    "code": "06",
+    "created_at": "2025-12-12T15:07:16.424Z",
+    "updated_at": "2025-12-12T15:07:16.424Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 79,
+  "fields": {
+    "name": "SARKIN DAWAKI",
+    "lga": 1,
+    "code": "07",
+    "created_at": "2025-12-12T15:07:16.429Z",
+    "updated_at": "2025-12-12T15:07:16.429Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 80,
+  "fields": {
+    "name": "SINTALI",
+    "lga": 1,
+    "code": "08",
+    "created_at": "2025-12-12T15:07:16.440Z",
+    "updated_at": "2025-12-12T15:07:16.440Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 81,
+  "fields": {
+    "name": "TURAKI 'A'",
+    "lga": 1,
+    "code": "09",
+    "created_at": "2025-12-12T15:07:16.445Z",
+    "updated_at": "2025-12-12T15:07:16.445Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 82,
+  "fields": {
+    "name": "TURAKI 'B'",
+    "lga": 1,
+    "code": "10",
+    "created_at": "2025-12-12T15:07:16.454Z",
+    "updated_at": "2025-12-12T15:07:16.454Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 83,
+  "fields": {
+    "name": "ANDAMIN",
+    "lga": 8,
+    "code": "02",
+    "created_at": "2025-12-12T15:08:32.348Z",
+    "updated_at": "2025-12-12T15:08:32.348Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 84,
+  "fields": {
+    "name": "BACHAMA",
+    "lga": 8,
+    "code": "03",
+    "created_at": "2025-12-12T15:08:32.348Z",
+    "updated_at": "2025-12-12T15:08:32.348Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 85,
+  "fields": {
+    "name": "BIKWIN",
+    "lga": 8,
+    "code": "04",
+    "created_at": "2025-12-12T15:08:32.374Z",
+    "updated_at": "2025-12-12T15:08:32.374Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 86,
+  "fields": {
+    "name": "DAROFAI",
+    "lga": 8,
+    "code": "05",
+    "created_at": "2025-12-12T15:08:32.385Z",
+    "updated_at": "2025-12-12T15:08:32.385Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 87,
+  "fields": {
+    "name": "DIDANGO",
+    "lga": 8,
+    "code": "06",
+    "created_at": "2025-12-12T15:08:32.395Z",
+    "updated_at": "2025-12-12T15:08:32.395Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 88,
+  "fields": {
+    "name": "JEN ARDIDO",
+    "lga": 8,
+    "code": "07",
+    "created_at": "2025-12-12T15:08:32.406Z",
+    "updated_at": "2025-12-12T15:08:32.406Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 89,
+  "fields": {
+    "name": "JEN KAIGAMA",
+    "lga": 8,
+    "code": "08",
+    "created_at": "2025-12-12T15:08:32.419Z",
+    "updated_at": "2025-12-12T15:08:32.419Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 90,
+  "fields": {
+    "name": "KARIM \"A\"",
+    "lga": 8,
+    "code": "09",
+    "created_at": "2025-12-12T15:08:32.424Z",
+    "updated_at": "2025-12-12T15:08:32.424Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 91,
+  "fields": {
+    "name": "KARIM \"B\"",
+    "lga": 8,
+    "code": "10",
+    "created_at": "2025-12-12T15:08:32.455Z",
+    "updated_at": "2025-12-12T15:08:32.455Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 92,
+  "fields": {
+    "name": "KWANCHI",
+    "lga": 8,
+    "code": "11",
+    "created_at": "2025-12-12T15:08:32.475Z",
+    "updated_at": "2025-12-12T15:08:32.475Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 93,
+  "fields": {
+    "name": "AKWENTO/BOKO",
+    "lga": 9,
+    "code": "02",
+    "created_at": "2025-12-12T15:09:13.888Z",
+    "updated_at": "2025-12-12T15:09:13.888Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 94,
+  "fields": {
+    "name": "ASHUKU/ENEME",
+    "lga": 9,
+    "code": "03",
+    "created_at": "2025-12-12T15:09:13.898Z",
+    "updated_at": "2025-12-12T15:09:13.898Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 95,
+  "fields": {
+    "name": "BAISSA",
+    "lga": 9,
+    "code": "04",
+    "created_at": "2025-12-12T15:09:13.904Z",
+    "updated_at": "2025-12-12T15:09:13.904Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 96,
+  "fields": {
+    "name": "BENTE/GALEA",
+    "lga": 9,
+    "code": "05",
+    "created_at": "2025-12-12T15:09:13.913Z",
+    "updated_at": "2025-12-12T15:09:13.913Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 97,
+  "fields": {
+    "name": "BISSAULA",
+    "lga": 9,
+    "code": "06",
+    "created_at": "2025-12-12T15:09:13.921Z",
+    "updated_at": "2025-12-12T15:09:13.921Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 98,
+  "fields": {
+    "name": "DIDAN",
+    "lga": 9,
+    "code": "07",
+    "created_at": "2025-12-12T15:09:13.931Z",
+    "updated_at": "2025-12-12T15:09:13.931Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 99,
+  "fields": {
+    "name": "NDAFORO/GEANDA",
+    "lga": 9,
+    "code": "08",
+    "created_at": "2025-12-12T15:09:13.937Z",
+    "updated_at": "2025-12-12T15:09:13.937Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 100,
+  "fields": {
+    "name": "NJUWANDE",
+    "lga": 9,
+    "code": "09",
+    "created_at": "2025-12-12T15:09:13.945Z",
+    "updated_at": "2025-12-12T15:09:13.945Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 101,
+  "fields": {
+    "name": "NYIDO/TOSSO",
+    "lga": 9,
+    "code": "10",
+    "created_at": "2025-12-12T15:09:13.951Z",
+    "updated_at": "2025-12-12T15:09:13.951Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 102,
+  "fields": {
+    "name": "ABBERE II",
+    "lga": 10,
+    "code": "02",
+    "created_at": "2025-12-12T15:10:04.589Z",
+    "updated_at": "2025-12-12T15:10:04.589Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 103,
+  "fields": {
+    "name": "DONADDA",
+    "lga": 10,
+    "code": "03",
+    "created_at": "2025-12-12T15:10:04.609Z",
+    "updated_at": "2025-12-12T15:10:04.609Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 104,
+  "fields": {
+    "name": "GARIN DOGO",
+    "lga": 10,
+    "code": "04",
+    "created_at": "2025-12-12T15:10:04.621Z",
+    "updated_at": "2025-12-12T15:10:04.621Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 105,
+  "fields": {
+    "name": "GARIN MAGAJI",
+    "lga": 10,
+    "code": "05",
+    "created_at": "2025-12-12T15:10:04.630Z",
+    "updated_at": "2025-12-12T15:10:04.630Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 106,
+  "fields": {
+    "name": "JIMLARI",
+    "lga": 10,
+    "code": "06",
+    "created_at": "2025-12-12T15:10:04.641Z",
+    "updated_at": "2025-12-12T15:10:04.641Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 107,
+  "fields": {
+    "name": "KUNINI",
+    "lga": 10,
+    "code": "07",
+    "created_at": "2025-12-12T15:10:04.650Z",
+    "updated_at": "2025-12-12T15:10:04.650Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 108,
+  "fields": {
+    "name": "LAU I",
+    "lga": 10,
+    "code": "08",
+    "created_at": "2025-12-12T15:10:04.658Z",
+    "updated_at": "2025-12-12T15:10:04.658Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 109,
+  "fields": {
+    "name": "LAU II",
+    "lga": 10,
+    "code": "09",
+    "created_at": "2025-12-12T15:10:04.670Z",
+    "updated_at": "2025-12-12T15:10:04.670Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 110,
+  "fields": {
+    "name": "MAYO LOPE",
+    "lga": 10,
+    "code": "10",
+    "created_at": "2025-12-12T15:10:04.679Z",
+    "updated_at": "2025-12-12T15:10:04.679Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 111,
+  "fields": {
+    "name": "GEMBU 'B'",
+    "lga": 11,
+    "code": "02",
+    "created_at": "2025-12-12T15:15:45.139Z",
+    "updated_at": "2025-12-12T15:15:45.139Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 112,
+  "fields": {
+    "name": "KABRI",
+    "lga": 11,
+    "code": "03",
+    "created_at": "2025-12-12T15:15:45.153Z",
+    "updated_at": "2025-12-12T15:15:45.153Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 113,
+  "fields": {
+    "name": "KAKARA",
+    "lga": 11,
+    "code": "04",
+    "created_at": "2025-12-12T15:15:45.165Z",
+    "updated_at": "2025-12-12T15:15:45.166Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 114,
+  "fields": {
+    "name": "MAGU",
+    "lga": 11,
+    "code": "05",
+    "created_at": "2025-12-12T15:15:45.175Z",
+    "updated_at": "2025-12-12T15:15:45.175Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 115,
+  "fields": {
+    "name": "MAYO-NDAGA",
+    "lga": 11,
+    "code": "06",
+    "created_at": "2025-12-12T15:15:45.192Z",
+    "updated_at": "2025-12-12T15:15:45.192Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 116,
+  "fields": {
+    "name": "MBAMNGA",
+    "lga": 11,
+    "code": "07",
+    "created_at": "2025-12-12T15:15:45.206Z",
+    "updated_at": "2025-12-12T15:15:45.206Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 117,
+  "fields": {
+    "name": "NDUM-YAJI",
+    "lga": 11,
+    "code": "08",
+    "created_at": "2025-12-12T15:15:45.219Z",
+    "updated_at": "2025-12-12T15:15:45.219Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 118,
+  "fields": {
+    "name": "NGUROJE",
+    "lga": 11,
+    "code": "09",
+    "created_at": "2025-12-12T15:15:45.232Z",
+    "updated_at": "2025-12-12T15:15:45.232Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 119,
+  "fields": {
+    "name": "TITONG",
+    "lga": 11,
+    "code": "10",
+    "created_at": "2025-12-12T15:15:45.242Z",
+    "updated_at": "2025-12-12T15:15:45.242Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 120,
+  "fields": {
+    "name": "WARWAR",
+    "lga": 11,
+    "code": "11",
+    "created_at": "2025-12-12T15:15:45.255Z",
+    "updated_at": "2025-12-12T15:15:45.255Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 121,
+  "fields": {
+    "name": "CHANCHANJI",
+    "lga": 12,
+    "code": "02",
+    "created_at": "2025-12-12T15:16:57.600Z",
+    "updated_at": "2025-12-12T15:16:57.600Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 122,
+  "fields": {
+    "name": "DUTSE",
+    "lga": 12,
+    "code": "03",
+    "created_at": "2025-12-12T15:16:57.608Z",
+    "updated_at": "2025-12-12T15:16:57.608Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 123,
+  "fields": {
+    "name": "FETE",
+    "lga": 12,
+    "code": "04",
+    "created_at": "2025-12-12T15:16:57.625Z",
+    "updated_at": "2025-12-12T15:16:57.626Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 124,
+  "fields": {
+    "name": "GAHWETON",
+    "lga": 12,
+    "code": "05",
+    "created_at": "2025-12-12T15:16:57.634Z",
+    "updated_at": "2025-12-12T15:16:57.634Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 125,
+  "fields": {
+    "name": "BIKASHIBILA",
+    "lga": 12,
+    "code": "06",
+    "created_at": "2025-12-12T15:16:57.652Z",
+    "updated_at": "2025-12-12T15:16:57.652Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 126,
+  "fields": {
+    "name": "MANYA",
+    "lga": 12,
+    "code": "07",
+    "created_at": "2025-12-12T15:16:57.659Z",
+    "updated_at": "2025-12-12T15:16:57.659Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 127,
+  "fields": {
+    "name": "ROGO",
+    "lga": 12,
+    "code": "08",
+    "created_at": "2025-12-12T15:16:57.659Z",
+    "updated_at": "2025-12-12T15:16:57.659Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 128,
+  "fields": {
+    "name": "SHIBONG",
+    "lga": 12,
+    "code": "09",
+    "created_at": "2025-12-12T15:16:57.682Z",
+    "updated_at": "2025-12-12T15:16:57.683Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 129,
+  "fields": {
+    "name": "TIKARI",
+    "lga": 12,
+    "code": "10",
+    "created_at": "2025-12-12T15:16:57.694Z",
+    "updated_at": "2025-12-12T15:16:57.694Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 130,
+  "fields": {
+    "name": "YUKUBEN",
+    "lga": 12,
+    "code": "11",
+    "created_at": "2025-12-12T15:16:57.707Z",
+    "updated_at": "2025-12-12T15:16:57.707Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 131,
+  "fields": {
+    "name": "FIKYU",
+    "lga": 13,
+    "code": "02",
+    "created_at": "2025-12-12T15:17:58.660Z",
+    "updated_at": "2025-12-12T15:17:58.660Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 132,
+  "fields": {
+    "name": "JENUWA",
+    "lga": 13,
+    "code": "03",
+    "created_at": "2025-12-12T15:17:58.676Z",
+    "updated_at": "2025-12-12T15:17:58.677Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 133,
+  "fields": {
+    "name": "KPAMBO",
+    "lga": 13,
+    "code": "04",
+    "created_at": "2025-12-12T15:17:58.686Z",
+    "updated_at": "2025-12-12T15:17:58.686Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 134,
+  "fields": {
+    "name": "KPAMBO PURI",
+    "lga": 13,
+    "code": "05",
+    "created_at": "2025-12-12T15:17:58.698Z",
+    "updated_at": "2025-12-12T15:17:58.698Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 135,
+  "fields": {
+    "name": "KWAMBAI",
+    "lga": 13,
+    "code": "06",
+    "created_at": "2025-12-12T15:17:58.713Z",
+    "updated_at": "2025-12-12T15:17:58.713Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 136,
+  "fields": {
+    "name": "KWESATI",
+    "lga": 13,
+    "code": "07",
+    "created_at": "2025-12-12T15:17:58.728Z",
+    "updated_at": "2025-12-12T15:17:58.728Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 137,
+  "fields": {
+    "name": "LISSAM I",
+    "lga": 13,
+    "code": "08",
+    "created_at": "2025-12-12T15:17:58.740Z",
+    "updated_at": "2025-12-12T15:17:58.740Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 138,
+  "fields": {
+    "name": "LISSAM II",
+    "lga": 13,
+    "code": "09",
+    "created_at": "2025-12-12T15:17:58.749Z",
+    "updated_at": "2025-12-12T15:17:58.749Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 139,
+  "fields": {
+    "name": "LUMBU",
+    "lga": 13,
+    "code": "10",
+    "created_at": "2025-12-12T15:17:58.761Z",
+    "updated_at": "2025-12-12T15:17:58.761Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 140,
+  "fields": {
+    "name": "RUFU",
+    "lga": 13,
+    "code": "11",
+    "created_at": "2025-12-12T15:17:58.773Z",
+    "updated_at": "2025-12-12T15:17:58.773Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 141,
+  "fields": {
+    "name": "AVYI",
+    "lga": 14,
+    "code": "02",
+    "created_at": "2025-12-12T15:18:52.312Z",
+    "updated_at": "2025-12-12T15:18:52.312Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 142,
+  "fields": {
+    "name": "BANTAJE",
+    "lga": 14,
+    "code": "03",
+    "created_at": "2025-12-12T15:18:52.327Z",
+    "updated_at": "2025-12-12T15:18:52.327Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 143,
+  "fields": {
+    "name": "CHONKU",
+    "lga": 14,
+    "code": "04",
+    "created_at": "2025-12-12T15:18:52.327Z",
+    "updated_at": "2025-12-12T15:18:52.327Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 144,
+  "fields": {
+    "name": "HOSPITAL",
+    "lga": 14,
+    "code": "05",
+    "created_at": "2025-12-12T15:18:52.343Z",
+    "updated_at": "2025-12-12T15:18:52.343Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 145,
+  "fields": {
+    "name": "JIBU",
+    "lga": 14,
+    "code": "06",
+    "created_at": "2025-12-12T15:18:52.343Z",
+    "updated_at": "2025-12-12T15:18:52.343Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 146,
+  "fields": {
+    "name": "KENTE",
+    "lga": 14,
+    "code": "07",
+    "created_at": "2025-12-12T15:18:52.343Z",
+    "updated_at": "2025-12-12T15:18:52.343Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 147,
+  "fields": {
+    "name": "PUJE",
+    "lga": 14,
+    "code": "08",
+    "created_at": "2025-12-12T15:18:52.358Z",
+    "updated_at": "2025-12-12T15:18:52.358Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 148,
+  "fields": {
+    "name": "RAFIN KADA",
+    "lga": 14,
+    "code": "09",
+    "created_at": "2025-12-12T15:18:52.358Z",
+    "updated_at": "2025-12-12T15:18:52.358Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 149,
+  "fields": {
+    "name": "TSOKUNDI",
+    "lga": 14,
+    "code": "10",
+    "created_at": "2025-12-12T15:18:52.374Z",
+    "updated_at": "2025-12-12T15:18:52.374Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 150,
+  "fields": {
+    "name": "BIKASSA II",
+    "lga": 15,
+    "code": "02",
+    "created_at": "2025-12-12T15:19:45.722Z",
+    "updated_at": "2025-12-12T15:19:45.723Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 151,
+  "fields": {
+    "name": "NYAJA I",
+    "lga": 15,
+    "code": "03",
+    "created_at": "2025-12-12T15:19:45.753Z",
+    "updated_at": "2025-12-12T15:19:45.753Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 152,
+  "fields": {
+    "name": "NYAJA II",
+    "lga": 15,
+    "code": "04",
+    "created_at": "2025-12-12T15:19:45.775Z",
+    "updated_at": "2025-12-12T15:19:45.775Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 153,
+  "fields": {
+    "name": "PANTISAWA I",
+    "lga": 15,
+    "code": "05",
+    "created_at": "2025-12-12T15:19:45.801Z",
+    "updated_at": "2025-12-12T15:19:45.801Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 154,
+  "fields": {
+    "name": "PANTISAWA II",
+    "lga": 15,
+    "code": "06",
+    "created_at": "2025-12-12T15:19:45.826Z",
+    "updated_at": "2025-12-12T15:19:45.826Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 155,
+  "fields": {
+    "name": "PUPULE I",
+    "lga": 15,
+    "code": "07",
+    "created_at": "2025-12-12T15:19:45.852Z",
+    "updated_at": "2025-12-12T15:19:45.853Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 156,
+  "fields": {
+    "name": "PUPULE II",
+    "lga": 15,
+    "code": "08",
+    "created_at": "2025-12-12T15:19:45.866Z",
+    "updated_at": "2025-12-12T15:19:45.866Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 157,
+  "fields": {
+    "name": "PUPULE III",
+    "lga": 15,
+    "code": "09",
+    "created_at": "2025-12-12T15:19:45.909Z",
+    "updated_at": "2025-12-12T15:19:45.909Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 158,
+  "fields": {
+    "name": "SUMBU I",
+    "lga": 15,
+    "code": "10",
+    "created_at": "2025-12-12T15:19:45.933Z",
+    "updated_at": "2025-12-12T15:19:45.933Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 159,
+  "fields": {
+    "name": "SUMBU II",
+    "lga": 15,
+    "code": "11",
+    "created_at": "2025-12-12T15:19:45.955Z",
+    "updated_at": "2025-12-12T15:19:45.955Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 160,
+  "fields": {
+    "name": "BUBONG",
+    "lga": 16,
+    "code": "02",
+    "created_at": "2025-12-12T15:20:26.564Z",
+    "updated_at": "2025-12-12T15:20:26.564Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 161,
+  "fields": {
+    "name": "DINDING",
+    "lga": 16,
+    "code": "03",
+    "created_at": "2025-12-12T15:20:26.749Z",
+    "updated_at": "2025-12-12T15:20:26.749Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 162,
+  "fields": {
+    "name": "LAMMA",
+    "lga": 16,
+    "code": "04",
+    "created_at": "2025-12-12T15:20:26.794Z",
+    "updated_at": "2025-12-12T15:20:26.794Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 163,
+  "fields": {
+    "name": "MONKIN A",
+    "lga": 16,
+    "code": "05",
+    "created_at": "2025-12-12T15:20:26.831Z",
+    "updated_at": "2025-12-12T15:20:26.831Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 164,
+  "fields": {
+    "name": "MONKIN B",
+    "lga": 16,
+    "code": "06",
+    "created_at": "2025-12-12T15:20:26.853Z",
+    "updated_at": "2025-12-12T15:20:26.853Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 165,
+  "fields": {
+    "name": "YAKOKO",
+    "lga": 16,
+    "code": "07",
+    "created_at": "2025-12-12T15:20:26.866Z",
+    "updated_at": "2025-12-12T15:20:26.866Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 166,
+  "fields": {
+    "name": "ZING A I",
+    "lga": 16,
+    "code": "08",
+    "created_at": "2025-12-12T15:20:26.897Z",
+    "updated_at": "2025-12-12T15:20:26.897Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 167,
+  "fields": {
+    "name": "ZING A II",
+    "lga": 16,
+    "code": "09",
+    "created_at": "2025-12-12T15:20:26.916Z",
+    "updated_at": "2025-12-12T15:20:26.916Z"
+  }
+},
+{
+  "model": "election.ward",
+  "pk": 168,
+  "fields": {
+    "name": "ZING B",
+    "lga": 16,
+    "code": "10",
+    "created_at": "2025-12-12T15:20:26.933Z",
+    "updated_at": "2025-12-12T15:20:26.933Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 1,
+  "fields": {
+    "name": "ALIM GORA I,ALIM GORA PRIMARY SCHOOL",
+    "ward": 2,
+    "code": "001",
+    "registered_voters": 3233,
+    "created_at": "2025-12-11T17:51:34.880Z",
+    "updated_at": "2025-12-12T09:09:40.983Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 2,
+  "fields": {
+    "name": "BADA GOSHI OPEN SPACE (BADAGOSHI, SANSANI)",
+    "ward": 3,
+    "code": "001",
+    "registered_voters": 73792,
+    "created_at": "2025-12-11T17:51:52.427Z",
+    "updated_at": "2025-12-12T09:10:54.734Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 3,
+  "fields": {
+    "name": "dlkdld",
+    "ward": 1,
+    "code": "lkdld",
+    "registered_voters": 28322,
+    "created_at": "2025-12-11T17:52:11.940Z",
+    "updated_at": "2025-12-12T09:12:16.721Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 4,
+  "fields": {
+    "name": "AKATE I, AKATE PRIMARY SCHOOL",
+    "ward": 4,
+    "code": "001",
+    "registered_voters": 32323,
+    "created_at": "2025-12-12T09:12:50.826Z",
+    "updated_at": "2025-12-12T09:12:50.826Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 7,
+  "fields": {
+    "name": "ALIM GORA II",
+    "ward": 2,
+    "code": "002",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:25:53.989Z",
+    "updated_at": "2025-12-12T15:25:53.990Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 8,
+  "fields": {
+    "name": "ALIM GORA III",
+    "ward": 2,
+    "code": "003",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:25:53.997Z",
+    "updated_at": "2025-12-12T15:25:53.997Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 9,
+  "fields": {
+    "name": "ALIM GORA PRI",
+    "ward": 2,
+    "code": "004",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:25:54.003Z",
+    "updated_at": "2025-12-12T15:25:54.003Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 10,
+  "fields": {
+    "name": "AUDU GIWA PRI. SCH. I (AUDU GIWA MARKET SQUARE)",
+    "ward": 17,
+    "code": "001",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:26:18.494Z",
+    "updated_at": "2025-12-12T15:26:18.494Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 11,
+  "fields": {
+    "name": "AUDU GIWA PRI. SCH. II (AUDU GIWA MARKET SQUARE)",
+    "ward": 17,
+    "code": "002",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:26:18.526Z",
+    "updated_at": "2025-12-12T15:26:18.526Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 12,
+  "fields": {
+    "name": "JAURO BUBA",
+    "ward": 17,
+    "code": "003",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:26:18.553Z",
+    "updated_at": "2025-12-12T15:26:18.553Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 13,
+  "fields": {
+    "name": "WAKILI KACHALLA PRI. SCH. (WAKILI KACHALLA NEAR MAI UNGUWA PALACE)",
+    "ward": 17,
+    "code": "004",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:26:18.579Z",
+    "updated_at": "2025-12-12T15:26:18.580Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 14,
+  "fields": {
+    "name": "JAURO JESSING OPEN SPACE (JAURO JESSI NEAR MAI-ANGUWA PALACE)",
+    "ward": 17,
+    "code": "005",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:26:18.608Z",
+    "updated_at": "2025-12-12T15:26:18.608Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 15,
+  "fields": {
+    "name": "JAURO MASHI PRI. SCH. I (JAURO MASHI I NEAR MAI UNGUWA PALACE)",
+    "ward": 17,
+    "code": "006",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:26:18.630Z",
+    "updated_at": "2025-12-12T15:26:18.630Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 16,
+  "fields": {
+    "name": "JAURO MASHI PRI. SCH. II (JAURO MASHI II NEAR MAI UNGUWA PALACE)",
+    "ward": 17,
+    "code": "007",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:26:18.659Z",
+    "updated_at": "2025-12-12T15:26:18.659Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 17,
+  "fields": {
+    "name": "WAKILI YOPPO",
+    "ward": 17,
+    "code": "008",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:26:18.677Z",
+    "updated_at": "2025-12-12T15:26:18.677Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 18,
+  "fields": {
+    "name": "OPEN SPACE (BABA HARI NEAR JAURO'S PALACE)",
+    "ward": 18,
+    "code": "001",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:26:32.945Z",
+    "updated_at": "2025-12-12T15:26:32.945Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 19,
+  "fields": {
+    "name": "GARI KARI NEAR JAURO'S PALACE",
+    "ward": 18,
+    "code": "002",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:26:32.957Z",
+    "updated_at": "2025-12-12T15:26:32.957Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 20,
+  "fields": {
+    "name": "IWARE I",
+    "ward": 18,
+    "code": "003",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:26:32.966Z",
+    "updated_at": "2025-12-12T15:26:32.966Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 21,
+  "fields": {
+    "name": "IWARE II",
+    "ward": 18,
+    "code": "004",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:26:32.973Z",
+    "updated_at": "2025-12-12T15:26:32.973Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 22,
+  "fields": {
+    "name": "IWARE PRI. SCH.",
+    "ward": 18,
+    "code": "005",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:26:32.978Z",
+    "updated_at": "2025-12-12T15:26:32.978Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 23,
+  "fields": {
+    "name": "SIBRE",
+    "ward": 18,
+    "code": "006",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:26:32.988Z",
+    "updated_at": "2025-12-12T15:26:32.988Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 24,
+  "fields": {
+    "name": "JAURO KAMAI I",
+    "ward": 19,
+    "code": "001",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:26:48.387Z",
+    "updated_at": "2025-12-12T15:26:48.387Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 25,
+  "fields": {
+    "name": "JAURO KAMAI II",
+    "ward": 19,
+    "code": "002",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:26:48.406Z",
+    "updated_at": "2025-12-12T15:26:48.406Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 26,
+  "fields": {
+    "name": "JAURO KAMAI III",
+    "ward": 19,
+    "code": "003",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:26:48.415Z",
+    "updated_at": "2025-12-12T15:26:48.415Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 27,
+  "fields": {
+    "name": "JAURO MUYA PRI. SCH. (JAURO MUYA NEAR MUYA PALACE)",
+    "ward": 19,
+    "code": "004",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:26:48.422Z",
+    "updated_at": "2025-12-12T15:26:48.422Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 28,
+  "fields": {
+    "name": "JAURO YINU I",
+    "ward": 19,
+    "code": "005",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:26:48.429Z",
+    "updated_at": "2025-12-12T15:26:48.429Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 29,
+  "fields": {
+    "name": "JAURO YINU II",
+    "ward": 19,
+    "code": "006",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:26:48.438Z",
+    "updated_at": "2025-12-12T15:26:48.438Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 30,
+  "fields": {
+    "name": "KURNAYEL PRI. SCH. (KURNAYEL JAURO'S PALACE)",
+    "ward": 19,
+    "code": "007",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:26:48.444Z",
+    "updated_at": "2025-12-12T15:26:48.445Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 31,
+  "fields": {
+    "name": "MURBAI",
+    "ward": 19,
+    "code": "008",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:26:48.452Z",
+    "updated_at": "2025-12-12T15:26:48.452Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 32,
+  "fields": {
+    "name": "BADAWAIRE PRI. SCH. (BADAWAIRE NEAR JAURO'S PALACE)",
+    "ward": 20,
+    "code": "001",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:27:02.670Z",
+    "updated_at": "2025-12-12T15:27:02.670Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 33,
+  "fields": {
+    "name": "GARIN CHEUDO",
+    "ward": 20,
+    "code": "002",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:27:02.680Z",
+    "updated_at": "2025-12-12T15:27:02.680Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 34,
+  "fields": {
+    "name": "JAURO DAHIRU OPEN SPACE (JAURO DAHIRU NEAR JAURO PALACE)",
+    "ward": 20,
+    "code": "003",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:27:02.686Z",
+    "updated_at": "2025-12-12T15:27:02.686Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 35,
+  "fields": {
+    "name": "KPANTI YALI",
+    "ward": 20,
+    "code": "004",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:27:02.693Z",
+    "updated_at": "2025-12-12T15:27:02.693Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 36,
+  "fields": {
+    "name": "LAMIDO BORNO PRI. SCH. (LAMIDO BORNO DISPENSARY)",
+    "ward": 20,
+    "code": "005",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:27:02.701Z",
+    "updated_at": "2025-12-12T15:27:02.701Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 37,
+  "fields": {
+    "name": "SAFAYARNA PRI. SCH. (SAFAYARNA MARKET SQUARE)",
+    "ward": 20,
+    "code": "006",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:27:02.706Z",
+    "updated_at": "2025-12-12T15:27:02.706Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 38,
+  "fields": {
+    "name": "TAMPURE OPEN SPACE (TAMPURE MARKET SQUARE)",
+    "ward": 20,
+    "code": "007",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:27:02.715Z",
+    "updated_at": "2025-12-12T15:27:02.715Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 39,
+  "fields": {
+    "name": "WURO BAKKA PRI. SCH. (WURO BAKKA NEAR JAURO'S PALACE)",
+    "ward": 20,
+    "code": "008",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:27:02.721Z",
+    "updated_at": "2025-12-12T15:27:02.721Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 40,
+  "fields": {
+    "name": "DISPENSARY (WURO LADDE NEAR JAURO'S PALACE)",
+    "ward": 20,
+    "code": "009",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:27:02.729Z",
+    "updated_at": "2025-12-12T15:27:02.729Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 41,
+  "fields": {
+    "name": "JIRU DAUDA",
+    "ward": 21,
+    "code": "001",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:27:18.144Z",
+    "updated_at": "2025-12-12T15:27:18.144Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 42,
+  "fields": {
+    "name": "POMI",
+    "ward": 21,
+    "code": "002",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:27:18.156Z",
+    "updated_at": "2025-12-12T15:27:18.156Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 43,
+  "fields": {
+    "name": "MOTOR PARK OPEN SPACE (SARKIN ALARO",
+    "ward": 21,
+    "code": "003",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:27:18.165Z",
+    "updated_at": "2025-12-12T15:27:18.165Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 44,
+  "fields": {
+    "name": "MARKET SQUARE OPEN SPACE (SARKIN BABBO I KOFAN BILLA)",
+    "ward": 21,
+    "code": "004",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:27:18.178Z",
+    "updated_at": "2025-12-12T15:27:18.178Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 45,
+  "fields": {
+    "name": "DISPENSARY (SARKIN BABBO II ANGUWA KABAWA)",
+    "ward": 21,
+    "code": "005",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:27:18.186Z",
+    "updated_at": "2025-12-12T15:27:18.186Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 46,
+  "fields": {
+    "name": "SARKIN GARMA I",
+    "ward": 21,
+    "code": "006",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:27:18.197Z",
+    "updated_at": "2025-12-12T15:27:18.197Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 47,
+  "fields": {
+    "name": "SARKIN GARMA II",
+    "ward": 21,
+    "code": "007",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:27:18.207Z",
+    "updated_at": "2025-12-12T15:27:18.207Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 48,
+  "fields": {
+    "name": "ANGUWAN KIRBI PRI. SCH. (ANGUWAN KIRBI NEAR JAURO'S PALACE)",
+    "ward": 22,
+    "code": "001",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:27:36.397Z",
+    "updated_at": "2025-12-12T15:27:36.397Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 49,
+  "fields": {
+    "name": "ANGUWAN VOKKAI PRI. SCH. (ANGUWAN VOKKAI NEAR JAURO'S PALACE)",
+    "ward": 22,
+    "code": "002",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:27:36.411Z",
+    "updated_at": "2025-12-12T15:27:36.411Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 50,
+  "fields": {
+    "name": "JAURO DANWE",
+    "ward": 22,
+    "code": "003",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:27:36.423Z",
+    "updated_at": "2025-12-12T15:27:36.423Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 51,
+  "fields": {
+    "name": "SARKIN DUTSE",
+    "ward": 22,
+    "code": "004",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:27:36.433Z",
+    "updated_at": "2025-12-12T15:27:36.433Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 52,
+  "fields": {
+    "name": "JAURO IBRAHIM I",
+    "ward": 22,
+    "code": "005",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:27:36.446Z",
+    "updated_at": "2025-12-12T15:27:36.446Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 53,
+  "fields": {
+    "name": "JAURO IBRAHIM II",
+    "ward": 22,
+    "code": "006",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:27:36.459Z",
+    "updated_at": "2025-12-12T15:27:36.459Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 54,
+  "fields": {
+    "name": "KASUWAN LAHDI PRI. SCH. (ADAMU CHAMBA BEHIND MOSQUE)",
+    "ward": 23,
+    "code": "001",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:27:51.375Z",
+    "updated_at": "2025-12-12T15:27:51.375Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 55,
+  "fields": {
+    "name": "ALIM FULANI OPEN SPACE (ALIM FULANI OPEN SPACE)",
+    "ward": 23,
+    "code": "002",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:27:51.399Z",
+    "updated_at": "2025-12-12T15:27:51.399Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 56,
+  "fields": {
+    "name": "DISPENSARY (ANGUWAN SOKI MARKET SQUARE)",
+    "ward": 23,
+    "code": "003",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:27:51.407Z",
+    "updated_at": "2025-12-12T15:27:51.407Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 57,
+  "fields": {
+    "name": "RECREATION CENTER (BABA JIKA NEAR MARKET)",
+    "ward": 23,
+    "code": "004",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:27:51.423Z",
+    "updated_at": "2025-12-12T15:27:51.423Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 58,
+  "fields": {
+    "name": "PRI. SCH. BEFORE MOTOR PARK (DISPENSARY",
+    "ward": 23,
+    "code": "005",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:27:51.437Z",
+    "updated_at": "2025-12-12T15:27:51.437Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 59,
+  "fields": {
+    "name": "GDSS",
+    "ward": 23,
+    "code": "006",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:27:51.450Z",
+    "updated_at": "2025-12-12T15:27:51.450Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 60,
+  "fields": {
+    "name": "G.D.S.S ADJACENT TO L.G. SECRETARIAT (SABONLAYI",
+    "ward": 23,
+    "code": "007",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:27:51.457Z",
+    "updated_at": "2025-12-12T15:27:51.457Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 61,
+  "fields": {
+    "name": "WURO ISHAKU PRI. SCH. (WURO ISHAKU",
+    "ward": 23,
+    "code": "008",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:27:51.474Z",
+    "updated_at": "2025-12-12T15:27:51.474Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 62,
+  "fields": {
+    "name": "KARIM LAZAI PRI. SCH. (KARIM LAZAI",
+    "ward": 24,
+    "code": "001",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:28:05.581Z",
+    "updated_at": "2025-12-12T15:28:05.581Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 63,
+  "fields": {
+    "name": "KORKAYE PRI. SCH. (KORKAYE",
+    "ward": 24,
+    "code": "002",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:28:05.581Z",
+    "updated_at": "2025-12-12T15:28:05.581Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 64,
+  "fields": {
+    "name": "SHOMO DAGULE OPEN SPACE (SHOMO DAGULE NEAR JAURO'S PALACE)",
+    "ward": 24,
+    "code": "003",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:28:05.605Z",
+    "updated_at": "2025-12-12T15:28:05.605Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 65,
+  "fields": {
+    "name": "SHOMO GALI OPEN SPACE (SHOMO GALI NEAR JAURO'S PALACE)",
+    "ward": 24,
+    "code": "004",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:28:05.617Z",
+    "updated_at": "2025-12-12T15:28:05.617Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 66,
+  "fields": {
+    "name": "TAU GALADIMA PRI. SCH. (TAU GALADIMA",
+    "ward": 24,
+    "code": "005",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:28:05.630Z",
+    "updated_at": "2025-12-12T15:28:05.630Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 67,
+  "fields": {
+    "name": "JAURO AHMADU",
+    "ward": 25,
+    "code": "001",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:28:31.883Z",
+    "updated_at": "2025-12-12T15:28:31.883Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 68,
+  "fields": {
+    "name": "GARIN AUDU OPEN SPACE (GARIN AUDU BEHIND MOSQUE)",
+    "ward": 25,
+    "code": "002",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:28:31.983Z",
+    "updated_at": "2025-12-12T15:28:31.983Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 69,
+  "fields": {
+    "name": "GARIN AYUBA PRI. SCH. (GARIN AYUBA",
+    "ward": 25,
+    "code": "003",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:28:32.045Z",
+    "updated_at": "2025-12-12T15:28:32.045Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 70,
+  "fields": {
+    "name": "GARIN MATTA PRI. SCH. (GARIN MATTA",
+    "ward": 25,
+    "code": "004",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:28:32.112Z",
+    "updated_at": "2025-12-12T15:28:32.112Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 71,
+  "fields": {
+    "name": "JAURO MANGA PRI. SCH. (JAURO MANGA",
+    "ward": 25,
+    "code": "005",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:28:32.148Z",
+    "updated_at": "2025-12-12T15:28:32.148Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 72,
+  "fields": {
+    "name": "HAMMAN HAMZA",
+    "ward": 25,
+    "code": "006",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:28:32.184Z",
+    "updated_at": "2025-12-12T15:28:32.185Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 73,
+  "fields": {
+    "name": "ZONGON KOMBI",
+    "ward": 25,
+    "code": "007",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:28:32.213Z",
+    "updated_at": "2025-12-12T15:28:32.213Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 74,
+  "fields": {
+    "name": "GARIN KARI PRI. SCH. (GARIN KARI",
+    "ward": 25,
+    "code": "008",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:28:32.244Z",
+    "updated_at": "2025-12-12T15:28:32.244Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 75,
+  "fields": {
+    "name": "BADA GOSHI OPEN SPACE (BADAGOSHI",
+    "ward": 3,
+    "code": "001",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:43:11.724Z",
+    "updated_at": "2025-12-12T15:43:11.724Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 76,
+  "fields": {
+    "name": "BAWI OPEN SPACE (BAWI SARKIN DAWA)",
+    "ward": 3,
+    "code": "002",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:43:11.755Z",
+    "updated_at": "2025-12-12T15:43:11.755Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 77,
+  "fields": {
+    "name": "GARKIN SAMA OPEN SPACE (GARKENSAMA)",
+    "ward": 3,
+    "code": "003",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:43:11.760Z",
+    "updated_at": "2025-12-12T15:43:11.760Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 78,
+  "fields": {
+    "name": "GOBIRAWA OPEN SPACE (GOBIRAWA)",
+    "ward": 3,
+    "code": "004",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:43:11.771Z",
+    "updated_at": "2025-12-12T15:43:11.771Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 79,
+  "fields": {
+    "name": "GARIN JALO OPEN SPACE (HAMMAN ADAMA",
+    "ward": 3,
+    "code": "005",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:43:11.787Z",
+    "updated_at": "2025-12-12T15:43:11.787Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 80,
+  "fields": {
+    "name": "PANTRI OPEN SPACE (PANGRI)",
+    "ward": 3,
+    "code": "006",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:43:11.803Z",
+    "updated_at": "2025-12-12T15:43:11.803Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 81,
+  "fields": {
+    "name": "LEKERE OPEN SPACE (JAURO LETERE)",
+    "ward": 3,
+    "code": "007",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:43:11.818Z",
+    "updated_at": "2025-12-12T15:43:11.818Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 82,
+  "fields": {
+    "name": "JATAU SABTI OPEN SPACE (JATAU SABTI)",
+    "ward": 3,
+    "code": "008",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:43:11.818Z",
+    "updated_at": "2025-12-12T15:43:11.818Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 83,
+  "fields": {
+    "name": "KARKARE OPEN SPACE (KARKARE)",
+    "ward": 3,
+    "code": "009",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:43:11.834Z",
+    "updated_at": "2025-12-12T15:43:11.834Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 84,
+  "fields": {
+    "name": "KAMAJIK OPEN SPACE (KAMAJIK)",
+    "ward": 3,
+    "code": "010",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:43:11.849Z",
+    "updated_at": "2025-12-12T15:43:11.849Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 85,
+  "fields": {
+    "name": "KUSUM OPEN SPACE (LINKUSUM",
+    "ward": 3,
+    "code": "011",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:43:11.865Z",
+    "updated_at": "2025-12-12T15:43:11.865Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 86,
+  "fields": {
+    "name": "BARIKI OPEN SPACE (MAYO KAM",
+    "ward": 3,
+    "code": "012",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:43:11.881Z",
+    "updated_at": "2025-12-12T15:43:11.881Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 87,
+  "fields": {
+    "name": "ZULDEI OPEN SPACE (SULE ZUDEI",
+    "ward": 3,
+    "code": "013",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:43:11.881Z",
+    "updated_at": "2025-12-12T15:43:11.881Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 88,
+  "fields": {
+    "name": "TARI OPEN SPACE (TARI)",
+    "ward": 3,
+    "code": "014",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:43:11.897Z",
+    "updated_at": "2025-12-12T15:43:11.897Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 89,
+  "fields": {
+    "name": "ADAMU I",
+    "ward": 26,
+    "code": "001",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:43:37.243Z",
+    "updated_at": "2025-12-12T15:43:37.243Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 90,
+  "fields": {
+    "name": "UNG.CHAMBA",
+    "ward": 26,
+    "code": "002",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:43:37.269Z",
+    "updated_at": "2025-12-12T15:43:37.269Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 91,
+  "fields": {
+    "name": "ADAMU III",
+    "ward": 26,
+    "code": "003",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:43:37.296Z",
+    "updated_at": "2025-12-12T15:43:37.296Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 92,
+  "fields": {
+    "name": "K/TORO TONDO OPEN SPACE (ADAMU IV",
+    "ward": 26,
+    "code": "004",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:43:37.319Z",
+    "updated_at": "2025-12-12T15:43:37.319Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 93,
+  "fields": {
+    "name": "G/ MANGORO HOSPITAL ROAD OPEN SPACE (AUDU",
+    "ward": 26,
+    "code": "005",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:43:37.351Z",
+    "updated_at": "2025-12-12T15:43:37.351Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 94,
+  "fields": {
+    "name": "JAMMIRI OPEN SPACE (JAMMIRI)",
+    "ward": 26,
+    "code": "006",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:43:37.368Z",
+    "updated_at": "2025-12-12T15:43:37.368Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 95,
+  "fields": {
+    "name": "JAURO BUNGA OPEN SPACE (JAURO BUNGA)",
+    "ward": 26,
+    "code": "007",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:43:37.399Z",
+    "updated_at": "2025-12-12T15:43:37.399Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 96,
+  "fields": {
+    "name": "M/GAJERE OPEN SPACE (M/GAJERE)",
+    "ward": 26,
+    "code": "008",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:43:37.421Z",
+    "updated_at": "2025-12-12T15:43:37.421Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 97,
+  "fields": {
+    "name": "NAYI NAWA OPEN SPACE (NAYI NAWA)",
+    "ward": 26,
+    "code": "009",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:43:37.452Z",
+    "updated_at": "2025-12-12T15:43:37.452Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 98,
+  "fields": {
+    "name": "S/BAKA OPEN SPACE (S/BAKA)",
+    "ward": 26,
+    "code": "010",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:43:37.473Z",
+    "updated_at": "2025-12-12T15:43:37.473Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 99,
+  "fields": {
+    "name": "WAYA",
+    "ward": 26,
+    "code": "011",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:43:37.495Z",
+    "updated_at": "2025-12-12T15:43:37.496Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 100,
+  "fields": {
+    "name": "ASINAI OPEN SPACE (ASINAI)",
+    "ward": 27,
+    "code": "001",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:47:02.227Z",
+    "updated_at": "2025-12-12T15:47:02.227Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 101,
+  "fields": {
+    "name": "GINDIN DUTSE OPEN SPACE (BAWA I",
+    "ward": 27,
+    "code": "002",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:47:02.243Z",
+    "updated_at": "2025-12-12T15:47:02.243Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 102,
+  "fields": {
+    "name": "UNG.SARKI OPEN SPACE (BAWA II",
+    "ward": 27,
+    "code": "003",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:47:02.250Z",
+    "updated_at": "2025-12-12T15:47:02.250Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 103,
+  "fields": {
+    "name": "DANIYA OPEN SPACE (UNG. DANIYA)",
+    "ward": 27,
+    "code": "004",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:47:02.270Z",
+    "updated_at": "2025-12-12T15:47:02.270Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 104,
+  "fields": {
+    "name": "GAZABU BELKEJI OPEN SPACE (GAZABU BELKEJI)",
+    "ward": 27,
+    "code": "005",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:47:02.293Z",
+    "updated_at": "2025-12-12T15:47:02.293Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 105,
+  "fields": {
+    "name": "GAZABU OPEN SPACE (GAZABU)",
+    "ward": 27,
+    "code": "006",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:47:02.305Z",
+    "updated_at": "2025-12-12T15:47:02.305Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 106,
+  "fields": {
+    "name": "G/AJUJI OPEN SPACE (G/AJUJI)",
+    "ward": 27,
+    "code": "007",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:47:02.323Z",
+    "updated_at": "2025-12-12T15:47:02.323Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 107,
+  "fields": {
+    "name": "JUKUNAWA I",
+    "ward": 27,
+    "code": "008",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:47:02.338Z",
+    "updated_at": "2025-12-12T15:47:02.338Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 108,
+  "fields": {
+    "name": "JUKUNAWA II",
+    "ward": 27,
+    "code": "009",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:47:02.346Z",
+    "updated_at": "2025-12-12T15:47:02.346Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 109,
+  "fields": {
+    "name": "SABON DALE OPEN SPACE (SABON DALE)",
+    "ward": 27,
+    "code": "010",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:47:02.353Z",
+    "updated_at": "2025-12-12T15:47:02.353Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 110,
+  "fields": {
+    "name": "G/ BAKEN OPEN SPACE (G/BAKEN)",
+    "ward": 28,
+    "code": "001",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:47:34.212Z",
+    "updated_at": "2025-12-12T15:47:34.212Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 111,
+  "fields": {
+    "name": "G/SAMEN OPEN SPACE (G/SAMEN)",
+    "ward": 28,
+    "code": "002",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:47:34.236Z",
+    "updated_at": "2025-12-12T15:47:34.236Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 112,
+  "fields": {
+    "name": "UNG JOBDI DAKA OPEN SPACE (JOBDI I",
+    "ward": 28,
+    "code": "003",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:47:34.261Z",
+    "updated_at": "2025-12-12T15:47:34.261Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 113,
+  "fields": {
+    "name": "KAMPU OPEN SPACE (JOBDI II",
+    "ward": 28,
+    "code": "004",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:47:34.278Z",
+    "updated_at": "2025-12-12T15:47:34.278Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 114,
+  "fields": {
+    "name": "NYAWANTI OPEN SPACE (NYAWANTI)",
+    "ward": 28,
+    "code": "005",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:47:34.296Z",
+    "updated_at": "2025-12-12T15:47:34.296Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 115,
+  "fields": {
+    "name": "NYINKUSUM OPEN SPACE (NYINKUSUM)",
+    "ward": 28,
+    "code": "006",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:47:34.320Z",
+    "updated_at": "2025-12-12T15:47:34.321Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 116,
+  "fields": {
+    "name": "SARKIN NOMA",
+    "ward": 28,
+    "code": "007",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:47:34.337Z",
+    "updated_at": "2025-12-12T15:47:34.337Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 117,
+  "fields": {
+    "name": "TIMJEMI OPEIN SPACE (TIMJEMI)",
+    "ward": 28,
+    "code": "008",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:47:34.351Z",
+    "updated_at": "2025-12-12T15:47:34.351Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 118,
+  "fields": {
+    "name": "GANGLARI OPEN SPACE (GANGLARI)",
+    "ward": 29,
+    "code": "001",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:48:08.968Z",
+    "updated_at": "2025-12-12T15:48:08.968Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 119,
+  "fields": {
+    "name": "GANGDUNIYARO OPEN PACE (GANG DUNIYARO)",
+    "ward": 29,
+    "code": "002",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:48:08.998Z",
+    "updated_at": "2025-12-12T15:48:08.999Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 120,
+  "fields": {
+    "name": "GANG SULE OPEN SPACE (GANG SULE)",
+    "ward": 29,
+    "code": "003",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:48:09.016Z",
+    "updated_at": "2025-12-12T15:48:09.016Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 121,
+  "fields": {
+    "name": "GANGKITA OPEN SPACE (GANGKITA)",
+    "ward": 29,
+    "code": "004",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:48:09.032Z",
+    "updated_at": "2025-12-12T15:48:09.032Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 122,
+  "fields": {
+    "name": "J/IBRAHIM OPEN SPACE (J/IBRAHIM)",
+    "ward": 29,
+    "code": "005",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:48:09.050Z",
+    "updated_at": "2025-12-12T15:48:09.050Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 123,
+  "fields": {
+    "name": "JANGARE OPEN SPACE (JANGARE)",
+    "ward": 29,
+    "code": "006",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:48:09.066Z",
+    "updated_at": "2025-12-12T15:48:09.066Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 124,
+  "fields": {
+    "name": "DEUKUSUM OPEN SPACE (DEUKUSUM I",
+    "ward": 30,
+    "code": "001",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:49:15.065Z",
+    "updated_at": "2025-12-12T15:49:15.065Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 125,
+  "fields": {
+    "name": "OPEN SPACE (DEUKUSUM II",
+    "ward": 30,
+    "code": "002",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:49:15.089Z",
+    "updated_at": "2025-12-12T15:49:15.090Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 126,
+  "fields": {
+    "name": "GANG- GIRA DADOA OPENSPACE (GANG-GIRA DADOA)",
+    "ward": 30,
+    "code": "003",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:49:15.112Z",
+    "updated_at": "2025-12-12T15:49:15.112Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 127,
+  "fields": {
+    "name": "TIBA OPEN SPACE (GANG TIBA",
+    "ward": 30,
+    "code": "004",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:49:15.135Z",
+    "updated_at": "2025-12-12T15:49:15.135Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 128,
+  "fields": {
+    "name": "SABON LAYI OPEN SPACE (GANG TIBA II",
+    "ward": 30,
+    "code": "005",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:49:15.158Z",
+    "updated_at": "2025-12-12T15:49:15.158Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 129,
+  "fields": {
+    "name": "NAMBURKI OPEN SPACE (MARARRABA TUKUR",
+    "ward": 30,
+    "code": "006",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:49:15.192Z",
+    "updated_at": "2025-12-12T15:49:15.192Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 130,
+  "fields": {
+    "name": "SARKIN MATA OPEN SPACE (SARKIN MATA)",
+    "ward": 30,
+    "code": "007",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:49:15.214Z",
+    "updated_at": "2025-12-12T15:49:15.214Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 131,
+  "fields": {
+    "name": "BINYIWA OPENSPACE (BINYIWA)",
+    "ward": 31,
+    "code": "001",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:50:17.001Z",
+    "updated_at": "2025-12-12T15:50:17.001Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 132,
+  "fields": {
+    "name": "GANG DAN BANA",
+    "ward": 31,
+    "code": "002",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:50:17.026Z",
+    "updated_at": "2025-12-12T15:50:17.027Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 133,
+  "fields": {
+    "name": "GANG BON OPEN SPACE (GANDAN BANA II",
+    "ward": 31,
+    "code": "003",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:50:17.045Z",
+    "updated_at": "2025-12-12T15:50:17.045Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 134,
+  "fields": {
+    "name": "GANG WOJIDA OPEN SPACE (GANG WOJIDA)",
+    "ward": 31,
+    "code": "004",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:50:17.064Z",
+    "updated_at": "2025-12-12T15:50:17.064Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 135,
+  "fields": {
+    "name": "GANG PENTOM",
+    "ward": 31,
+    "code": "005",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:50:17.084Z",
+    "updated_at": "2025-12-12T15:50:17.084Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 136,
+  "fields": {
+    "name": "MIRIMIRIDONKOLO OPEN SPACE (MIRIMIRIDONKOLO)",
+    "ward": 31,
+    "code": "006",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:50:17.106Z",
+    "updated_at": "2025-12-12T15:50:17.106Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 137,
+  "fields": {
+    "name": "PAMANGA OPEN SPACE (PAMANGA)",
+    "ward": 31,
+    "code": "007",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:50:17.126Z",
+    "updated_at": "2025-12-12T15:50:17.126Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 138,
+  "fields": {
+    "name": "SABONGIDA OPEN SPACE (SABONGIDA)",
+    "ward": 31,
+    "code": "008",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:50:17.147Z",
+    "updated_at": "2025-12-12T15:50:17.147Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 139,
+  "fields": {
+    "name": "B/WURKUM OPEN SPACE (B/ WURKUM)",
+    "ward": 32,
+    "code": "001",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:53:42.581Z",
+    "updated_at": "2025-12-12T15:53:42.581Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 140,
+  "fields": {
+    "name": "GANG FURUM OPEN SPACE (GANG FURUM)",
+    "ward": 32,
+    "code": "002",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:53:42.603Z",
+    "updated_at": "2025-12-12T15:53:42.603Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 141,
+  "fields": {
+    "name": "J/ALI OPEN SPACE (J/ ALI)",
+    "ward": 32,
+    "code": "003",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:53:42.621Z",
+    "updated_at": "2025-12-12T15:53:42.621Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 142,
+  "fields": {
+    "name": "J/ JULDE OPEN SPACE I (J/ JULDE I)",
+    "ward": 32,
+    "code": "004",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:53:42.641Z",
+    "updated_at": "2025-12-12T15:53:42.641Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 143,
+  "fields": {
+    "name": "J/ JULDE OPEN SPACE II (J/ JULDE II J/AUDI)",
+    "ward": 32,
+    "code": "005",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:53:42.657Z",
+    "updated_at": "2025-12-12T15:53:42.658Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 144,
+  "fields": {
+    "name": "J/BUDOWA OPEN SPACE (J/BUDOWA)",
+    "ward": 32,
+    "code": "006",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:53:42.671Z",
+    "updated_at": "2025-12-12T15:53:42.671Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 145,
+  "fields": {
+    "name": "J/ ZUBAIRU OPEN SPACE (J/ ZUBAIRU)",
+    "ward": 32,
+    "code": "007",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:53:42.687Z",
+    "updated_at": "2025-12-12T15:53:42.687Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 146,
+  "fields": {
+    "name": "J/ BELLO OPEN SPACE (J/ BELLO)",
+    "ward": 32,
+    "code": "008",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:53:42.698Z",
+    "updated_at": "2025-12-12T15:53:42.698Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 147,
+  "fields": {
+    "name": "J/ NABAYI OPEN SPACE (J/NABAYI)",
+    "ward": 32,
+    "code": "009",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:53:42.714Z",
+    "updated_at": "2025-12-12T15:53:42.714Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 148,
+  "fields": {
+    "name": "NYAMA TAMANDA OPEN PACE (J/ISA",
+    "ward": 32,
+    "code": "010",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:53:42.731Z",
+    "updated_at": "2025-12-12T15:53:42.731Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 149,
+  "fields": {
+    "name": "KANKANI OPEN SPACE (KANKANI)",
+    "ward": 32,
+    "code": "011",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:53:42.746Z",
+    "updated_at": "2025-12-12T15:53:42.746Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 150,
+  "fields": {
+    "name": "MAI BULTU OPEN SPACE (MAIBULTU)",
+    "ward": 32,
+    "code": "012",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:53:42.761Z",
+    "updated_at": "2025-12-12T15:53:42.761Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 151,
+  "fields": {
+    "name": "M/NYANDAM",
+    "ward": 32,
+    "code": "013",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:53:42.778Z",
+    "updated_at": "2025-12-12T15:53:42.778Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 152,
+  "fields": {
+    "name": "KWALBATIGKWE OPEN SPACE (S/ WURKUM",
+    "ward": 32,
+    "code": "014",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:53:42.794Z",
+    "updated_at": "2025-12-12T15:53:42.794Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 153,
+  "fields": {
+    "name": "SANDARU OPEN SPACE (SANDARU)",
+    "ward": 32,
+    "code": "015",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:53:42.809Z",
+    "updated_at": "2025-12-12T15:53:42.809Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 154,
+  "fields": {
+    "name": "GANGSHMEN OPEN SPACE (Y/GANG SHMEN)",
+    "ward": 32,
+    "code": "016",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:53:42.824Z",
+    "updated_at": "2025-12-12T15:53:42.824Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 155,
+  "fields": {
+    "name": "YAYANI YUSUF OPEN SPACE (YAYANI YUSUF)",
+    "ward": 32,
+    "code": "017",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T15:53:42.840Z",
+    "updated_at": "2025-12-12T15:53:42.840Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 156,
+  "fields": {
+    "name": "B/ JALO OPEN SPACE (B/ JALO)",
+    "ward": 33,
+    "code": "001",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:01:58.008Z",
+    "updated_at": "2025-12-12T16:01:58.008Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 157,
+  "fields": {
+    "name": "DAJERU OPEN SPACE (DAJERU)",
+    "ward": 33,
+    "code": "002",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:01:58.025Z",
+    "updated_at": "2025-12-12T16:01:58.025Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 158,
+  "fields": {
+    "name": "DADIN KOWA OPEN SPACE (DADIN KOWA)",
+    "ward": 33,
+    "code": "003",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:01:58.055Z",
+    "updated_at": "2025-12-12T16:01:58.055Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 159,
+  "fields": {
+    "name": "BAKI OPEN SPACE (GARIN BAKI)",
+    "ward": 33,
+    "code": "004",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:01:58.072Z",
+    "updated_at": "2025-12-12T16:01:58.073Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 160,
+  "fields": {
+    "name": "K/GORO OPEN SPACE (K/GORO)",
+    "ward": 33,
+    "code": "005",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:01:58.090Z",
+    "updated_at": "2025-12-12T16:01:58.090Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 161,
+  "fields": {
+    "name": "MAI HULA G. DORUWA OPEN SPACE (K/NYAPO",
+    "ward": 33,
+    "code": "006",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:01:58.115Z",
+    "updated_at": "2025-12-12T16:01:58.115Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 162,
+  "fields": {
+    "name": "K/NYAVO OPEN SPACE (K/NYAVO)",
+    "ward": 33,
+    "code": "007",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:01:58.130Z",
+    "updated_at": "2025-12-12T16:01:58.130Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 163,
+  "fields": {
+    "name": "K/GANG NADERE OPEN SPACE (K/GANG NADERE)",
+    "ward": 33,
+    "code": "008",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:01:58.147Z",
+    "updated_at": "2025-12-12T16:01:58.147Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 164,
+  "fields": {
+    "name": "LADAN OPEN SPACE (LADAN)",
+    "ward": 33,
+    "code": "009",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:01:58.171Z",
+    "updated_at": "2025-12-12T16:01:58.171Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 165,
+  "fields": {
+    "name": "MAIKINTA OPEN SPACE (MAIKINTA)",
+    "ward": 33,
+    "code": "010",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:01:58.188Z",
+    "updated_at": "2025-12-12T16:01:58.188Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 166,
+  "fields": {
+    "name": "M/TONTI",
+    "ward": 33,
+    "code": "011",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:01:58.211Z",
+    "updated_at": "2025-12-12T16:01:58.211Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 167,
+  "fields": {
+    "name": "NAHUTA",
+    "ward": 33,
+    "code": "012",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:01:58.225Z",
+    "updated_at": "2025-12-12T16:01:58.225Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 168,
+  "fields": {
+    "name": "SABON GIDA OPEN SPACE (SABON GIDA)",
+    "ward": 33,
+    "code": "013",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:01:58.247Z",
+    "updated_at": "2025-12-12T16:01:58.247Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 169,
+  "fields": {
+    "name": "WURBO",
+    "ward": 33,
+    "code": "014",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:01:58.263Z",
+    "updated_at": "2025-12-12T16:01:58.263Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 170,
+  "fields": {
+    "name": "DANBOYI OPEN SPACE (DANBOYI)",
+    "ward": 34,
+    "code": "001",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:04:36.185Z",
+    "updated_at": "2025-12-12T16:04:36.185Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 171,
+  "fields": {
+    "name": "G/GARBA SUNTAI",
+    "ward": 34,
+    "code": "002",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:04:36.207Z",
+    "updated_at": "2025-12-12T16:04:36.207Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 172,
+  "fields": {
+    "name": "GOBIR OPEN SPACE (GOBIR)",
+    "ward": 34,
+    "code": "003",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:04:36.215Z",
+    "updated_at": "2025-12-12T16:04:36.215Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 173,
+  "fields": {
+    "name": "GARBA KUNGANA OPENSPACE (GARBA KUNGANA)",
+    "ward": 34,
+    "code": "004",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:04:36.225Z",
+    "updated_at": "2025-12-12T16:04:36.225Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 174,
+  "fields": {
+    "name": "H/ ZAGAH OPEN SPACE (H/ ZAGAH)",
+    "ward": 34,
+    "code": "005",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:04:36.230Z",
+    "updated_at": "2025-12-12T16:04:36.230Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 175,
+  "fields": {
+    "name": "IBRAHIM OPEN SPACE (IBRAHIM)",
+    "ward": 34,
+    "code": "006",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:04:36.254Z",
+    "updated_at": "2025-12-12T16:04:36.254Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 176,
+  "fields": {
+    "name": "JATAU OPEN SPACE (JATAU)",
+    "ward": 34,
+    "code": "007",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:04:36.261Z",
+    "updated_at": "2025-12-12T16:04:36.261Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 177,
+  "fields": {
+    "name": "K/DAMISA OPEN SPACE (K/DAMISA)",
+    "ward": 34,
+    "code": "008",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:04:36.268Z",
+    "updated_at": "2025-12-12T16:04:36.268Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 178,
+  "fields": {
+    "name": "KUNGANA OPENSPACE (KUNGANA)",
+    "ward": 34,
+    "code": "009",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:04:36.275Z",
+    "updated_at": "2025-12-12T16:04:36.275Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 179,
+  "fields": {
+    "name": "KWASSA OPEN SPACE (KWASSA)",
+    "ward": 34,
+    "code": "010",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:04:36.281Z",
+    "updated_at": "2025-12-12T16:04:36.281Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 180,
+  "fields": {
+    "name": "K/BARIKI OPEN SPACE (KWASSA BARIKI",
+    "ward": 34,
+    "code": "011",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:04:36.289Z",
+    "updated_at": "2025-12-12T16:04:36.289Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 181,
+  "fields": {
+    "name": "MAMMAN OPEN SPACE (MAMMAN)",
+    "ward": 34,
+    "code": "012",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:04:36.289Z",
+    "updated_at": "2025-12-12T16:04:36.289Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 182,
+  "fields": {
+    "name": "MAI KASUWA OPEN SPACE (MAI KASUWA)",
+    "ward": 34,
+    "code": "013",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:04:36.305Z",
+    "updated_at": "2025-12-12T16:04:36.305Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 183,
+  "fields": {
+    "name": "MAI KUDI OPEN SPACE (MAIKUDI)",
+    "ward": 34,
+    "code": "014",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:04:36.311Z",
+    "updated_at": "2025-12-12T16:04:36.311Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 184,
+  "fields": {
+    "name": "MAI GOGE OPEN SPACE I (MAI GOGE I)",
+    "ward": 34,
+    "code": "015",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:04:36.318Z",
+    "updated_at": "2025-12-12T16:04:36.318Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 185,
+  "fields": {
+    "name": "MAI GOGE OPEN SPACE II (MAI GOGE II)",
+    "ward": 34,
+    "code": "016",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:04:36.328Z",
+    "updated_at": "2025-12-12T16:04:36.328Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 186,
+  "fields": {
+    "name": "M/ SARKI OPEN SPACE (M/ SARKI)",
+    "ward": 34,
+    "code": "017",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:04:36.341Z",
+    "updated_at": "2025-12-12T16:04:36.341Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 187,
+  "fields": {
+    "name": "M/ JOJI OPEN SPACE (M/JOJI)",
+    "ward": 34,
+    "code": "018",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:04:36.349Z",
+    "updated_at": "2025-12-12T16:04:36.349Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 188,
+  "fields": {
+    "name": "S/ DANKO OPEN SPACE (S/ DANKO)",
+    "ward": 34,
+    "code": "019",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:04:36.361Z",
+    "updated_at": "2025-12-12T16:04:36.361Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 189,
+  "fields": {
+    "name": "T/ ZAKI OPEN SPACE (T/ZAKI)",
+    "ward": 34,
+    "code": "020",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:04:36.369Z",
+    "updated_at": "2025-12-12T16:04:36.369Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 190,
+  "fields": {
+    "name": "TAKALAFIYA OPEN SPACE (AUYUKAWA",
+    "ward": 35,
+    "code": "001",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:07:24.330Z",
+    "updated_at": "2025-12-12T16:07:24.330Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 191,
+  "fields": {
+    "name": "BORNO I",
+    "ward": 35,
+    "code": "002",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:07:24.359Z",
+    "updated_at": "2025-12-12T16:07:24.359Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 192,
+  "fields": {
+    "name": "BORNO OPEN SPACE (BORNO II)",
+    "ward": 35,
+    "code": "003",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:07:24.392Z",
+    "updated_at": "2025-12-12T16:07:24.392Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 193,
+  "fields": {
+    "name": "BABA JULI OPEN SPACE (BABA JULI)",
+    "ward": 35,
+    "code": "004",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:07:24.404Z",
+    "updated_at": "2025-12-12T16:07:24.404Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 194,
+  "fields": {
+    "name": "DALI OPEN SPACE (DALI)",
+    "ward": 35,
+    "code": "005",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:07:24.442Z",
+    "updated_at": "2025-12-12T16:07:24.442Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 195,
+  "fields": {
+    "name": "GARWA OPEN SPACE (GARWA)",
+    "ward": 35,
+    "code": "006",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:07:24.464Z",
+    "updated_at": "2025-12-12T16:07:24.464Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 196,
+  "fields": {
+    "name": "G/JALO OPEN SPAECE (JALO",
+    "ward": 35,
+    "code": "007",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:07:24.491Z",
+    "updated_at": "2025-12-12T16:07:24.491Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 197,
+  "fields": {
+    "name": "KARA RUWA I",
+    "ward": 35,
+    "code": "008",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:07:24.515Z",
+    "updated_at": "2025-12-12T16:07:24.515Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 198,
+  "fields": {
+    "name": "KARA RUWA OPEN SPACE (KARA RUWA II)",
+    "ward": 35,
+    "code": "009",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:07:24.543Z",
+    "updated_at": "2025-12-12T16:07:24.543Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 199,
+  "fields": {
+    "name": "KATSINA OPEN SPACE (KATSINA)",
+    "ward": 35,
+    "code": "010",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:07:24.569Z",
+    "updated_at": "2025-12-12T16:07:24.569Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 200,
+  "fields": {
+    "name": "MALAM YERO OPEN SPACE (MALAM YERO)",
+    "ward": 35,
+    "code": "011",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:07:24.593Z",
+    "updated_at": "2025-12-12T16:07:24.593Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 201,
+  "fields": {
+    "name": "TAKALAFIYA I",
+    "ward": 35,
+    "code": "012",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:07:24.615Z",
+    "updated_at": "2025-12-12T16:07:24.615Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 202,
+  "fields": {
+    "name": "TAKALAFIYA OPEN SPACE (TAKALAFIYA II)",
+    "ward": 35,
+    "code": "013",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:07:24.641Z",
+    "updated_at": "2025-12-12T16:07:24.641Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 203,
+  "fields": {
+    "name": "YELWA OPEN SPACE (YELWA)",
+    "ward": 35,
+    "code": "014",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:07:24.675Z",
+    "updated_at": "2025-12-12T16:07:24.675Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 204,
+  "fields": {
+    "name": "AKATE I",
+    "ward": 4,
+    "code": "001",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:15:00.125Z",
+    "updated_at": "2025-12-12T16:15:00.125Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 205,
+  "fields": {
+    "name": "AKATE II",
+    "ward": 4,
+    "code": "002",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:15:00.142Z",
+    "updated_at": "2025-12-12T16:15:00.142Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 206,
+  "fields": {
+    "name": "AKATE III",
+    "ward": 4,
+    "code": "003",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:15:00.142Z",
+    "updated_at": "2025-12-12T16:15:00.142Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 207,
+  "fields": {
+    "name": "GBUNDU",
+    "ward": 4,
+    "code": "004",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:15:00.158Z",
+    "updated_at": "2025-12-12T16:15:00.158Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 208,
+  "fields": {
+    "name": "GURUZA",
+    "ward": 4,
+    "code": "005",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:15:00.158Z",
+    "updated_at": "2025-12-12T16:15:00.158Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 209,
+  "fields": {
+    "name": "MBAKUMBOL MKT. SQ. OPEN SPACE (MBAKUMBOL)",
+    "ward": 4,
+    "code": "006",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:15:00.175Z",
+    "updated_at": "2025-12-12T16:15:00.175Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 210,
+  "fields": {
+    "name": "MBASSA MKT. SQ. OPEN SPACE (MBASSA",
+    "ward": 4,
+    "code": "007",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:15:00.175Z",
+    "updated_at": "2025-12-12T16:15:00.175Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 211,
+  "fields": {
+    "name": "MBATURA MKT. SQ. OPEN SPACE (MBATURA",
+    "ward": 4,
+    "code": "008",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:15:00.175Z",
+    "updated_at": "2025-12-12T16:15:00.175Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 212,
+  "fields": {
+    "name": "AKATE MKT. SQ. OPEN SPACE (K/S AKATE",
+    "ward": 4,
+    "code": "009",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:15:00.192Z",
+    "updated_at": "2025-12-12T16:15:00.192Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 213,
+  "fields": {
+    "name": "NOMADIC PRI. SCH. (KOFAR SANI)",
+    "ward": 4,
+    "code": "010",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:15:00.198Z",
+    "updated_at": "2025-12-12T16:15:00.198Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 214,
+  "fields": {
+    "name": "TSE-UDA MKT. SQ. OPEN SPACE (TSE-UDA",
+    "ward": 4,
+    "code": "011",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:15:00.208Z",
+    "updated_at": "2025-12-12T16:15:00.208Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 215,
+  "fields": {
+    "name": "TOR DAMISA",
+    "ward": 4,
+    "code": "012",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:15:00.209Z",
+    "updated_at": "2025-12-12T16:15:00.209Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 216,
+  "fields": {
+    "name": "ANANUM I",
+    "ward": 36,
+    "code": "001",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:20:27.872Z",
+    "updated_at": "2025-12-12T16:20:27.872Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 217,
+  "fields": {
+    "name": "ASIBITI",
+    "ward": 36,
+    "code": "002",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:20:27.888Z",
+    "updated_at": "2025-12-12T16:20:27.888Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 218,
+  "fields": {
+    "name": "BAKIN ASIBITI (BINGA/KOFAR DAKIN SAMA)",
+    "ward": 36,
+    "code": "003",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:20:27.893Z",
+    "updated_at": "2025-12-12T16:20:27.893Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 219,
+  "fields": {
+    "name": "DOGO",
+    "ward": 36,
+    "code": "004",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:20:27.903Z",
+    "updated_at": "2025-12-12T16:20:27.903Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 220,
+  "fields": {
+    "name": "OLD MARKET SQUARE DONGAOPEN SPACE (GBANA",
+    "ward": 36,
+    "code": "005",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:20:27.908Z",
+    "updated_at": "2025-12-12T16:20:27.908Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 221,
+  "fields": {
+    "name": "DOZUNGA PRIMARY SCHOOL I (GAYAM I / KOFAR GAYAM DONGA)",
+    "ward": 36,
+    "code": "006",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:20:27.915Z",
+    "updated_at": "2025-12-12T16:20:27.915Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 222,
+  "fields": {
+    "name": "DOZUNGA PRIMARY SCHOOL II (GAYAM II / KOFAR GAYAM DONGA)",
+    "ward": 36,
+    "code": "007",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:20:27.922Z",
+    "updated_at": "2025-12-12T16:20:27.922Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 223,
+  "fields": {
+    "name": "DONGA MOTOR PARKOPEN SPACE (GAMIYA",
+    "ward": 36,
+    "code": "008",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:20:27.928Z",
+    "updated_at": "2025-12-12T16:20:27.928Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 224,
+  "fields": {
+    "name": "NEW MARKET DONGAOPEN SPACE (GARGEA)",
+    "ward": 36,
+    "code": "009",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:20:27.938Z",
+    "updated_at": "2025-12-12T16:20:27.938Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 225,
+  "fields": {
+    "name": "MADAKI OPEN SPACE (MADAKI",
+    "ward": 36,
+    "code": "010",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:20:27.942Z",
+    "updated_at": "2025-12-12T16:20:27.943Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 226,
+  "fields": {
+    "name": "NUFU OPEN SPACE (NUFU",
+    "ward": 36,
+    "code": "011",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:20:27.951Z",
+    "updated_at": "2025-12-12T16:20:27.951Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 227,
+  "fields": {
+    "name": "KAPE PRIMARY SCHOOL (LUFU/ KOFAR LUFU)",
+    "ward": 36,
+    "code": "012",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:20:27.960Z",
+    "updated_at": "2025-12-12T16:20:27.960Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 228,
+  "fields": {
+    "name": "SHAAKAA I",
+    "ward": 36,
+    "code": "013",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:20:27.968Z",
+    "updated_at": "2025-12-12T16:20:27.968Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 229,
+  "fields": {
+    "name": "KOFAR SABO TOO OPEN SPACE (TOO",
+    "ward": 36,
+    "code": "014",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:20:27.974Z",
+    "updated_at": "2025-12-12T16:20:27.974Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 230,
+  "fields": {
+    "name": "TONGOV",
+    "ward": 36,
+    "code": "015",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:20:27.979Z",
+    "updated_at": "2025-12-12T16:20:27.979Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 231,
+  "fields": {
+    "name": "DONZUNGA PRIMARY SCHOOL (YERIMA/ KOFAR YERIMA DONGA)",
+    "ward": 36,
+    "code": "016",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:20:27.988Z",
+    "updated_at": "2025-12-12T16:20:27.988Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 232,
+  "fields": {
+    "name": "FADA I",
+    "ward": 37,
+    "code": "001",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:24:28.640Z",
+    "updated_at": "2025-12-12T16:24:28.640Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 233,
+  "fields": {
+    "name": "OLD MARKET SQUAREOPEN SPACE (FADA II",
+    "ward": 37,
+    "code": "002",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:24:28.672Z",
+    "updated_at": "2025-12-12T16:24:28.673Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 234,
+  "fields": {
+    "name": "OLD MARKET SQUAREOPEN SPACE (KANTI I",
+    "ward": 37,
+    "code": "003",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:24:28.710Z",
+    "updated_at": "2025-12-12T16:24:28.710Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 235,
+  "fields": {
+    "name": "OLD MARKET SQUAREOPEN SPACE (KANTI II",
+    "ward": 37,
+    "code": "004",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:24:28.732Z",
+    "updated_at": "2025-12-12T16:24:28.733Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 236,
+  "fields": {
+    "name": "OLD MARKET SQUARE OPEN SPACE (MAKERI",
+    "ward": 37,
+    "code": "005",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:24:28.752Z",
+    "updated_at": "2025-12-12T16:24:28.752Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 237,
+  "fields": {
+    "name": "OPEN SPACE (RICE MILL)",
+    "ward": 37,
+    "code": "006",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:24:28.775Z",
+    "updated_at": "2025-12-12T16:24:28.775Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 238,
+  "fields": {
+    "name": "OLD MARKET SQUARE OPEN SPACE (SAMBO",
+    "ward": 37,
+    "code": "007",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:24:28.795Z",
+    "updated_at": "2025-12-12T16:24:28.795Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 239,
+  "fields": {
+    "name": "ASIBITI",
+    "ward": 38,
+    "code": "001",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:28:20.427Z",
+    "updated_at": "2025-12-12T16:28:20.427Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 240,
+  "fields": {
+    "name": "BIBINU I",
+    "ward": 38,
+    "code": "002",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:28:20.447Z",
+    "updated_at": "2025-12-12T16:28:20.448Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 241,
+  "fields": {
+    "name": "BIBINU PRIMARY SCHOOL (BIBINU II / KOFAR YERIMA DONGA)",
+    "ward": 38,
+    "code": "003",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:28:20.463Z",
+    "updated_at": "2025-12-12T16:28:20.463Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 242,
+  "fields": {
+    "name": "BENYE",
+    "ward": 38,
+    "code": "004",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:28:20.479Z",
+    "updated_at": "2025-12-12T16:28:20.479Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 243,
+  "fields": {
+    "name": "FALI",
+    "ward": 38,
+    "code": "005",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:28:20.495Z",
+    "updated_at": "2025-12-12T16:28:20.495Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 244,
+  "fields": {
+    "name": "MARKET SQUREOPEN SPACE (GAYAMA I",
+    "ward": 38,
+    "code": "006",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:28:20.510Z",
+    "updated_at": "2025-12-12T16:28:20.510Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 245,
+  "fields": {
+    "name": "GAYAMA II",
+    "ward": 38,
+    "code": "007",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:28:20.527Z",
+    "updated_at": "2025-12-12T16:28:20.527Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 246,
+  "fields": {
+    "name": "NAAH",
+    "ward": 38,
+    "code": "008",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:28:20.542Z",
+    "updated_at": "2025-12-12T16:28:20.542Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 247,
+  "fields": {
+    "name": "GAYAMA PRIMARY SCHOOL (NUKPO / KOFAR SRKIN NUKPO)",
+    "ward": 38,
+    "code": "009",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:28:20.557Z",
+    "updated_at": "2025-12-12T16:28:20.557Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 248,
+  "fields": {
+    "name": "T/WADA",
+    "ward": 38,
+    "code": "010",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:28:20.570Z",
+    "updated_at": "2025-12-12T16:28:20.570Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 249,
+  "fields": {
+    "name": "TACHAPA",
+    "ward": 38,
+    "code": "011",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:28:20.576Z",
+    "updated_at": "2025-12-12T16:28:20.576Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 250,
+  "fields": {
+    "name": "TATINDORO",
+    "ward": 38,
+    "code": "012",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:28:20.595Z",
+    "updated_at": "2025-12-12T16:28:20.595Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 251,
+  "fields": {
+    "name": "KUMBO PRIMARY SCHOOL I (IMUDI I / KOFAR IMUDI I)",
+    "ward": 39,
+    "code": "001",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:30:07.958Z",
+    "updated_at": "2025-12-12T16:30:07.958Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 252,
+  "fields": {
+    "name": "KUMBO PRIMARY SCHOOL (IMUDI II / KOFAR IMUDI II)",
+    "ward": 39,
+    "code": "002",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:30:07.975Z",
+    "updated_at": "2025-12-12T16:30:07.975Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 253,
+  "fields": {
+    "name": "EAST PRIMARY SCHOOL (KUMBO / KOFAR SARKIN KUMBO)",
+    "ward": 39,
+    "code": "003",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:30:07.990Z",
+    "updated_at": "2025-12-12T16:30:07.990Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 254,
+  "fields": {
+    "name": "GOV'T",
+    "ward": 39,
+    "code": "005",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:30:08.004Z",
+    "updated_at": "2025-12-12T16:30:08.020Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 255,
+  "fields": {
+    "name": "NYIVU I",
+    "ward": 39,
+    "code": "006",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:30:08.033Z",
+    "updated_at": "2025-12-12T16:30:08.033Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 256,
+  "fields": {
+    "name": "NYIVU",
+    "ward": 39,
+    "code": "009",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:30:08.044Z",
+    "updated_at": "2025-12-12T16:30:08.073Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 257,
+  "fields": {
+    "name": "GIDAN MAKERI PRIMARY SCHOOL (NYIVU III / GIDAN MAKERI)",
+    "ward": 39,
+    "code": "008",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:30:08.058Z",
+    "updated_at": "2025-12-12T16:30:08.058Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 258,
+  "fields": {
+    "name": "SANSO",
+    "ward": 39,
+    "code": "010",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:30:08.090Z",
+    "updated_at": "2025-12-12T16:30:08.090Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 259,
+  "fields": {
+    "name": "TISSA",
+    "ward": 39,
+    "code": "011",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:30:08.108Z",
+    "updated_at": "2025-12-12T16:30:08.108Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 260,
+  "fields": {
+    "name": "NIKIBI PLAY GROUND OPEN SPACE (UHWESI I",
+    "ward": 39,
+    "code": "012",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:30:08.126Z",
+    "updated_at": "2025-12-12T16:30:08.126Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 261,
+  "fields": {
+    "name": "NYIVU PRIMARY SCHOOL (UHWESI II",
+    "ward": 39,
+    "code": "013",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:30:08.140Z",
+    "updated_at": "2025-12-12T16:30:08.140Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 262,
+  "fields": {
+    "name": "EAST PRIMARY SCHOOL I (YERIMA I / KOFAR YERIMA I)",
+    "ward": 39,
+    "code": "014",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:30:08.153Z",
+    "updated_at": "2025-12-12T16:30:08.153Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 263,
+  "fields": {
+    "name": "EAST PRIMARY SCHOOL II (YERIMA II / KOFAR YERIMA II)",
+    "ward": 39,
+    "code": "015",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:30:08.167Z",
+    "updated_at": "2025-12-12T16:30:08.167Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 264,
+  "fields": {
+    "name": "EAST PRIMARY SCHOOL III (YERIMA III / KOFAR YERIMA III)",
+    "ward": 39,
+    "code": "016",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:30:08.181Z",
+    "updated_at": "2025-12-12T16:30:08.181Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 265,
+  "fields": {
+    "name": "ZAMBANA",
+    "ward": 39,
+    "code": "017",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:30:08.193Z",
+    "updated_at": "2025-12-12T16:30:08.193Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 266,
+  "fields": {
+    "name": "CHURCH I",
+    "ward": 40,
+    "code": "001",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:32:45.163Z",
+    "updated_at": "2025-12-12T16:32:45.164Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 267,
+  "fields": {
+    "name": "CHURCH II",
+    "ward": 40,
+    "code": "002",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:32:45.277Z",
+    "updated_at": "2025-12-12T16:32:45.277Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 268,
+  "fields": {
+    "name": "CHURCH III",
+    "ward": 40,
+    "code": "003",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:32:45.307Z",
+    "updated_at": "2025-12-12T16:32:45.307Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 269,
+  "fields": {
+    "name": "DAUDA KWANCHA PRI. SCHOOL (LIMAN / KOFAR LIMAN)",
+    "ward": 40,
+    "code": "004",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:32:45.335Z",
+    "updated_at": "2025-12-12T16:32:45.335Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 270,
+  "fields": {
+    "name": "DAUDA KWANCHA PRI. SCHOOL (MUSA LAFIYA / K/M/ LAFIYA)",
+    "ward": 40,
+    "code": "005",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:32:45.370Z",
+    "updated_at": "2025-12-12T16:32:45.370Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 271,
+  "fields": {
+    "name": "MASSALACHI OPEN SPACE (MASSALACHI)",
+    "ward": 40,
+    "code": "006",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:32:45.402Z",
+    "updated_at": "2025-12-12T16:32:45.402Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 272,
+  "fields": {
+    "name": "RIJIYA OPEN SPACE (RIJIYA",
+    "ward": 40,
+    "code": "007",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:32:45.406Z",
+    "updated_at": "2025-12-12T16:32:45.406Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 273,
+  "fields": {
+    "name": "BORKONO",
+    "ward": 41,
+    "code": "001",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:33:14.528Z",
+    "updated_at": "2025-12-12T16:33:14.528Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 274,
+  "fields": {
+    "name": "KADARKO I",
+    "ward": 41,
+    "code": "002",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:33:14.539Z",
+    "updated_at": "2025-12-12T16:33:14.539Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 275,
+  "fields": {
+    "name": "KADARKO MARKET SQUARE OPEN SPACE (KADARKO II",
+    "ward": 41,
+    "code": "003",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:33:14.554Z",
+    "updated_at": "2025-12-12T16:33:14.554Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 276,
+  "fields": {
+    "name": "SABON GIDA",
+    "ward": 41,
+    "code": "004",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:33:14.565Z",
+    "updated_at": "2025-12-12T16:33:14.565Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 277,
+  "fields": {
+    "name": "TENDEGA",
+    "ward": 41,
+    "code": "005",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:33:14.570Z",
+    "updated_at": "2025-12-12T16:33:14.570Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 278,
+  "fields": {
+    "name": "UTIRE",
+    "ward": 41,
+    "code": "006",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:33:14.581Z",
+    "updated_at": "2025-12-12T16:33:14.581Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 279,
+  "fields": {
+    "name": "ASEN PRIMARY SCHOOL (ASEN / ASEN)",
+    "ward": 42,
+    "code": "001",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:33:28.244Z",
+    "updated_at": "2025-12-12T16:33:28.244Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 280,
+  "fields": {
+    "name": "CENTRAL PRIMARY SCHOOL (GANKWE AKAH / GANKWE AKAH)",
+    "ward": 42,
+    "code": "002",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:33:28.271Z",
+    "updated_at": "2025-12-12T16:33:28.271Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 281,
+  "fields": {
+    "name": "ASEN PRIMARY SCHOOL (GANKWE ASEN / GANKWE ASEN)",
+    "ward": 42,
+    "code": "003",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:33:28.299Z",
+    "updated_at": "2025-12-12T16:33:28.299Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 282,
+  "fields": {
+    "name": "GARLEYA PRIMARY SCHOOL (GANKWE ADAMU / GANKWE ADAMU)",
+    "ward": 42,
+    "code": "004",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:33:28.321Z",
+    "updated_at": "2025-12-12T16:33:28.323Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 283,
+  "fields": {
+    "name": "GARLEYA",
+    "ward": 42,
+    "code": "005",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:33:28.363Z",
+    "updated_at": "2025-12-12T16:33:28.363Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 284,
+  "fields": {
+    "name": "CENTRAL PRIMARY SCHOOL MARARRABA I (GINDIN DUSE / GINDIN DUTSE)",
+    "ward": 42,
+    "code": "006",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:33:28.385Z",
+    "updated_at": "2025-12-12T16:33:28.385Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 285,
+  "fields": {
+    "name": "CENTRAL PRIMARY SCHOOL MARARRABA II (IDO / KOFAR IDO)",
+    "ward": 42,
+    "code": "007",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:33:28.410Z",
+    "updated_at": "2025-12-12T16:33:28.410Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 286,
+  "fields": {
+    "name": "JATAU JIBAWA",
+    "ward": 42,
+    "code": "008",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:33:28.435Z",
+    "updated_at": "2025-12-12T16:33:28.435Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 287,
+  "fields": {
+    "name": "WAST PRIMARY SCHOOL (KASIMU",
+    "ward": 42,
+    "code": "009",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:33:28.465Z",
+    "updated_at": "2025-12-12T16:33:28.465Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 288,
+  "fields": {
+    "name": "CENTRAL PRIMARY SCHOOL MARARRABA (MAIANGUWA GANKWE /K/M/ GANKWE)",
+    "ward": 42,
+    "code": "010",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:33:28.488Z",
+    "updated_at": "2025-12-12T16:33:28.488Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 289,
+  "fields": {
+    "name": "NUKUNYA",
+    "ward": 42,
+    "code": "011",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:33:28.514Z",
+    "updated_at": "2025-12-12T16:33:28.514Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 290,
+  "fields": {
+    "name": "MARKET SQURE NDESSIN OPEN SPACE (NDESSIN)",
+    "ward": 42,
+    "code": "012",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:33:28.537Z",
+    "updated_at": "2025-12-12T16:33:28.537Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 291,
+  "fields": {
+    "name": "EAST PRIMARY SCHOOL (SARKIN BUBAN/ K/S/ BUBAN)",
+    "ward": 42,
+    "code": "013",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:33:28.565Z",
+    "updated_at": "2025-12-12T16:33:28.565Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 292,
+  "fields": {
+    "name": "YABE MARKET SQUARE OPEN SPACE (YABE",
+    "ward": 42,
+    "code": "014",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:33:28.592Z",
+    "updated_at": "2025-12-12T16:33:28.592Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 293,
+  "fields": {
+    "name": "MARKET SQUARE OPEN SPACE (YUSUF",
+    "ward": 42,
+    "code": "015",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:33:28.616Z",
+    "updated_at": "2025-12-12T16:33:28.616Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 294,
+  "fields": {
+    "name": "NYITA PRIMARY SCHOOL I-I (MADAKI / KOFAR MADAKI)",
+    "ward": 43,
+    "code": "001",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:33:42.784Z",
+    "updated_at": "2025-12-12T16:33:42.784Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 295,
+  "fields": {
+    "name": "NYITA PRIMARY SCHOOL I-II (NWUWHA I / KOFAR YERIMA NWUWHA)",
+    "ward": 43,
+    "code": "002",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:33:42.807Z",
+    "updated_at": "2025-12-12T16:33:42.807Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 296,
+  "fields": {
+    "name": "NWUWHA II",
+    "ward": 43,
+    "code": "003",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:33:42.820Z",
+    "updated_at": "2025-12-12T16:33:42.820Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 297,
+  "fields": {
+    "name": "NYIMUI I",
+    "ward": 43,
+    "code": "004",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:33:42.834Z",
+    "updated_at": "2025-12-12T16:33:42.834Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 298,
+  "fields": {
+    "name": "NYIMUI PRIMARY SCHOOL (NYIMUI II / KOFAR SARKIN NYIMUI)",
+    "ward": 43,
+    "code": "005",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:33:42.854Z",
+    "updated_at": "2025-12-12T16:33:42.854Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 299,
+  "fields": {
+    "name": "NYABE MARKET SQUARE OPEN SPACE (NYABE)",
+    "ward": 43,
+    "code": "006",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:33:42.868Z",
+    "updated_at": "2025-12-12T16:33:42.868Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 300,
+  "fields": {
+    "name": "NYITA PRIMARY SCHOOL II-I (NYITE I / KOFAR SARKIN NYITEL)",
+    "ward": 43,
+    "code": "007",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:33:42.887Z",
+    "updated_at": "2025-12-12T16:33:42.887Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 301,
+  "fields": {
+    "name": "NYITA PRIMARY SCHOOL II-II (NYITE II / KOFAR SARKIN NYITE)",
+    "ward": 43,
+    "code": "008",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:33:42.899Z",
+    "updated_at": "2025-12-12T16:33:42.899Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 302,
+  "fields": {
+    "name": "NYITA PRIMARY SCHOOL (SABO / KOFAR SARKIN SABO)",
+    "ward": 43,
+    "code": "009",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:33:42.913Z",
+    "updated_at": "2025-12-12T16:33:42.914Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 303,
+  "fields": {
+    "name": "TSOHO",
+    "ward": 43,
+    "code": "010",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:33:42.930Z",
+    "updated_at": "2025-12-12T16:33:42.930Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 304,
+  "fields": {
+    "name": "SUNTAI PRIMARY SCHOOL I (GARGEA / KOFAR SARKI GARGEA)",
+    "ward": 44,
+    "code": "001",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:33:56.764Z",
+    "updated_at": "2025-12-12T16:33:56.764Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 305,
+  "fields": {
+    "name": "GALADIMA / SUNTAI",
+    "ward": 44,
+    "code": "002",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:33:56.796Z",
+    "updated_at": "2025-12-12T16:33:56.796Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 306,
+  "fields": {
+    "name": "SUNTAI PRIMARY SCHOOL II (MADAKI / KOFAR MADAKI)",
+    "ward": 44,
+    "code": "003",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:33:56.825Z",
+    "updated_at": "2025-12-12T16:33:56.825Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 307,
+  "fields": {
+    "name": "PASOKI",
+    "ward": 44,
+    "code": "004",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:33:56.858Z",
+    "updated_at": "2025-12-12T16:33:56.858Z"
+  }
+},
+{
+  "model": "election.pollingunit",
+  "pk": 308,
+  "fields": {
+    "name": "MARKET SQUARE OPEN SPACE (ZUAGA",
+    "ward": 44,
+    "code": "005",
+    "registered_voters": 0,
+    "created_at": "2025-12-12T16:33:56.905Z",
+    "updated_at": "2025-12-12T16:33:56.905Z"
+  }
+},
+{
+  "model": "election.politicalparty",
+  "pk": 1,
+  "fields": {
+    "name": "Peoples Democratic party",
+    "abbreviation": "PDP",
+    "color": "#F23D0E",
+    "logo": "party_logos/pdp.jpeg",
+    "created_at": "2025-12-11T17:53:26.594Z",
+    "updated_at": "2025-12-12T14:37:01.716Z"
+  }
+},
+{
+  "model": "election.politicalparty",
+  "pk": 2,
+  "fields": {
+    "name": "All progressive party",
+    "abbreviation": "APC",
+    "color": "#264b5e",
+    "logo": "party_logos/apc.jpeg",
+    "created_at": "2025-12-11T17:54:04.004Z",
+    "updated_at": "2025-12-12T14:35:40.453Z"
+  }
+},
+{
+  "model": "election.politicalparty",
+  "pk": 3,
+  "fields": {
+    "name": "socal democratic party",
+    "abbreviation": "SDP",
+    "color": "#bee6b0",
+    "logo": "party_logos/sdp.jpeg",
+    "created_at": "2025-12-11T17:54:45.609Z",
+    "updated_at": "2025-12-12T14:37:24.262Z"
+  }
+},
+{
+  "model": "election.politicalparty",
+  "pk": 4,
+  "fields": {
+    "name": "ADC",
+    "abbreviation": "ADC",
+    "color": "#489a11",
+    "logo": "party_logos/adc.jpeg",
+    "created_at": "2025-12-12T09:36:53.213Z",
+    "updated_at": "2025-12-12T14:36:33.328Z"
+  }
+}
+]
