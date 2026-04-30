@@ -162,6 +162,10 @@ CSRF_TRUSTED_ORIGINS = [
     "https://tarabaelection.vercel.app",
 ]
 
-# Disable CSRF for API endpoints (DRF handles this)
-CSRF_COOKIE_SECURE = False  # Set to True in production with HTTPS
+# Cookie settings for cross-origin (Vercel frontend <-> PythonAnywhere backend)
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = 'None'
 CSRF_COOKIE_HTTPONLY = False
+
+SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_SAMESITE = 'None'
