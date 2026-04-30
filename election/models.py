@@ -130,3 +130,24 @@ class ElectionResult(models.Model):
     @property
     def ward(self):
         return self.polling_unit.ward
+
+
+class WardResult(models.Model):
+    """Ward-level result override — replaces polling unit aggregation for this ward+party when present."""
+    ward = models.ForeignKey(Ward, on_delete=models.CASCADE, related_name='ward_results')
+    party = models.ForeignKey(PoliticalParty, on_delete=models.CASCADE, related_name='ward_results')
+    votes = models.IntegerField(default=0)
+    entered_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='entered_ward_results')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['ward', 'party']
+        unique_together = ['ward', 'party']
+        indexes = [
+            models.Index(fields=['ward', 'party']),
+            models.Index(fields=['ward']),
+        ]
+
+    def __str__(self):
+        return f"{self.party.abbreviation}: {self.votes} votes at Ward {self.ward.name} (override)"

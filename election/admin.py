@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from .models import (
     User, LocalGovernmentArea, Ward, PollingUnit,
-    PoliticalParty, ElectionResult
+    PoliticalParty, ElectionResult, WardResult
 )
 
 admin.site.site_header = "Taraba Election Portal Admin"
@@ -71,4 +71,12 @@ class ElectionResultAdmin(admin.ModelAdmin):
         'entered_by__username'
     ]
     autocomplete_fields = ['polling_unit', 'party', 'entered_by']
+    readonly_fields = ['created_at', 'updated_at']
+
+
+@admin.register(WardResult)
+class WardResultAdmin(admin.ModelAdmin):
+    list_display = ['ward', 'party', 'votes', 'entered_by', 'updated_at']
+    list_filter = ['ward__lga', 'party']
+    search_fields = ['ward__name', 'party__name']
     readonly_fields = ['created_at', 'updated_at']

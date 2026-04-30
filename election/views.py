@@ -11,14 +11,14 @@ from django.utils.decorators import method_decorator
 
 from .models import (
     User, LocalGovernmentArea, Ward, PollingUnit,
-    PoliticalParty, ElectionResult
+    PoliticalParty, ElectionResult, WardResult
 )
 from .serializers import (
     UserSerializer, LoginSerializer,
     LocalGovernmentAreaSerializer, WardSerializer,
     PollingUnitSerializer, PoliticalPartySerializer,
     ElectionResultSerializer, ElectionResultCreateSerializer,
-    ElectionResultSummarySerializer
+    ElectionResultSummarySerializer, WardResultSerializer, WardResultCreateSerializer
 )
 
 
@@ -219,62 +219,141 @@ class ElectionResultViewSet(viewsets.ModelViewSet):
     
     @action(detail=False, methods=['get'])
     def summary(self, request):
-        """Get summary of results grouped by LGA and party"""
-        results = ElectionResult.objects.values(
-            'polling_unit__ward__lga__name',
-            'party__abbreviation'
-        ).annotate(
-            total_votes=Sum('votes')
-        ).order_by('polling_unit__ward__lga__name', 'party__abbreviation')
-        
-        summary_data = [
-            {
-                'lga': item['polling_unit__ward__lga__name'],
-                'party': item['party__abbreviation'],
-                'votes': item['total_votes']
-            }
-            for item in results
-        ]
-        
+        """Get summary of results grouped by LGA and party, with ward overrides applied."""
+        ward_overrides = {
+            (wr.ward_id, wr.party_id): wr.votes
+            for wr in WardResult.objects.all()
+        }
+        pu_totals = {
+            (row['polling_unit__ward_id'], row['party_id']): row['total']
+            for row in ElectionResult.objects.values(
+                'polling_unit__ward_id', 'party_id'
+            ).annotate(total=Sum('votes'))
+        }
+
+        summary_data = []
+        for lga in LocalGovernmentArea.objects.prefetch_related('wards').all():
+            for party in PoliticalParty.objects.all():
+                total = sum(
+                    ward_overrides.get((w.id, party.id), pu_totals.get((w.id, party.id), 0))
+                    for w in lga.wards.all()
+                )
+                if total > 0:
+                    summary_data.append({
+                        'lga': lga.name,
+                        'party': party.abbreviation,
+                        'votes': total
+                    })
+
         serializer = ElectionResultSummarySerializer(summary_data, many=True)
         return Response(serializer.data)
-    
+
     @action(detail=False, methods=['get'], permission_classes=[permissions.AllowAny])
     def chart_data(self, request):
-        """Get data formatted for charts - Public access for landing page"""
-        # Bar chart data - votes by LGA and party
-        bar_data = []
+        """Get data formatted for charts - Public access for landing page. Ward overrides take priority."""
         lgas = LocalGovernmentArea.objects.all()
         parties = PoliticalParty.objects.all()
-        
+
+        # Bulk fetch to avoid N+1 queries
+        ward_overrides = {
+            (wr.ward_id, wr.party_id): wr.votes
+            for wr in WardResult.objects.all()
+        }
+        pu_totals = {
+            (row['polling_unit__ward_id'], row['party_id']): row['total']
+            for row in ElectionResult.objects.values(
+                'polling_unit__ward_id', 'party_id'
+            ).annotate(total=Sum('votes'))
+        }
+        ward_lga = {w.id: w.lga_id for w in Ward.objects.all()}
+
+        def effective_votes(ward_id, party_id):
+            if (ward_id, party_id) in ward_overrides:
+                return ward_overrides[(ward_id, party_id)]
+            return pu_totals.get((ward_id, party_id), 0)
+
+        bar_data = []
         for lga in lgas:
             lga_data = {'lga': lga.name}
+            lga_ward_ids = [wid for wid, lid in ward_lga.items() if lid == lga.id]
             for party in parties:
-                total_votes = ElectionResult.objects.filter(
-                    polling_unit__ward__lga=lga,
-                    party=party
-                ).aggregate(total=Sum('votes'))['total'] or 0
-                lga_data[party.abbreviation] = total_votes
+                lga_data[party.abbreviation] = sum(
+                    effective_votes(wid, party.id) for wid in lga_ward_ids
+                )
             bar_data.append(lga_data)
-        
-        # Radial chart data - total votes per party
+
         radial_data = []
         for party in parties:
-            total_votes = ElectionResult.objects.filter(party=party).aggregate(
-                total=Sum('votes')
-            )['total'] or 0
+            total = sum(effective_votes(wid, party.id) for wid in ward_lga)
             radial_data.append({
                 'party': party.abbreviation,
-                'votes': total_votes,
+                'votes': total,
                 'fill': party.color,
                 'logo_url': request.build_absolute_uri(party.logo.url) if party.logo else None,
             })
-        
-        # Line chart data - same as bar but formatted for line chart
-        line_data = bar_data.copy()
-        
+
         return Response({
             'bar': bar_data,
             'radial': radial_data,
-            'line': line_data
+            'line': bar_data.copy()
         })
+
+
+class WardResultViewSet(viewsets.ModelViewSet):
+    """ViewSet for Ward-level result overrides."""
+    queryset = WardResult.objects.select_related('ward', 'ward__lga', 'party', 'entered_by').all()
+    serializer_class = WardResultSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        ward_id = self.request.query_params.get('ward')
+        lga_id = self.request.query_params.get('lga')
+        if ward_id:
+            queryset = queryset.filter(ward_id=ward_id)
+        if lga_id:
+            queryset = queryset.filter(ward__lga_id=lga_id)
+        return queryset
+
+    def perform_create(self, serializer):
+        serializer.save(entered_by=self.request.user)
+
+    @action(detail=False, methods=['post'])
+    def bulk_create(self, request):
+        """Bulk create/update ward result overrides."""
+        serializer = WardResultCreateSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        ward_id = serializer.validated_data['ward_id']
+        results_data = serializer.validated_data['results']
+
+        try:
+            ward = Ward.objects.get(id=ward_id)
+        except Ward.DoesNotExist:
+            return Response({'error': 'Ward not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        created_results, updated_results = [], []
+
+        for item in results_data:
+            party_id = item.get('party_id')
+            votes = item.get('votes', 0)
+            if not party_id:
+                continue
+            try:
+                party = PoliticalParty.objects.get(id=party_id)
+            except PoliticalParty.DoesNotExist:
+                continue
+
+            result, created = WardResult.objects.update_or_create(
+                ward=ward, party=party,
+                defaults={'votes': votes, 'entered_by': request.user, 'updated_at': timezone.now()}
+            )
+            (created_results if created else updated_results).append(result)
+
+        return Response({
+            'message': f'Created {len(created_results)}, updated {len(updated_results)} ward results',
+            'ward': WardSerializer(ward).data,
+            'created': WardResultSerializer(created_results, many=True).data,
+            'updated': WardResultSerializer(updated_results, many=True).data,
+        }, status=status.HTTP_201_CREATED)

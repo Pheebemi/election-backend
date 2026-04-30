@@ -1,8 +1,8 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
 from .models import (
-    User, LocalGovernmentArea, Ward, PollingUnit, 
-    PoliticalParty, ElectionResult
+    User, LocalGovernmentArea, Ward, PollingUnit,
+    PoliticalParty, ElectionResult, WardResult
 )
 
 
@@ -133,4 +133,35 @@ class ElectionResultSummarySerializer(serializers.Serializer):
     lga = serializers.CharField()
     party = serializers.CharField()
     votes = serializers.IntegerField()
+
+
+class WardResultSerializer(serializers.ModelSerializer):
+    ward_name = serializers.CharField(source='ward.name', read_only=True)
+    lga_name = serializers.CharField(source='ward.lga.name', read_only=True)
+    lga_id = serializers.IntegerField(source='ward.lga.id', read_only=True)
+    party_name = serializers.CharField(source='party.name', read_only=True)
+    party_abbreviation = serializers.CharField(source='party.abbreviation', read_only=True)
+    party_color = serializers.CharField(source='party.color', read_only=True)
+    entered_by_username = serializers.CharField(source='entered_by.username', read_only=True)
+
+    class Meta:
+        model = WardResult
+        fields = [
+            'id', 'ward', 'ward_name', 'lga_name', 'lga_id',
+            'party', 'party_name', 'party_abbreviation', 'party_color',
+            'votes', 'entered_by', 'entered_by_username', 'created_at', 'updated_at'
+        ]
+        read_only_fields = ['entered_by']
+
+
+class WardResultCreateSerializer(serializers.Serializer):
+    ward_id = serializers.IntegerField()
+    results = serializers.ListField(child=serializers.DictField(child=serializers.IntegerField()))
+
+    def validate(self, attrs):
+        if not Ward.objects.filter(id=attrs.get('ward_id')).exists():
+            raise serializers.ValidationError('Ward does not exist')
+        if not attrs.get('results'):
+            raise serializers.ValidationError('Results list cannot be empty')
+        return attrs
 
