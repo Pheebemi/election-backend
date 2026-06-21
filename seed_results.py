@@ -6,24 +6,34 @@ Outcome (by design):
   * APC wins 10 LGAs, PDP wins the remaining 6.
   * SDP and ADC trail in every LGA.
 
-How it works (non-destructive to polling-unit data):
-  For each LGA we put that LGA's full party totals as a WARD OVERRIDE on the
-  LGA's first ward, and set 0 overrides on all the LGA's other wards. The
-  chart_data endpoint uses ward overrides ahead of polling-unit sums, so the
-  per-LGA totals become exactly the numbers below regardless of any existing
-  polling-unit entries. No ElectionResult rows are deleted.
+How it works:
+  Each LGA's party totals (below) are spread across ALL of that LGA's polling
+  units as real ElectionResult rows, so every ward and polling unit carries
+  plausible numbers — not just the first ward. The split is randomised (fixed
+  seed, reproducible) but always sums EXACTLY to the LGA target, so per-LGA
+  winners and statewide totals are guaranteed.
+
+  This is a clean reseed: it first deletes all existing ElectionResult and
+  WardResult rows (including the earlier first-ward-only seed), then rebuilds.
 
 Run it from the backend project root:
     python seed_results.py
 """
 
 import os
+import random
 import django
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 django.setup()
 
-from election.models import LocalGovernmentArea, Ward, PoliticalParty, WardResult
+from django.db import transaction
+from election.models import (
+    LocalGovernmentArea, Ward, PollingUnit,
+    PoliticalParty, ElectionResult, WardResult,
+)
+
+RNG = random.Random(42)  # fixed seed -> reproducible distribution
 
 
 def norm(s):
@@ -54,20 +64,41 @@ LGA_RESULTS = {
 }
 
 
-def run():
-    # Parties keyed by abbreviation (case-insensitive)
-    parties = {p.abbreviation.upper(): p for p in PoliticalParty.objects.all()}
-    missing_parties = {a for d in LGA_RESULTS.values() for a in d} - set(parties)
-    if missing_parties:
-        raise SystemExit(f"Missing parties in DB: {sorted(missing_parties)}. "
-                         f"Found: {sorted(parties)}")
+def split_total(total, n):
+    """Split `total` into `n` non-negative ints (randomised) that sum to total."""
+    if n <= 0:
+        return []
+    if n == 1:
+        return [total]
+    weights = [RNG.random() * 0.6 + 0.7 for _ in range(n)]  # 0.7 .. 1.3
+    s = sum(weights)
+    raw = [total * w / s for w in weights]
+    floored = [int(x) for x in raw]
+    remainder = total - sum(floored)
+    # hand out the remainder to the largest fractional parts
+    order = sorted(range(n), key=lambda i: raw[i] - floored[i], reverse=True)
+    for i in range(remainder):
+        floored[order[i]] += 1
+    return floored
 
-    # LGAs keyed by normalized name
+
+@transaction.atomic
+def run():
+    parties = {p.abbreviation.upper(): p for p in PoliticalParty.objects.all()}
+    missing = {a for d in LGA_RESULTS.values() for a in d} - set(parties)
+    if missing:
+        raise SystemExit(f"Missing parties in DB: {sorted(missing)}. Found: {sorted(parties)}")
+
     lgas = {norm(l.name): l for l in LocalGovernmentArea.objects.all()}
+
+    # Clean slate (removes the old first-ward-only override seed too)
+    wr = WardResult.objects.all().delete()
+    er = ElectionResult.objects.all().delete()
+    print(f"Cleared {er[0]} ElectionResult and {wr[0]} WardResult rows.\n")
 
     overall = {a: 0 for a in parties}
     summary = []
-    n_overrides = 0
+    new_rows = []
 
     for lga_name, votes in LGA_RESULTS.items():
         lga = lgas.get(norm(lga_name))
@@ -75,45 +106,34 @@ def run():
             print(f"  ! LGA not found, skipping: {lga_name}")
             continue
 
-        wards = list(Ward.objects.filter(lga=lga).order_by('id'))
-        if not wards:
-            print(f"  ! No wards for {lga.name}, skipping")
+        pus = list(PollingUnit.objects.filter(ward__lga=lga).order_by('id'))
+        if not pus:
+            print(f"  ! No polling units for {lga.name}, skipping")
             continue
 
-        first, rest = wards[0], wards[1:]
-
-        # Full LGA totals on the first ward
         for abbr, party in parties.items():
-            v = votes.get(abbr, 0)
-            WardResult.objects.update_or_create(
-                ward=first, party=party, defaults={'votes': v, 'entered_by': None}
-            )
-            overall[abbr] += v
-            n_overrides += 1
-
-        # Zero overrides on every other ward of this LGA (mask any stray data)
-        for w in rest:
-            for party in parties.values():
-                WardResult.objects.update_or_create(
-                    ward=w, party=party, defaults={'votes': 0, 'entered_by': None}
-                )
-                n_overrides += 1
+            target = votes.get(abbr, 0)
+            for pu, share in zip(pus, split_total(target, len(pus))):
+                new_rows.append(ElectionResult(polling_unit=pu, party=party, votes=share))
+            overall[abbr] += target
 
         winner = max(votes, key=votes.get)
-        summary.append((lga.name, winner, votes))
+        summary.append((lga.name, winner, votes, len(pus)))
+
+    ElectionResult.objects.bulk_create(new_rows, batch_size=500)
 
     # ---- Report ----
-    print("\n=== Per-LGA winners ===")
-    for name, winner, votes in summary:
+    print("=== Per-LGA winners (votes spread across all PUs) ===")
+    for name, winner, votes, n_pu in summary:
         line = "  ".join(f"{a}:{votes.get(a, 0):>6}" for a in ('APC', 'PDP', 'SDP', 'ADC'))
-        print(f"  {name:<14} winner={winner:<4}  {line}")
+        print(f"  {name:<14} winner={winner:<4} PUs={n_pu:<3} {line}")
 
-    print(f"\n=== Statewide totals ({n_overrides} ward-override rows written) ===")
+    print(f"\n=== Statewide totals ({len(new_rows)} polling-unit result rows) ===")
     for abbr in ('APC', 'PDP', 'SDP', 'ADC'):
         print(f"  {abbr}: {overall.get(abbr, 0):,}")
     leader = max(overall, key=overall.get)
-    apc_wins = sum(1 for _, w, _ in summary if w == 'APC')
-    pdp_wins = sum(1 for _, w, _ in summary if w == 'PDP')
+    apc_wins = sum(1 for _, w, _, _ in summary if w == 'APC')
+    pdp_wins = sum(1 for _, w, _, _ in summary if w == 'PDP')
     print(f"\n  Overall leader: {leader}")
     print(f"  LGAs won -> APC: {apc_wins}, PDP: {pdp_wins}")
     print("\nDone. Refresh the landing page / map to see results.")

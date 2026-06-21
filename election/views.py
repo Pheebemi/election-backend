@@ -3,7 +3,7 @@ from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
-from django.db.models import Sum, Q, F
+from django.db.models import Sum, Q, F, Count
 from django.contrib.auth import login, logout
 from django.utils import timezone
 from django.middleware.csrf import get_token
@@ -132,6 +132,35 @@ class PollingUnitViewSet(viewsets.ReadOnlyModelViewSet):
         results = polling_unit.results.select_related('party', 'entered_by').all()
         serializer = ElectionResultSerializer(results, many=True)
         return Response(serializer.data)
+
+    @action(detail=False, methods=['get'], permission_classes=[permissions.AllowAny])
+    def stats(self, request):
+        """Public coverage stats for the landing page: total polling units plus a
+        per-LGA → ward breakdown of polling unit counts."""
+        ward_counts = {
+            row['ward_id']: row['pu_count']
+            for row in PollingUnit.objects.values('ward_id').annotate(pu_count=Count('id'))
+        }
+
+        by_lga = []
+        for lga in LocalGovernmentArea.objects.prefetch_related('wards').all():
+            wards = [
+                {'ward': w.name, 'polling_units': ward_counts.get(w.id, 0)}
+                for w in lga.wards.all()
+            ]
+            by_lga.append({
+                'lga': lga.name,
+                'ward_count': len(wards),
+                'polling_units': sum(w['polling_units'] for w in wards),
+                'wards': wards,
+            })
+
+        return Response({
+            'total_polling_units': PollingUnit.objects.count(),
+            'total_wards': Ward.objects.count(),
+            'total_lgas': LocalGovernmentArea.objects.count(),
+            'by_lga': by_lga,
+        })
 
 
 class PoliticalPartyViewSet(viewsets.ReadOnlyModelViewSet):
