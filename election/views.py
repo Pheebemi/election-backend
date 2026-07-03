@@ -3,7 +3,7 @@ from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
-from django.db.models import Sum, Q, F, Count
+from django.db.models import Sum, Q, F, Count, Max
 from django.contrib.auth import login, logout
 from django.utils import timezone
 from django.middleware.csrf import get_token
@@ -178,6 +178,83 @@ class PollingUnitViewSet(viewsets.ReadOnlyModelViewSet):
             'total_lgas': LocalGovernmentArea.objects.filter(dataset=dataset).count(),
             'by_lga': by_lga,
         })
+
+    @action(detail=False, methods=['get'], permission_classes=[permissions.IsAuthenticated])
+    def progress(self, request):
+        """Result-entry progress for the dashboard.
+
+        A polling unit counts as 'reported' once it has at least one result row.
+        Returns overall + per-LGA/ward completion for everyone logged in; the
+        per-clerk breakdown is included only for admins."""
+        dataset = request_dataset(request)
+
+        reported_pu_ids = set(
+            ElectionResult.objects.filter(dataset=dataset)
+            .values_list('polling_unit_id', flat=True).distinct()
+        )
+
+        # ward_id -> {'total': n, 'reported': n}
+        ward_total, ward_reported = {}, {}
+        for row in PollingUnit.objects.filter(dataset=dataset).values('id', 'ward_id'):
+            wid = row['ward_id']
+            ward_total[wid] = ward_total.get(wid, 0) + 1
+            if row['id'] in reported_pu_ids:
+                ward_reported[wid] = ward_reported.get(wid, 0) + 1
+
+        by_lga = []
+        total_pus = reported_pus = 0
+        for lga in LocalGovernmentArea.objects.filter(dataset=dataset).prefetch_related('wards').all():
+            wards, lga_total, lga_reported, wards_complete = [], 0, 0, 0
+            for w in lga.wards.all():
+                t = ward_total.get(w.id, 0)
+                r = ward_reported.get(w.id, 0)
+                lga_total += t
+                lga_reported += r
+                if t > 0 and r >= t:
+                    wards_complete += 1
+                wards.append({
+                    'ward': w.name, 'total': t, 'reported': r,
+                    'percent': round(r / t * 100, 1) if t else 0.0,
+                })
+            total_pus += lga_total
+            reported_pus += lga_reported
+            by_lga.append({
+                'lga': lga.name,
+                'total': lga_total,
+                'reported': lga_reported,
+                'percent': round(lga_reported / lga_total * 100, 1) if lga_total else 0.0,
+                'ward_count': len(wards),
+                'wards_complete': wards_complete,
+                'wards': wards,
+            })
+
+        data = {
+            'is_admin': bool(getattr(request.user, 'is_admin', False)),
+            'overall': {
+                'total': total_pus,
+                'reported': reported_pus,
+                'percent': round(reported_pus / total_pus * 100, 1) if total_pus else 0.0,
+            },
+            'by_lga': by_lga,
+        }
+
+        # Per-clerk breakdown — admins only
+        if data['is_admin']:
+            data['by_clerk'] = [
+                {
+                    'username': row['entered_by__username'],
+                    'polling_units': row['pus'],
+                    'last_activity': row['last'],
+                }
+                for row in ElectionResult.objects.filter(
+                    dataset=dataset, entered_by__isnull=False
+                ).values('entered_by__username').annotate(
+                    pus=Count('polling_unit', distinct=True),
+                    last=Max('updated_at'),
+                ).order_by('-pus')
+            ]
+
+        return Response(data)
 
 
 class PoliticalPartyViewSet(viewsets.ReadOnlyModelViewSet):
