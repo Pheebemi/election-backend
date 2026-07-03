@@ -36,6 +36,10 @@ from election.models import (
 DATASET = 'apc'
 RNG = random.Random(2027)  # fixed seed -> reproducible
 
+# Force PDP's statewide total to this exact figure (APC still leads overall and
+# the per-LGA winner map is preserved exactly).
+PDP_TARGET_TOTAL = 202_322
+
 
 def norm(s):
     return ' '.join((s or '').lower().replace('-', ' ').split())
@@ -125,14 +129,11 @@ def run():
     er = ElectionResult.objects.filter(dataset=DATASET).delete()
     print(f"Cleared {er[0]} apc ElectionResult and {wr[0]} apc WardResult rows.\n")
 
-    overall = {a: 0 for a in parties}
-    summary = []
-    new_rows = []
-
+    # ---- Pass 1: per-LGA APC / SDP / ADC totals (PDP filled in afterwards) ----
+    per_lga = []  # list of dicts: {lga, winner, pus, apc, sdp, adc}
     for lga in ordered:
         key = norm(lga.name)
         winner = winners[key]
-        loser = 'PDP' if winner == 'APC' else 'APC'
 
         pus = list(PollingUnit.objects.filter(ward__lga=lga, dataset=DATASET).order_by('id'))
         if not pus:
@@ -143,20 +144,66 @@ def run():
         reg = sum(pu.registered_voters for pu in pus) or len(pus) * 500
         cast = int(reg * RNG.uniform(0.35, 0.62))
 
-        # Randomised vote shares; winner strictly on top
+        # Randomised vote shares; the winner is strictly on top of the runner-up
         w_share = RNG.uniform(0.40, 0.52)
         l_share = RNG.uniform(0.26, min(0.36, w_share - 0.05))
         sdp_share = RNG.uniform(0.03, 0.08)
         adc_share = RNG.uniform(0.02, 0.06)
         total_share = w_share + l_share + sdp_share + adc_share
 
-        votes = {
-            winner: int(cast * w_share / total_share),
-            loser: int(cast * l_share / total_share),
-            'SDP': int(cast * sdp_share / total_share),
-            'ADC': int(cast * adc_share / total_share),
-        }
+        apc_share = w_share if winner == 'APC' else l_share
+        per_lga.append({
+            'lga': lga,
+            'winner': winner,
+            'pus': pus,
+            'apc': int(cast * apc_share / total_share),
+            'sdp': int(cast * sdp_share / total_share),
+            'adc': int(cast * adc_share / total_share),
+        })
 
+    # ---- Allocate PDP so its statewide total is EXACTLY PDP_TARGET_TOTAL ----
+    # PDP-won LGAs must stay above their APC number; APC-won LGAs must stay below.
+    pdp = {}
+    for r in per_lga:
+        if r['winner'] == 'PDP':
+            lead = max(1, round(r['apc'] * RNG.uniform(0.06, 0.14)))
+            pdp[r['lga'].id] = r['apc'] + lead
+
+    used = sum(pdp.values())
+    apc_won = [r for r in per_lga if r['winner'] == 'APC']
+    remaining = PDP_TARGET_TOTAL - used
+    if remaining < len(apc_won):
+        raise SystemExit(
+            f"PDP target {PDP_TARGET_TOTAL:,} too low to keep the winner map "
+            f"(PDP already needs {used:,} to win its LGAs)."
+        )
+
+    weight_total = sum(r['apc'] for r in apc_won) or 1
+    for r in apc_won:
+        share = int(remaining * r['apc'] / weight_total)
+        pdp[r['lga'].id] = min(r['apc'] - 1, max(1, share))  # strictly below APC
+
+    # Fix rounding drift so the grand total lands exactly on PDP_TARGET_TOTAL
+    drift = PDP_TARGET_TOTAL - sum(pdp.values())
+    step = 1 if drift > 0 else -1
+    idx = 0
+    while drift != 0 and apc_won:
+        r = apc_won[idx % len(apc_won)]
+        cur = pdp[r['lga'].id]
+        if 1 <= cur + step <= r['apc'] - 1:
+            pdp[r['lga'].id] = cur + step
+            drift -= step
+        idx += 1
+        if idx > len(apc_won) * 100000:
+            raise SystemExit("Could not reconcile PDP total — check constraints.")
+
+    # ---- Pass 2: spread each party's LGA total across its polling units ----
+    overall = {a: 0 for a in parties}
+    summary = []
+    new_rows = []
+    for r in per_lga:
+        lga, pus = r['lga'], r['pus']
+        votes = {'APC': r['apc'], 'PDP': pdp[lga.id], 'SDP': r['sdp'], 'ADC': r['adc']}
         for abbr, target in votes.items():
             party = parties[abbr]
             for pu, share in zip(pus, split_total(target, len(pus))):
@@ -164,8 +211,7 @@ def run():
                     polling_unit=pu, party=party, votes=share, dataset=DATASET,
                 ))
             overall[abbr] += target
-
-        summary.append((lga.name, winner, votes, len(pus)))
+        summary.append((lga.name, r['winner'], votes, len(pus)))
 
     ElectionResult.objects.bulk_create(new_rows, batch_size=500)
 
