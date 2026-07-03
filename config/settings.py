@@ -167,6 +167,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3001",   # apc runs on a separate dev port
     "http://127.0.0.1:3001",
     "https://tarabaelection.vercel.app",
+    "https://apctaraba.vercel.app",   # apc portal
 ]
 
 # Allow the custom portal/dataset header used to pick which dataset a frontend reads
