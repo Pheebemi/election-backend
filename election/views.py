@@ -23,6 +23,18 @@ from .serializers import (
 )
 
 
+def request_dataset(request):
+    """Which portal/dataset this request is scoped to.
+
+    Frontends send it via the ``X-Dataset`` header (preferred) or a ``?dataset=``
+    query param. Defaults to 'main' (the original my-app portal)."""
+    return (
+        request.headers.get('X-Dataset')
+        or request.query_params.get('dataset')
+        or 'main'
+    )
+
+
 class CSRFTokenView(APIView):
     """Get CSRF token for frontend"""
     permission_classes = [permissions.AllowAny]
@@ -77,7 +89,10 @@ class LocalGovernmentAreaViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = LocalGovernmentArea.objects.all()
     serializer_class = LocalGovernmentAreaSerializer
     permission_classes = [permissions.IsAuthenticated]
-    
+
+    def get_queryset(self):
+        return super().get_queryset().filter(dataset=request_dataset(self.request))
+
     @action(detail=True, methods=['get'])
     def wards(self, request, pk=None):
         """Get all wards for an LGA"""
@@ -94,7 +109,7 @@ class WardViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     
     def get_queryset(self):
-        queryset = super().get_queryset()
+        queryset = super().get_queryset().filter(dataset=request_dataset(self.request))
         lga_id = self.request.query_params.get('lga', None)
         if lga_id:
             queryset = queryset.filter(lga_id=lga_id)
@@ -116,7 +131,7 @@ class PollingUnitViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     
     def get_queryset(self):
-        queryset = super().get_queryset()
+        queryset = super().get_queryset().filter(dataset=request_dataset(self.request))
         ward_id = self.request.query_params.get('ward', None)
         lga_id = self.request.query_params.get('lga', None)
         if ward_id:
@@ -137,13 +152,15 @@ class PollingUnitViewSet(viewsets.ReadOnlyModelViewSet):
     def stats(self, request):
         """Public coverage stats for the landing page: total polling units plus a
         per-LGA → ward breakdown of polling unit counts."""
+        dataset = request_dataset(request)
         ward_counts = {
             row['ward_id']: row['pu_count']
-            for row in PollingUnit.objects.values('ward_id').annotate(pu_count=Count('id'))
+            for row in PollingUnit.objects.filter(dataset=dataset)
+            .values('ward_id').annotate(pu_count=Count('id'))
         }
 
         by_lga = []
-        for lga in LocalGovernmentArea.objects.prefetch_related('wards').all():
+        for lga in LocalGovernmentArea.objects.filter(dataset=dataset).prefetch_related('wards').all():
             wards = [
                 {'ward': w.name, 'polling_units': ward_counts.get(w.id, 0)}
                 for w in lga.wards.all()
@@ -156,9 +173,9 @@ class PollingUnitViewSet(viewsets.ReadOnlyModelViewSet):
             })
 
         return Response({
-            'total_polling_units': PollingUnit.objects.count(),
-            'total_wards': Ward.objects.count(),
-            'total_lgas': LocalGovernmentArea.objects.count(),
+            'total_polling_units': PollingUnit.objects.filter(dataset=dataset).count(),
+            'total_wards': Ward.objects.filter(dataset=dataset).count(),
+            'total_lgas': LocalGovernmentArea.objects.filter(dataset=dataset).count(),
             'by_lga': by_lga,
         })
 
@@ -180,11 +197,11 @@ class ElectionResultViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     
     def get_queryset(self):
-        queryset = super().get_queryset()
+        queryset = super().get_queryset().filter(dataset=request_dataset(self.request))
         polling_unit_id = self.request.query_params.get('polling_unit', None)
         lga_id = self.request.query_params.get('lga', None)
         party_id = self.request.query_params.get('party', None)
-        
+
         if polling_unit_id:
             queryset = queryset.filter(polling_unit_id=polling_unit_id)
         if lga_id:
@@ -207,9 +224,11 @@ class ElectionResultViewSet(viewsets.ModelViewSet):
         
         polling_unit_id = serializer.validated_data['polling_unit_id']
         results_data = serializer.validated_data['results']
-        
+
         try:
-            polling_unit = PollingUnit.objects.get(id=polling_unit_id)
+            polling_unit = PollingUnit.objects.get(
+                id=polling_unit_id, dataset=request_dataset(request)
+            )
         except PollingUnit.DoesNotExist:
             return Response(
                 {'error': 'Polling unit not found'},
@@ -256,19 +275,20 @@ class ElectionResultViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'])
     def summary(self, request):
         """Get summary of results grouped by LGA and party, with ward overrides applied."""
+        dataset = request_dataset(request)
         ward_overrides = {
             (wr.ward_id, wr.party_id): wr.votes
-            for wr in WardResult.objects.all()
+            for wr in WardResult.objects.filter(dataset=dataset)
         }
         pu_totals = {
             (row['polling_unit__ward_id'], row['party_id']): row['total']
-            for row in ElectionResult.objects.values(
+            for row in ElectionResult.objects.filter(dataset=dataset).values(
                 'polling_unit__ward_id', 'party_id'
             ).annotate(total=Sum('votes'))
         }
 
         summary_data = []
-        for lga in LocalGovernmentArea.objects.prefetch_related('wards').all():
+        for lga in LocalGovernmentArea.objects.filter(dataset=dataset).prefetch_related('wards').all():
             for party in PoliticalParty.objects.all():
                 total = sum(
                     ward_overrides.get((w.id, party.id), pu_totals.get((w.id, party.id), 0))
@@ -287,21 +307,22 @@ class ElectionResultViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'], permission_classes=[permissions.AllowAny])
     def chart_data(self, request):
         """Get data formatted for charts - Public access for landing page. Ward overrides take priority."""
-        lgas = LocalGovernmentArea.objects.all()
+        dataset = request_dataset(request)
+        lgas = LocalGovernmentArea.objects.filter(dataset=dataset)
         parties = PoliticalParty.objects.all()
 
         # Bulk fetch to avoid N+1 queries
         ward_overrides = {
             (wr.ward_id, wr.party_id): wr.votes
-            for wr in WardResult.objects.all()
+            for wr in WardResult.objects.filter(dataset=dataset)
         }
         pu_totals = {
             (row['polling_unit__ward_id'], row['party_id']): row['total']
-            for row in ElectionResult.objects.values(
+            for row in ElectionResult.objects.filter(dataset=dataset).values(
                 'polling_unit__ward_id', 'party_id'
             ).annotate(total=Sum('votes'))
         }
-        ward_lga = {w.id: w.lga_id for w in Ward.objects.all()}
+        ward_lga = {w.id: w.lga_id for w in Ward.objects.filter(dataset=dataset)}
 
         def effective_votes(ward_id, party_id):
             if (ward_id, party_id) in ward_overrides:
@@ -342,7 +363,7 @@ class WardResultViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        queryset = super().get_queryset()
+        queryset = super().get_queryset().filter(dataset=request_dataset(self.request))
         ward_id = self.request.query_params.get('ward')
         lga_id = self.request.query_params.get('lga')
         if ward_id:
@@ -365,7 +386,7 @@ class WardResultViewSet(viewsets.ModelViewSet):
         results_data = serializer.validated_data['results']
 
         try:
-            ward = Ward.objects.get(id=ward_id)
+            ward = Ward.objects.get(id=ward_id, dataset=request_dataset(request))
         except Ward.DoesNotExist:
             return Response({'error': 'Ward not found'}, status=status.HTTP_404_NOT_FOUND)
 

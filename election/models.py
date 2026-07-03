@@ -29,16 +29,19 @@ class User(AbstractUser):
 
 class LocalGovernmentArea(models.Model):
     """Local Government Area (LGA) model"""
-    name = models.CharField(max_length=100, unique=True)
-    code = models.CharField(max_length=10, unique=True, null=True, blank=True)
+    name = models.CharField(max_length=100)
+    code = models.CharField(max_length=10, null=True, blank=True)
+    dataset = models.CharField(max_length=20, default='main', db_index=True,
+                               help_text="Which portal this record belongs to, e.g. 'main' or 'apc'")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
+
     class Meta:
         ordering = ['name']
         verbose_name = 'Local Government Area'
         verbose_name_plural = 'Local Government Areas'
-    
+        unique_together = [('name', 'dataset'), ('code', 'dataset')]
+
     def __str__(self):
         return self.name
 
@@ -48,13 +51,20 @@ class Ward(models.Model):
     name = models.CharField(max_length=100)
     lga = models.ForeignKey(LocalGovernmentArea, on_delete=models.CASCADE, related_name='wards')
     code = models.CharField(max_length=20, null=True, blank=True)
+    dataset = models.CharField(max_length=20, default='main', db_index=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
+
     class Meta:
         ordering = ['lga', 'name']
         unique_together = ['name', 'lga']
-    
+
+    def save(self, *args, **kwargs):
+        # Keep dataset in sync with the parent LGA
+        if self.lga_id:
+            self.dataset = self.lga.dataset
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return f"{self.name} ({self.lga.name})"
 
@@ -65,13 +75,19 @@ class PollingUnit(models.Model):
     ward = models.ForeignKey(Ward, on_delete=models.CASCADE, related_name='polling_units')
     code = models.CharField(max_length=30, null=True, blank=True)
     registered_voters = models.IntegerField(default=0)
+    dataset = models.CharField(max_length=20, default='main', db_index=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
+
     class Meta:
         ordering = ['ward__lga', 'ward', 'name']
         unique_together = ['name', 'ward']
-    
+
+    def save(self, *args, **kwargs):
+        if self.ward_id:
+            self.dataset = self.ward.dataset
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return f"{self.name} ({self.ward.name}, {self.ward.lga.name})"
     
@@ -108,18 +124,25 @@ class ElectionResult(models.Model):
     polling_unit = models.ForeignKey(PollingUnit, on_delete=models.CASCADE, related_name='results')
     party = models.ForeignKey(PoliticalParty, on_delete=models.CASCADE, related_name='results')
     votes = models.IntegerField(default=0)
+    dataset = models.CharField(max_length=20, default='main', db_index=True)
     entered_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='entered_results')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
+
     class Meta:
         ordering = ['polling_unit', 'party']
         unique_together = ['polling_unit', 'party']
         indexes = [
             models.Index(fields=['polling_unit', 'party']),
             models.Index(fields=['party']),
+            models.Index(fields=['dataset']),
         ]
-    
+
+    def save(self, *args, **kwargs):
+        if self.polling_unit_id:
+            self.dataset = self.polling_unit.dataset
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return f"{self.party.abbreviation}: {self.votes} votes at {self.polling_unit.name}"
     
@@ -137,6 +160,7 @@ class WardResult(models.Model):
     ward = models.ForeignKey(Ward, on_delete=models.CASCADE, related_name='ward_results')
     party = models.ForeignKey(PoliticalParty, on_delete=models.CASCADE, related_name='ward_results')
     votes = models.IntegerField(default=0)
+    dataset = models.CharField(max_length=20, default='main', db_index=True)
     entered_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='entered_ward_results')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -147,7 +171,57 @@ class WardResult(models.Model):
         indexes = [
             models.Index(fields=['ward', 'party']),
             models.Index(fields=['ward']),
+            models.Index(fields=['dataset']),
         ]
+
+    def save(self, *args, **kwargs):
+        if self.ward_id:
+            self.dataset = self.ward.dataset
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.party.abbreviation}: {self.votes} votes at Ward {self.ward.name} (override)"
+
+
+# ---------------------------------------------------------------------------
+# APC portal proxy models
+#
+# These share the exact same database tables as the models above (no extra
+# storage) but let the Django admin show a SEPARATE "APC portal" section whose
+# lists only contain rows tagged dataset='apc'. The originals stay scoped to
+# 'main'. See admin.py for the per-dataset filtering.
+# ---------------------------------------------------------------------------
+
+class ApcLocalGovernmentArea(LocalGovernmentArea):
+    class Meta:
+        proxy = True
+        verbose_name = 'Local Government Area (APC)'
+        verbose_name_plural = 'Local Government Areas (APC)'
+
+
+class ApcWard(Ward):
+    class Meta:
+        proxy = True
+        verbose_name = 'Ward (APC)'
+        verbose_name_plural = 'Wards (APC)'
+
+
+class ApcPollingUnit(PollingUnit):
+    class Meta:
+        proxy = True
+        verbose_name = 'Polling Unit (APC)'
+        verbose_name_plural = 'Polling Units (APC)'
+
+
+class ApcElectionResult(ElectionResult):
+    class Meta:
+        proxy = True
+        verbose_name = 'Election Result (APC)'
+        verbose_name_plural = 'Election Results (APC)'
+
+
+class ApcWardResult(WardResult):
+    class Meta:
+        proxy = True
+        verbose_name = 'Ward Result (APC)'
+        verbose_name_plural = 'Ward Results (APC)'
