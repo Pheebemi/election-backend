@@ -166,7 +166,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",
     "http://localhost:3001",   # apc runs on a separate dev port
     "http://127.0.0.1:3001",
-    "https://tarabaelection.vercel.app",
+    "https://tarabaelection.pheedev.online",   # main portal
     "https://apctaraba.vercel.app",   # apc portal
 ]
 
@@ -180,7 +180,7 @@ CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
     "https://electionportal.pythonanywhere.com",
-    "https://tarabaelection.vercel.app",
+    "https://tarabaelection.pheedev.online",   # main portal
     "https://apctaraba.vercel.app",   # apc portal
 ]
 

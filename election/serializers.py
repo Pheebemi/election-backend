@@ -8,10 +8,17 @@ from .models import (
 
 class UserSerializer(serializers.ModelSerializer):
     """Serializer for User model"""
+    is_admin = serializers.BooleanField(read_only=True)
+    assigned_lga_ids = serializers.SerializerMethodField()
+
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'role', 'first_name', 'last_name']
-        read_only_fields = ['id', 'role']
+        fields = ['id', 'username', 'email', 'role', 'first_name', 'last_name',
+                  'is_admin', 'assigned_lga_ids']
+        read_only_fields = ['id', 'role', 'is_admin', 'assigned_lga_ids']
+
+    def get_assigned_lga_ids(self, obj):
+        return list(obj.assigned_lgas.values_list('id', flat=True))
 
 
 class LoginSerializer(serializers.Serializer):

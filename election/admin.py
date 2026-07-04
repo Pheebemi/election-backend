@@ -50,8 +50,9 @@ class UserAdmin(BaseUserAdmin):
     """Admin interface for User model"""
     list_display = ['username', 'email', 'role', 'is_staff', 'is_active', 'date_joined']
     list_filter = ['role', 'is_staff', 'is_active']
+    filter_horizontal = BaseUserAdmin.filter_horizontal + ('assigned_lgas',)
     fieldsets = BaseUserAdmin.fieldsets + (
-        ('Role', {'fields': ('role',)}),
+        ('Role & assignments', {'fields': ('role', 'assigned_lgas')}),
     )
     add_fieldsets = BaseUserAdmin.add_fieldsets + (
         ('Role', {'fields': ('role',)}),

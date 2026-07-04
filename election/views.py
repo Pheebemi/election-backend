@@ -35,6 +35,28 @@ def request_dataset(request):
     )
 
 
+def visible_lga_ids(user):
+    """LGA ids a user may access.
+
+    Returns None for unrestricted access (admins / superusers), an empty set for
+    anonymous users, or the set of assigned LGA ids for a clerk."""
+    if not user or not user.is_authenticated:
+        return set()
+    if getattr(user, 'is_admin', False):
+        return None
+    return set(user.assigned_lgas.values_list('id', flat=True))
+
+
+class IsAdmin(permissions.BasePermission):
+    """Allow only admin users (role=admin or superuser)."""
+    def has_permission(self, request, view):
+        return bool(
+            request.user
+            and request.user.is_authenticated
+            and getattr(request.user, 'is_admin', False)
+        )
+
+
 class CSRFTokenView(APIView):
     """Get CSRF token for frontend"""
     permission_classes = [permissions.AllowAny]
@@ -91,7 +113,11 @@ class LocalGovernmentAreaViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        return super().get_queryset().filter(dataset=request_dataset(self.request))
+        qs = super().get_queryset().filter(dataset=request_dataset(self.request))
+        ids = visible_lga_ids(self.request.user)
+        if ids is not None:
+            qs = qs.filter(id__in=ids)
+        return qs
 
     @action(detail=True, methods=['get'])
     def wards(self, request, pk=None):
@@ -110,6 +136,9 @@ class WardViewSet(viewsets.ReadOnlyModelViewSet):
     
     def get_queryset(self):
         queryset = super().get_queryset().filter(dataset=request_dataset(self.request))
+        ids = visible_lga_ids(self.request.user)
+        if ids is not None:
+            queryset = queryset.filter(lga_id__in=ids)
         lga_id = self.request.query_params.get('lga', None)
         if lga_id:
             queryset = queryset.filter(lga_id=lga_id)
@@ -132,6 +161,9 @@ class PollingUnitViewSet(viewsets.ReadOnlyModelViewSet):
     
     def get_queryset(self):
         queryset = super().get_queryset().filter(dataset=request_dataset(self.request))
+        ids = visible_lga_ids(self.request.user)
+        if ids is not None:
+            queryset = queryset.filter(ward__lga_id__in=ids)
         ward_id = self.request.query_params.get('ward', None)
         lga_id = self.request.query_params.get('lga', None)
         if ward_id:
@@ -187,15 +219,21 @@ class PollingUnitViewSet(viewsets.ReadOnlyModelViewSet):
         Returns overall + per-LGA/ward completion for everyone logged in; the
         per-clerk breakdown is included only for admins."""
         dataset = request_dataset(request)
+        ids = visible_lga_ids(request.user)  # None = all (admin), else assigned set
 
-        reported_pu_ids = set(
-            ElectionResult.objects.filter(dataset=dataset)
-            .values_list('polling_unit_id', flat=True).distinct()
-        )
+        pu_qs = PollingUnit.objects.filter(dataset=dataset)
+        lga_qs = LocalGovernmentArea.objects.filter(dataset=dataset)
+        result_qs = ElectionResult.objects.filter(dataset=dataset)
+        if ids is not None:
+            pu_qs = pu_qs.filter(ward__lga_id__in=ids)
+            lga_qs = lga_qs.filter(id__in=ids)
+            result_qs = result_qs.filter(polling_unit__ward__lga_id__in=ids)
+
+        reported_pu_ids = set(result_qs.values_list('polling_unit_id', flat=True).distinct())
 
         # ward_id -> {'total': n, 'reported': n}
         ward_total, ward_reported = {}, {}
-        for row in PollingUnit.objects.filter(dataset=dataset).values('id', 'ward_id'):
+        for row in pu_qs.values('id', 'ward_id'):
             wid = row['ward_id']
             ward_total[wid] = ward_total.get(wid, 0) + 1
             if row['id'] in reported_pu_ids:
@@ -203,7 +241,7 @@ class PollingUnitViewSet(viewsets.ReadOnlyModelViewSet):
 
         by_lga = []
         total_pus = reported_pus = 0
-        for lga in LocalGovernmentArea.objects.filter(dataset=dataset).prefetch_related('wards').all():
+        for lga in lga_qs.prefetch_related('wards').all():
             wards, lga_total, lga_reported, wards_complete = [], 0, 0, 0
             for w in lga.wards.all():
                 t = ward_total.get(w.id, 0)
@@ -275,6 +313,9 @@ class ElectionResultViewSet(viewsets.ModelViewSet):
     
     def get_queryset(self):
         queryset = super().get_queryset().filter(dataset=request_dataset(self.request))
+        ids = visible_lga_ids(self.request.user)
+        if ids is not None:
+            queryset = queryset.filter(polling_unit__ward__lga_id__in=ids)
         polling_unit_id = self.request.query_params.get('polling_unit', None)
         lga_id = self.request.query_params.get('lga', None)
         party_id = self.request.query_params.get('party', None)
@@ -288,10 +329,20 @@ class ElectionResultViewSet(viewsets.ModelViewSet):
         
         return queryset
     
+    def _assert_lga_allowed(self, lga_id):
+        """Block clerks from touching an LGA they are not assigned to."""
+        ids = visible_lga_ids(self.request.user)
+        if ids is not None and lga_id not in ids:
+            from rest_framework.exceptions import PermissionDenied
+            raise PermissionDenied('You are not assigned to this LGA.')
+
     def perform_create(self, serializer):
         """Set the user who entered the result"""
+        pu = serializer.validated_data.get('polling_unit')
+        if pu is not None:
+            self._assert_lga_allowed(pu.ward.lga_id)
         serializer.save(entered_by=self.request.user)
-    
+
     @action(detail=False, methods=['post'])
     def bulk_create(self, request):
         """Bulk create/update election results for a polling unit"""
@@ -311,6 +362,8 @@ class ElectionResultViewSet(viewsets.ModelViewSet):
                 {'error': 'Polling unit not found'},
                 status=status.HTTP_404_NOT_FOUND
             )
+
+        self._assert_lga_allowed(polling_unit.ward.lga_id)
         
         created_results = []
         updated_results = []
@@ -441,6 +494,9 @@ class WardResultViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = super().get_queryset().filter(dataset=request_dataset(self.request))
+        ids = visible_lga_ids(self.request.user)
+        if ids is not None:
+            queryset = queryset.filter(ward__lga_id__in=ids)
         ward_id = self.request.query_params.get('ward')
         lga_id = self.request.query_params.get('lga')
         if ward_id:
@@ -450,6 +506,12 @@ class WardResultViewSet(viewsets.ModelViewSet):
         return queryset
 
     def perform_create(self, serializer):
+        ward = serializer.validated_data.get('ward')
+        if ward is not None:
+            ids = visible_lga_ids(self.request.user)
+            if ids is not None and ward.lga_id not in ids:
+                from rest_framework.exceptions import PermissionDenied
+                raise PermissionDenied('You are not assigned to this LGA.')
         serializer.save(entered_by=self.request.user)
 
     @action(detail=False, methods=['post'])
@@ -466,6 +528,11 @@ class WardResultViewSet(viewsets.ModelViewSet):
             ward = Ward.objects.get(id=ward_id, dataset=request_dataset(request))
         except Ward.DoesNotExist:
             return Response({'error': 'Ward not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        _ids = visible_lga_ids(request.user)
+        if _ids is not None and ward.lga_id not in _ids:
+            return Response({'error': 'You are not assigned to this LGA.'},
+                            status=status.HTTP_403_FORBIDDEN)
 
         created_results, updated_results = [], []
 
@@ -491,3 +558,54 @@ class WardResultViewSet(viewsets.ModelViewSet):
             'created': WardResultSerializer(created_results, many=True).data,
             'updated': WardResultSerializer(updated_results, many=True).data,
         }, status=status.HTTP_201_CREATED)
+
+
+class ClerkViewSet(viewsets.ViewSet):
+    """Admin-only management of clerk -> LGA assignments (current dataset)."""
+    permission_classes = [IsAdmin]
+
+    def _serialize(self, clerk, dataset):
+        # Only surface assignments that belong to the active dataset
+        assigned = list(
+            clerk.assigned_lgas.filter(dataset=dataset).values_list('id', flat=True)
+        )
+        pu_count = ElectionResult.objects.filter(
+            dataset=dataset, entered_by=clerk
+        ).values('polling_unit').distinct().count()
+        return {
+            'id': clerk.id,
+            'username': clerk.username,
+            'email': clerk.email,
+            'assigned_lga_ids': assigned,
+            'polling_units_entered': pu_count,
+        }
+
+    def list(self, request):
+        dataset = request_dataset(request)
+        clerks = User.objects.filter(role=User.CLERK).order_by('username')
+        return Response([self._serialize(c, dataset) for c in clerks])
+
+    @action(detail=True, methods=['post'])
+    def assign(self, request, pk=None):
+        """Replace a clerk's LGA assignments for the current dataset.
+
+        Assignments in *other* datasets are preserved; only the ones for this
+        dataset are swapped for the supplied ``lga_ids``."""
+        dataset = request_dataset(request)
+        try:
+            clerk = User.objects.get(pk=pk, role=User.CLERK)
+        except User.DoesNotExist:
+            return Response({'error': 'Clerk not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        lga_ids = request.data.get('lga_ids', [])
+        if not isinstance(lga_ids, list):
+            return Response({'error': 'lga_ids must be a list'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Validate the ids exist within this dataset
+        new_lgas = list(LocalGovernmentArea.objects.filter(id__in=lga_ids, dataset=dataset))
+
+        # Keep any assignments the clerk has in other datasets untouched
+        keep_other = clerk.assigned_lgas.exclude(dataset=dataset)
+        clerk.assigned_lgas.set(list(keep_other) + new_lgas)
+
+        return Response(self._serialize(clerk, dataset))

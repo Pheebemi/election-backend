@@ -12,9 +12,13 @@ class User(AbstractUser):
     ]
     
     role = models.CharField(max_length=10, choices=ROLE_CHOICES, default=CLERK)
+    assigned_lgas = models.ManyToManyField(
+        'LocalGovernmentArea', blank=True, related_name='assigned_clerks',
+        help_text='LGAs this clerk may access. Admins can access every LGA regardless.',
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
+
     def __str__(self):
         return f"{self.username} ({self.get_role_display()})"
     
@@ -43,7 +47,9 @@ class LocalGovernmentArea(models.Model):
         unique_together = [('name', 'dataset'), ('code', 'dataset')]
 
     def __str__(self):
-        return self.name
+        # Include the dataset so main vs apc LGAs are distinguishable in the
+        # Django admin pickers (both portals share identical LGA names).
+        return f"{self.name} ({self.dataset})"
 
 
 class Ward(models.Model):
