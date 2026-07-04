@@ -19,16 +19,28 @@ class User(AbstractUser):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def save(self, *args, **kwargs):
+        # A brand-new superuser (created via `createsuperuser`, which never
+        # prompts for role) should be an app admin by default. Any later,
+        # explicit change of `role` is respected — so demoting a superuser to
+        # clerk actually demotes them.
+        if self._state.adding and self.is_superuser and self.role == self.CLERK:
+            self.role = self.ADMIN
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return f"{self.username} ({self.get_role_display()})"
-    
+
     @property
     def is_clerk(self):
         return self.role == self.CLERK
-    
+
     @property
     def is_admin(self):
-        return self.role == self.ADMIN or self.is_superuser
+        # Role is the single source of truth for app-level admin rights.
+        # (Django's is_superuser still governs the Django /admin/ site, but not
+        # the app's clerk-assignment features.)
+        return self.role == self.ADMIN
 
 
 class LocalGovernmentArea(models.Model):
