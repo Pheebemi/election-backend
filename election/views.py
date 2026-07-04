@@ -204,8 +204,16 @@ class PollingUnitViewSet(viewsets.ReadOnlyModelViewSet):
                 'wards': wards,
             })
 
+        total_pus = PollingUnit.objects.filter(dataset=dataset).count()
+        reported_pus = (
+            ElectionResult.objects.filter(dataset=dataset)
+            .values('polling_unit').distinct().count()
+        )
+
         return Response({
-            'total_polling_units': PollingUnit.objects.filter(dataset=dataset).count(),
+            'total_polling_units': total_pus,
+            'reported_polling_units': reported_pus,
+            'reported_percent': round(reported_pus / total_pus * 100, 1) if total_pus else 0.0,
             'total_wards': Ward.objects.filter(dataset=dataset).count(),
             'total_lgas': LocalGovernmentArea.objects.filter(dataset=dataset).count(),
             'by_lga': by_lga,
