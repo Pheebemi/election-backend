@@ -300,6 +300,30 @@ class PollingUnitViewSet(viewsets.ReadOnlyModelViewSet):
                 ).order_by('-pus')
             ]
 
+            # Recent entries feed — latest polling-unit submissions with their
+            # ward + LGA, so an admin can quickly audit a suspicious result.
+            recent, seen = [], set()
+            qs = (
+                ElectionResult.objects
+                .filter(dataset=dataset, entered_by__isnull=False)
+                .select_related('polling_unit__ward__lga', 'entered_by')
+                .order_by('-updated_at')
+            )
+            for r in qs[:300]:
+                if r.polling_unit_id in seen:
+                    continue
+                seen.add(r.polling_unit_id)
+                recent.append({
+                    'clerk': r.entered_by.username,
+                    'lga': r.polling_unit.ward.lga.name,
+                    'ward': r.polling_unit.ward.name,
+                    'polling_unit': r.polling_unit.name,
+                    'at': r.updated_at,
+                })
+                if len(recent) >= 25:
+                    break
+            data['recent_entries'] = recent
+
         return Response(data)
 
 
