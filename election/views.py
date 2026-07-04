@@ -300,31 +300,73 @@ class PollingUnitViewSet(viewsets.ReadOnlyModelViewSet):
                 ).order_by('-pus')
             ]
 
-            # Recent entries feed — latest polling-unit submissions with their
-            # ward + LGA, so an admin can quickly audit a suspicious result.
-            recent, seen = [], set()
-            qs = (
-                ElectionResult.objects
-                .filter(dataset=dataset, entered_by__isnull=False)
-                .select_related('polling_unit__ward__lga', 'entered_by')
-                .order_by('-updated_at')
-            )
-            for r in qs[:300]:
-                if r.polling_unit_id in seen:
-                    continue
-                seen.add(r.polling_unit_id)
-                recent.append({
-                    'clerk': r.entered_by.username,
-                    'lga': r.polling_unit.ward.lga.name,
-                    'ward': r.polling_unit.ward.name,
-                    'polling_unit': r.polling_unit.name,
-                    'at': r.updated_at,
-                })
-                if len(recent) >= 25:
-                    break
-            data['recent_entries'] = recent
-
         return Response(data)
+
+    @action(detail=False, methods=['get'], permission_classes=[IsAdmin])
+    def recent_entries(self, request):
+        """Paginated feed of the latest polling-unit submissions with ward + LGA,
+        so an admin can audit suspicious results. Admin only.
+
+        One row per polling unit (its most recent submission), newest first.
+        Query params: ?page= (1-based) and ?page_size= (5..50, default 15)."""
+        dataset = request_dataset(request)
+        try:
+            page = max(1, int(request.query_params.get('page', 1)))
+        except (TypeError, ValueError):
+            page = 1
+        try:
+            page_size = min(50, max(5, int(request.query_params.get('page_size', 15))))
+        except (TypeError, ValueError):
+            page_size = 15
+
+        # Distinct polling units ordered by their most recent entry (SQLite-safe:
+        # dedup via GROUP BY rather than DISTINCT ON).
+        base = (
+            ElectionResult.objects
+            .filter(dataset=dataset, entered_by__isnull=False)
+            .values('polling_unit')
+            .annotate(last=Max('updated_at'))
+            .order_by('-last')
+        )
+        total = base.count()
+        start = (page - 1) * page_size
+        page_rows = list(base[start:start + page_size])
+        last_by_pu = {r['polling_unit']: r['last'] for r in page_rows}
+        pu_ids = [r['polling_unit'] for r in page_rows]
+
+        # Hydrate only this page's polling units (name / ward / lga / clerk).
+        picked = {}
+        for r in (
+            ElectionResult.objects
+            .filter(dataset=dataset, polling_unit_id__in=pu_ids)
+            .select_related('polling_unit__ward__lga', 'entered_by')
+        ):
+            if r.polling_unit_id not in picked and r.updated_at == last_by_pu.get(r.polling_unit_id):
+                picked[r.polling_unit_id] = r
+
+        results = []
+        for pid in pu_ids:  # preserve newest-first order
+            r = picked.get(pid)
+            if not r:
+                continue
+            results.append({
+                'clerk': r.entered_by.username,
+                'lga': r.polling_unit.ward.lga.name,
+                'ward': r.polling_unit.ward.name,
+                'polling_unit': r.polling_unit.name,
+                'at': r.updated_at,
+            })
+
+        num_pages = (total + page_size - 1) // page_size
+        return Response({
+            'results': results,
+            'count': total,
+            'page': page,
+            'page_size': page_size,
+            'num_pages': num_pages,
+            'has_next': page < num_pages,
+            'has_prev': page > 1,
+        })
 
 
 class PoliticalPartyViewSet(viewsets.ReadOnlyModelViewSet):
