@@ -659,6 +659,47 @@ class ClerkViewSet(viewsets.ViewSet):
         clerks = User.objects.filter(role=User.CLERK).order_by('username')
         return Response([self._serialize(c, dataset) for c in clerks])
 
+    def create(self, request):
+        """Create a clerk account, optionally assigned to LGAs in the current dataset.
+
+        Body: ``username``, ``password``, optional ``first_name``,
+        ``last_name``, ``email`` and ``lga_ids``."""
+        from django.contrib.auth.password_validation import validate_password
+        from django.core.exceptions import ValidationError
+
+        dataset = request_dataset(request)
+        username = (request.data.get('username') or '').strip()
+        password = request.data.get('password') or ''
+        lga_ids = request.data.get('lga_ids', [])
+
+        errors = {}
+        if not username:
+            errors['username'] = ['Username is required.']
+        elif User.objects.filter(username__iexact=username).exists():
+            errors['username'] = ['A user with that username already exists.']
+        if not isinstance(lga_ids, list):
+            errors['lga_ids'] = ['lga_ids must be a list.']
+
+        candidate = User(
+            username=username,
+            first_name=(request.data.get('first_name') or '').strip(),
+            last_name=(request.data.get('last_name') or '').strip(),
+            email=(request.data.get('email') or '').strip(),
+            role=User.CLERK,
+        )
+        try:
+            validate_password(password, user=candidate)
+        except ValidationError as exc:
+            errors['password'] = list(exc.messages)
+
+        if errors:
+            return Response(errors, status=status.HTTP_400_BAD_REQUEST)
+
+        candidate.set_password(password)
+        candidate.save()
+        candidate.assigned_lgas.set(LocalGovernmentArea.objects.filter(id__in=lga_ids, dataset=dataset))
+        return Response(self._serialize(candidate, dataset), status=status.HTTP_201_CREATED)
+
     @action(detail=True, methods=['post'])
     def assign(self, request, pk=None):
         """Replace a clerk's LGA assignments for the current dataset.
