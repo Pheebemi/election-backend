@@ -3,7 +3,7 @@ from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
-from django.db.models import Sum, Q, F, Count, Max
+from django.db.models import Sum, Q, F, Count, Max, Exists, OuterRef
 from django.contrib.auth import login, logout
 from django.utils import timezone
 from django.middleware.csrf import get_token
@@ -170,7 +170,10 @@ class PollingUnitViewSet(viewsets.ReadOnlyModelViewSet):
             queryset = queryset.filter(ward_id=ward_id)
         if lga_id:
             queryset = queryset.filter(ward__lga_id=lga_id)
-        return queryset
+        # Lets the entry form tick polling units that already have results.
+        return queryset.annotate(
+            has_results=Exists(ElectionResult.objects.filter(polling_unit=OuterRef('pk')))
+        )
     
     @action(detail=True, methods=['get'])
     def results(self, request, pk=None):

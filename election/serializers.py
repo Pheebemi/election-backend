@@ -67,10 +67,17 @@ class PollingUnitSerializer(serializers.ModelSerializer):
     ward_name = serializers.CharField(source='ward.name', read_only=True)
     lga_name = serializers.CharField(source='ward.lga.name', read_only=True)
     lga_id = serializers.IntegerField(source='ward.lga.id', read_only=True)
-    
+    has_results = serializers.SerializerMethodField()
+
     class Meta:
         model = PollingUnit
-        fields = ['id', 'name', 'code', 'ward', 'ward_name', 'lga_name', 'lga_id', 'registered_voters', 'created_at', 'updated_at']
+        fields = ['id', 'name', 'code', 'ward', 'ward_name', 'lga_name', 'lga_id', 'registered_voters',
+                  'has_results', 'created_at', 'updated_at']
+
+    def get_has_results(self, obj):
+        # Annotated by PollingUnitViewSet in one query; fall back to a lookup elsewhere.
+        annotated = getattr(obj, 'has_results', None)
+        return annotated if annotated is not None else obj.results.exists()
 
 
 class PoliticalPartySerializer(serializers.ModelSerializer):

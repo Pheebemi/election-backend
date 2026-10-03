@@ -45,3 +45,22 @@ class ClerkCreateTests(APITestCase):
         r = self.client.post(self.url, {'username': 'sneaky', 'password': 'S3cure-pass-xyz'}, format='json')
         self.assertEqual(r.status_code, 403)
         self.assertFalse(User.objects.filter(username='sneaky').exists())
+
+
+class PollingUnitHasResultsTests(APITestCase):
+    @classmethod
+    def setUpTestData(cls):
+        from .models import ElectionResult, PoliticalParty, PollingUnit, Ward
+        cls.admin = User.objects.create_user('chief', password='pw-123456!', role=User.ADMIN)
+        lga = LocalGovernmentArea.objects.create(name='Jalingo', code='JAL')
+        cls.ward = Ward.objects.create(name='Barade', lga=lga)
+        cls.done = PollingUnit.objects.create(name='PU 1', ward=cls.ward)
+        cls.todo = PollingUnit.objects.create(name='PU 2', ward=cls.ward)
+        party = PoliticalParty.objects.create(name='All Progressives Congress', abbreviation='APC')
+        ElectionResult.objects.create(polling_unit=cls.done, party=party, votes=10)
+
+    def test_ward_list_flags_reported_units(self):
+        self.client.force_authenticate(self.admin)
+        r = self.client.get('/api/polling-units/', {'ward': self.ward.id})
+        rows = r.data['results'] if isinstance(r.data, dict) else r.data
+        self.assertEqual({row['name']: row['has_results'] for row in rows}, {'PU 1': True, 'PU 2': False})
