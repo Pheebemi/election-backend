@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
 from .models import (
+    ResultChange,
     User, LocalGovernmentArea, Ward, PollingUnit,
     PoliticalParty, ElectionResult, WardResult
 )
@@ -179,3 +180,15 @@ class WardResultCreateSerializer(serializers.Serializer):
             raise serializers.ValidationError('Results list cannot be empty')
         return attrs
 
+
+
+class ResultChangeSerializer(serializers.ModelSerializer):
+    lga_name = serializers.CharField(source='lga.name', read_only=True, default=None)
+    ward_name = serializers.CharField(source='ward.name', read_only=True, default=None)
+    polling_unit_name = serializers.CharField(source='polling_unit.name', read_only=True, default=None)
+
+    class Meta:
+        model = ResultChange
+        fields = ['id', 'kind', 'action', 'place', 'lga', 'lga_name', 'ward', 'ward_name',
+                  'polling_unit', 'polling_unit_name', 'party_abbreviation',
+                  'old_votes', 'new_votes', 'changed_by_name', 'changed_at']

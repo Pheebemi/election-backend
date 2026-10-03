@@ -4,7 +4,7 @@ from .views import (
     CSRFTokenView, LoginView, LogoutView, CurrentUserView,
     LocalGovernmentAreaViewSet, WardViewSet,
     PollingUnitViewSet, PoliticalPartyViewSet,
-    ElectionResultViewSet, WardResultViewSet, ClerkViewSet
+    ElectionResultViewSet, WardResultViewSet, ClerkViewSet, ResultChangeViewSet
 )
 
 router = DefaultRouter()
@@ -15,6 +15,7 @@ router.register(r'parties', PoliticalPartyViewSet, basename='party')
 router.register(r'results', ElectionResultViewSet, basename='result')
 router.register(r'ward-results', WardResultViewSet, basename='ward-result')
 router.register(r'clerks', ClerkViewSet, basename='clerk')
+router.register(r'result-history', ResultChangeViewSet, basename='result-history')
 
 urlpatterns = [
     path('auth/csrf/', CSRFTokenView.as_view(), name='csrf-token'),

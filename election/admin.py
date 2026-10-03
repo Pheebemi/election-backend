@@ -4,7 +4,7 @@ from .models import (
     User, LocalGovernmentArea, Ward, PollingUnit,
     PoliticalParty, ElectionResult, WardResult,
     ApcLocalGovernmentArea, ApcWard, ApcPollingUnit,
-    ApcElectionResult, ApcWardResult,
+    ApcElectionResult, ApcWardResult, ResultChange,
 )
 
 admin.site.site_header = "Taraba Election Portal Admin"
@@ -59,6 +59,41 @@ class UserAdmin(BaseUserAdmin):
     )
 
 
+class RecordsWhoChangedMixin:
+    """Name the admin user in the change history for edits and deletes made here."""
+
+    def save_model(self, request, obj, form, change):
+        obj._changed_by = request.user
+        super().save_model(request, obj, form, change)
+
+    def delete_model(self, request, obj):
+        obj._changed_by = request.user
+        super().delete_model(request, obj)
+
+    def delete_queryset(self, request, queryset):
+        for obj in queryset:
+            obj._changed_by = request.user
+            obj.delete()
+
+
+@admin.register(ResultChange)
+class ResultChangeAdmin(admin.ModelAdmin):
+    """Read-only change history of results (both portals)."""
+    list_display = ['changed_at', 'dataset', 'place', 'party_abbreviation', 'old_votes', 'new_votes', 'action', 'changed_by_name']
+    list_filter = ['dataset', 'action', 'kind', 'lga']
+    search_fields = ['place', 'changed_by_name', 'party_abbreviation']
+    date_hierarchy = 'changed_at'
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+
 # ---- Main (my-app) portal -------------------------------------------------
 
 @admin.register(LocalGovernmentArea)
@@ -100,7 +135,7 @@ class PoliticalPartyAdmin(admin.ModelAdmin):
 
 
 @admin.register(ElectionResult)
-class ElectionResultAdmin(MainScopedMixin, admin.ModelAdmin):
+class ElectionResultAdmin(RecordsWhoChangedMixin, MainScopedMixin, admin.ModelAdmin):
     """Admin interface for Election Result"""
     list_display = ['polling_unit', 'party', 'votes', 'entered_by', 'created_at']
     list_filter = ['party', 'polling_unit__ward__lga', 'created_at']
@@ -113,7 +148,7 @@ class ElectionResultAdmin(MainScopedMixin, admin.ModelAdmin):
 
 
 @admin.register(WardResult)
-class WardResultAdmin(MainScopedMixin, admin.ModelAdmin):
+class WardResultAdmin(RecordsWhoChangedMixin, MainScopedMixin, admin.ModelAdmin):
     list_display = ['ward', 'party', 'votes', 'entered_by', 'updated_at']
     list_filter = ['ward__lga', 'party']
     search_fields = ['ward__name', 'party__name']
@@ -148,7 +183,7 @@ class ApcPollingUnitAdmin(ApcScopedMixin, admin.ModelAdmin):
 
 
 @admin.register(ApcElectionResult)
-class ApcElectionResultAdmin(ApcScopedMixin, admin.ModelAdmin):
+class ApcElectionResultAdmin(RecordsWhoChangedMixin, ApcScopedMixin, admin.ModelAdmin):
     list_display = ['polling_unit', 'party', 'votes', 'entered_by', 'created_at']
     list_filter = ['party', 'polling_unit__ward__lga', 'created_at']
     search_fields = [
@@ -159,7 +194,7 @@ class ApcElectionResultAdmin(ApcScopedMixin, admin.ModelAdmin):
 
 
 @admin.register(ApcWardResult)
-class ApcWardResultAdmin(ApcScopedMixin, admin.ModelAdmin):
+class ApcWardResultAdmin(RecordsWhoChangedMixin, ApcScopedMixin, admin.ModelAdmin):
     list_display = ['ward', 'party', 'votes', 'entered_by', 'updated_at']
     list_filter = ['ward__lga', 'party']
     search_fields = ['ward__name', 'party__name']

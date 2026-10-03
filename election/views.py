@@ -11,10 +11,12 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 
 from .models import (
+    ResultChange,
     User, LocalGovernmentArea, Ward, PollingUnit,
     PoliticalParty, ElectionResult, WardResult
 )
 from .serializers import (
+    ResultChangeSerializer,
     UserSerializer, LoginSerializer,
     LocalGovernmentAreaSerializer, WardSerializer,
     PollingUnitSerializer, PoliticalPartySerializer,
@@ -194,6 +196,12 @@ class PollingUnitViewSet(viewsets.ReadOnlyModelViewSet):
             .values('ward_id').annotate(pu_count=Count('id'))
         }
 
+        reported_by_lga = dict(
+            ElectionResult.objects.filter(dataset=dataset)
+            .values('polling_unit__ward__lga_id')
+            .annotate(n=Count('polling_unit', distinct=True))
+            .values_list('polling_unit__ward__lga_id', 'n')
+        )
         by_lga = []
         for lga in LocalGovernmentArea.objects.filter(dataset=dataset).prefetch_related('wards').all():
             wards = [
@@ -204,6 +212,7 @@ class PollingUnitViewSet(viewsets.ReadOnlyModelViewSet):
                 'lga': lga.name,
                 'ward_count': len(wards),
                 'polling_units': sum(w['polling_units'] for w in wards),
+                'reported_polling_units': reported_by_lga.get(lga.id, 0),
                 'wards': wards,
             })
 
@@ -304,6 +313,38 @@ class PollingUnitViewSet(viewsets.ReadOnlyModelViewSet):
             ]
 
         return Response(data)
+
+    @action(detail=False, methods=['get'], permission_classes=[permissions.AllowAny])
+    def latest(self, request):
+        """Public feed of the most recently reported polling units, newest first.
+
+        For the projector ticker: place names and time only, never who entered it.
+        ``?limit=`` (1..50, default 15)."""
+        dataset = request_dataset(request)
+        try:
+            limit = min(50, max(1, int(request.query_params.get('limit', 15))))
+        except (TypeError, ValueError):
+            limit = 15
+        rows = list(
+            ElectionResult.objects.filter(dataset=dataset)
+            .values('polling_unit')
+            .annotate(last=Max('updated_at'))
+            .order_by('-last')[:limit]
+        )
+        units = {
+            pu.id: pu for pu in PollingUnit.objects.filter(id__in=[r['polling_unit'] for r in rows])
+            .select_related('ward__lga')
+        }
+        return Response([
+            {
+                'lga': units[r['polling_unit']].ward.lga.name,
+                'ward': units[r['polling_unit']].ward.name,
+                'polling_unit': units[r['polling_unit']].name,
+                'code': units[r['polling_unit']].code,
+                'at': r['last'],
+            }
+            for r in rows if r['polling_unit'] in units
+        ])
 
     @action(detail=False, methods=['get'], permission_classes=[IsAdmin])
     def recent_entries(self, request):
@@ -510,6 +551,118 @@ class ElectionResultViewSet(viewsets.ModelViewSet):
 
         serializer = ElectionResultSummarySerializer(summary_data, many=True)
         return Response(serializer.data)
+
+    def _scoped_lgas(self, request):
+        """LGAs this user may export, narrowed by ``?lga=``/``?ward=``."""
+        dataset = request_dataset(request)
+        lgas = LocalGovernmentArea.objects.filter(dataset=dataset)
+        ids = visible_lga_ids(request.user)
+        if ids is not None:
+            lgas = lgas.filter(id__in=ids)
+        return lgas
+
+    @action(detail=False, methods=['get'])
+    def export(self, request):
+        """Polling-unit results for a spreadsheet: the whole state (``?lga=`` /
+        ``?ward=`` to narrow), limited to the LGAs the user may see.
+
+        Returns parties (column order), one row per polling unit with its votes
+        per party, and the ward overrides in scope."""
+        lgas = self._scoped_lgas(request)
+        lga_id, ward_id = request.query_params.get('lga'), request.query_params.get('ward')
+        wards = Ward.objects.filter(lga__in=lgas)
+        if lga_id:
+            wards = wards.filter(lga_id=lga_id)
+        if ward_id:
+            wards = wards.filter(id=ward_id)
+        wards = wards.select_related('lga').order_by('lga__name', 'name')
+        parties = list(PoliticalParty.objects.all().order_by('name'))
+
+        votes = {}
+        last = {}
+        for r in ElectionResult.objects.filter(polling_unit__ward__in=wards).values(
+            'polling_unit_id', 'party_id', 'votes', 'updated_at', 'entered_by__username'
+        ):
+            votes.setdefault(r['polling_unit_id'], {})[r['party_id']] = r['votes']
+            prev = last.get(r['polling_unit_id'])
+            if prev is None or r['updated_at'] > prev[0]:
+                last[r['polling_unit_id']] = (r['updated_at'], r['entered_by__username'] or '')
+
+        rows = []
+        for pu in PollingUnit.objects.filter(ward__in=wards).select_related('ward__lga').order_by(
+            'ward__lga__name', 'ward__name', 'code', 'name'
+        ):
+            v = votes.get(pu.id, {})
+            rows.append({
+                'lga': pu.ward.lga.name, 'ward': pu.ward.name, 'code': pu.code or '', 'polling_unit': pu.name,
+                'reported': pu.id in votes,
+                'votes': {p.abbreviation: v.get(p.id, 0) for p in parties},
+                'total': sum(v.values()),
+                'entered_by': last.get(pu.id, (None, ''))[1],
+                'updated_at': last.get(pu.id, (None, None))[0],
+            })
+
+        overrides = {}
+        for wr in WardResult.objects.filter(ward__in=wards).select_related('ward__lga', 'party'):
+            # Only the parties actually overridden: the rest keep their polling-unit sums.
+            row = overrides.setdefault(wr.ward_id, {'lga': wr.ward.lga.name, 'ward': wr.ward.name, 'votes': {}})
+            row['votes'][wr.party.abbreviation] = wr.votes
+        override_rows = sorted(overrides.values(), key=lambda r: (r['lga'], r['ward']))
+        for r in override_rows:
+            r['total'] = sum(r['votes'].values())
+
+        return Response({
+            'generated_at': timezone.now(),
+            'parties': [{'abbreviation': p.abbreviation, 'name': p.name, 'color': p.color} for p in parties],
+            'polling_units': rows,
+            'ward_overrides': override_rows,
+        })
+
+    @action(detail=False, methods=['get'])
+    def lga_report(self, request):
+        """Everything the printable LGA summary needs for ``?lga=<id>``:
+        party totals and a ward-by-ward breakdown (ward overrides applied)."""
+        try:
+            lga = self._scoped_lgas(request).get(id=request.query_params.get('lga'))
+        except (LocalGovernmentArea.DoesNotExist, ValueError, TypeError):
+            return Response({'error': 'LGA not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        parties = list(PoliticalParty.objects.all())
+        wards = list(lga.wards.order_by('name'))
+        overrides = {(w, p): v for w, p, v in WardResult.objects.filter(ward__lga=lga)
+                     .values_list('ward_id', 'party_id', 'votes')}
+        pu_sums = {
+            (r['polling_unit__ward_id'], r['party_id']): r['total']
+            for r in ElectionResult.objects.filter(polling_unit__ward__lga=lga)
+            .values('polling_unit__ward_id', 'party_id').annotate(total=Sum('votes'))
+        }
+        pu_total = dict(PollingUnit.objects.filter(ward__lga=lga).values('ward_id')
+                        .annotate(n=Count('id')).values_list('ward_id', 'n'))
+        pu_reported = dict(ElectionResult.objects.filter(polling_unit__ward__lga=lga)
+                           .values('polling_unit__ward_id')
+                           .annotate(n=Count('polling_unit', distinct=True))
+                           .values_list('polling_unit__ward_id', 'n'))
+        overridden = {w for (w, _p) in overrides}
+
+        ward_rows = []
+        for w in wards:
+            v = {p.abbreviation: overrides.get((w.id, p.id), pu_sums.get((w.id, p.id), 0)) for p in parties}
+            ward_rows.append({
+                'ward': w.name, 'votes': v, 'total': sum(v.values()),
+                'override': w.id in overridden,
+                'reported': pu_reported.get(w.id, 0), 'polling_units': pu_total.get(w.id, 0),
+            })
+        totals = {p.abbreviation: sum(r['votes'][p.abbreviation] for r in ward_rows) for p in parties}
+        return Response({
+            'generated_at': timezone.now(),
+            'lga': {'id': lga.id, 'name': lga.name},
+            'parties': [{'abbreviation': p.abbreviation, 'name': p.name, 'color': p.color} for p in parties],
+            'totals': totals,
+            'total_votes': sum(totals.values()),
+            'wards': ward_rows,
+            'reported': sum(r['reported'] for r in ward_rows),
+            'polling_units': sum(r['polling_units'] for r in ward_rows),
+        })
 
     @action(detail=False, methods=['get'], permission_classes=[permissions.AllowAny])
     def chart_data(self, request):
@@ -727,3 +880,20 @@ class ClerkViewSet(viewsets.ViewSet):
         clerk.assigned_lgas.set(list(keep_other) + new_lgas)
 
         return Response(self._serialize(clerk, dataset))
+
+
+
+class ResultChangeViewSet(viewsets.ReadOnlyModelViewSet):
+    """Admin-only change history of results for the current dataset, newest first.
+
+    Filters: ``?lga=``, ``?ward=``, ``?polling_unit=``, ``?kind=pu|ward``."""
+    serializer_class = ResultChangeSerializer
+    permission_classes = [IsAdmin]
+
+    def get_queryset(self):
+        qs = ResultChange.objects.filter(dataset=request_dataset(self.request))
+        for param, field in (('lga', 'lga_id'), ('ward', 'ward_id'), ('polling_unit', 'polling_unit_id'), ('kind', 'kind')):
+            value = self.request.query_params.get(param)
+            if value:
+                qs = qs.filter(**{field: value})
+        return qs

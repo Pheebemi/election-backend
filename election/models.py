@@ -201,6 +201,42 @@ class WardResult(models.Model):
         return f"{self.party.abbreviation}: {self.votes} votes at Ward {self.ward.name} (override)"
 
 
+class ResultChange(models.Model):
+    """One change to a polling-unit result or ward override: who, when, from what to what.
+
+    Rows are written automatically (see signals.py) and never edited."""
+    CREATED = 'created'
+    UPDATED = 'updated'
+    DELETED = 'deleted'
+    ACTION_CHOICES = [(CREATED, 'Created'), (UPDATED, 'Changed'), (DELETED, 'Deleted')]
+    POLLING_UNIT = 'pu'
+    WARD = 'ward'
+    KIND_CHOICES = [(POLLING_UNIT, 'Polling unit'), (WARD, 'Ward override')]
+
+    kind = models.CharField(max_length=4, choices=KIND_CHOICES)
+    action = models.CharField(max_length=8, choices=ACTION_CHOICES)
+    dataset = models.CharField(max_length=20, default='main', db_index=True)
+    lga = models.ForeignKey(LocalGovernmentArea, on_delete=models.SET_NULL, null=True, related_name='+')
+    ward = models.ForeignKey(Ward, on_delete=models.SET_NULL, null=True, related_name='+')
+    polling_unit = models.ForeignKey(PollingUnit, on_delete=models.SET_NULL, null=True, blank=True, related_name='+')
+    party = models.ForeignKey(PoliticalParty, on_delete=models.SET_NULL, null=True, related_name='+')
+    # Snapshots, so the record still reads correctly if names change or rows go.
+    place = models.CharField(max_length=255)
+    party_abbreviation = models.CharField(max_length=20)
+    old_votes = models.IntegerField(null=True, blank=True)
+    new_votes = models.IntegerField(null=True, blank=True)
+    changed_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='result_changes')
+    changed_by_name = models.CharField(max_length=150, blank=True)
+    changed_at = models.DateTimeField(auto_now_add=True, db_index=True)
+
+    class Meta:
+        ordering = ['-changed_at', '-id']
+        indexes = [models.Index(fields=['dataset', '-changed_at'])]
+
+    def __str__(self):
+        return f"{self.place} {self.party_abbreviation}: {self.old_votes} -> {self.new_votes}"
+
+
 # ---------------------------------------------------------------------------
 # APC portal proxy models
 #
