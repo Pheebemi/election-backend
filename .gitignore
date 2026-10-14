@@ -19,7 +19,7 @@ env/
 
 # Django
 staticfiles/
-media/
+# media/ holds the party logos, which ship with the code
 *.log
 
 # IDE
@@ -29,3 +29,6 @@ media/
 # OS
 .DS_Store
 Thumbs.db
+
+# Node (Tailwind build)
+node_modules/

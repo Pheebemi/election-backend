@@ -1,0 +1,9 @@
+<svg viewBox="0 0 {{ radial.size }} {{ radial.size }}" class="mx-auto mt-4 h-auto w-full max-w-sm" data-chart>
+  {% for r in radial.rings %}
+  <g data-tip="{{ r.tooltip }}">
+    <path d="{{ r.track }}" fill="none" stroke="currentColor" stroke-width="{{ r.stroke }}" class="text-slate-100 dark:text-white/10"></path>
+    {% if r.arc %}<path d="{{ r.arc }}" fill="none" stroke="{{ r.color }}" stroke-width="{{ r.stroke }}" stroke-linecap="round" data-series="{{ r.abbr }}" class="transition-opacity"></path>{% endif %}
+    <text x="{{ r.label_x }}" y="{{ r.label_y }}" font-size="11" font-weight="700" fill="#ffffff" pointer-events="none" style="paint-order: stroke; stroke: rgba(0,0,0,0.35); stroke-width: 0.6">{{ r.abbr }}</text>
+  </g>
+  {% endfor %}
+</svg>

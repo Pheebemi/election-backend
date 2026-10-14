@@ -1,0 +1,129 @@
+{% extends "web/dash/base.html" %}
+{% load portal %}
+{% block content %}
+{% with override=mode_override %}
+<div class="mx-auto flex max-w-6xl flex-col gap-6">
+  {% if not lgas %}
+  <div class="rounded-xl border border-amber-300 bg-amber-50 p-4 text-sm text-amber-800 dark:border-amber-400/30 dark:bg-amber-500/10 dark:text-amber-200">You have not been assigned to any Local Government yet. Ask an admin to assign you.</div>
+  {% endif %}
+  <div class="grid gap-6 md:grid-cols-5">
+    <section class="md:col-span-3">
+      <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-xl shadow-brand-500/5 dark:border-white/5 dark:bg-white/5 dark:shadow-2xl dark:shadow-brand-500/10 dark:backdrop-blur">
+        <div class="flex items-center justify-between gap-3">
+          <h2 class="text-lg font-semibold">Select location</h2>
+          <span class="text-xs text-brand-700 dark:text-brand-100/80">LGA → Ward → Polling Unit</span>
+        </div>
+        <form method="get" class="mt-4 grid gap-4 md:grid-cols-3" data-autosubmit>
+          <input type="hidden" name="mode" value="{{ mode }}">
+          <div class="space-y-2">
+            <label for="sel-lga" class="text-xs font-semibold uppercase tracking-wide text-brand-700 dark:text-brand-100/80">Local Government</label>
+            <select id="sel-lga" name="lga" data-resets="ward pu" class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none ring-brand-400/40 transition focus:border-brand-400 focus:ring-2 dark:border-white/10 dark:bg-slate-900 dark:text-white">
+              {% for l in lgas %}<option value="{{ l.id }}" {% if l.id == lga.id %}selected{% endif %}>{{ l.name }}</option>{% endfor %}
+            </select>
+          </div>
+          <div class="space-y-2">
+            <label for="sel-ward" class="text-xs font-semibold uppercase tracking-wide text-brand-700 dark:text-brand-100/80">Ward</label>
+            <select id="sel-ward" name="ward" data-resets="pu" {% if not wards %}disabled{% endif %} class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none ring-brand-400/40 transition focus:border-brand-400 focus:ring-2 disabled:opacity-50 dark:border-white/10 dark:bg-slate-900 dark:text-white">
+              {% for w in wards %}<option value="{{ w.id }}" {% if w.id == ward.id %}selected{% endif %}>{{ w.name }}</option>{% empty %}<option>No wards available</option>{% endfor %}
+            </select>
+          </div>
+          <div class="space-y-2 transition-opacity {% if override %}pointer-events-none opacity-40{% endif %}">
+            <label for="sel-pu" class="text-xs font-semibold uppercase tracking-wide text-brand-700 dark:text-brand-100/80">Polling Unit</label>
+            <select id="sel-pu" name="pu" {% if not units %}disabled{% endif %} class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none ring-brand-400/40 transition focus:border-brand-400 focus:ring-2 disabled:opacity-50 dark:border-white/10 dark:bg-slate-900 dark:text-white">
+              {% for u in units %}<option value="{{ u.id }}" {% if u.id == pu.id %}selected{% endif %}>{% if u.has_results %}✓ {% endif %}{{ u.name }}</option>{% empty %}<option>No polling units available</option>{% endfor %}
+            </select>
+          </div>
+        </form>
+
+        {% if ward %}
+        <div class="mt-4 flex gap-2 rounded-lg border border-slate-200 bg-slate-50 p-3 dark:border-white/10 dark:bg-white/5">
+          <a href="?lga={{ lga.id }}&ward={{ ward.id }}{% if pu %}&pu={{ pu.id }}{% endif %}" class="rounded-md px-3 py-1.5 text-sm font-medium transition {% if not override %}bg-brand-700 text-white{% else %}text-slate-500 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white{% endif %}">Polling Unit Entry</a>
+          <a href="?lga={{ lga.id }}&ward={{ ward.id }}{% if pu %}&pu={{ pu.id }}{% endif %}&mode=ward" class="rounded-md px-3 py-1.5 text-sm font-medium transition {% if override %}bg-amber-500 text-amber-950{% else %}text-slate-500 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white{% endif %}">Ward Override</a>
+        </div>
+        {% endif %}
+
+        <div class="mt-6 rounded-xl border p-4 text-sm {% if override %}border-amber-400/30 bg-amber-50 text-amber-900 dark:border-amber-400/20 dark:bg-amber-500/5 dark:text-amber-50{% else %}border-brand-400/30 bg-brand-50 text-brand-900 dark:border-brand-400/20 dark:bg-brand-500/5 dark:text-brand-50{% endif %}">
+          <p class="font-semibold {% if override %}text-amber-800 dark:text-amber-100{% else %}text-brand-800 dark:text-brand-100{% endif %}">Context</p>
+          <p class="mt-1 {% if override %}text-amber-700 dark:text-amber-100/80{% else %}text-brand-700 dark:text-brand-100/80{% endif %}">
+            {% if override %}{% if ward %}Entering ward-level override for {{ ward.name }} — overrides all polling unit totals for this ward{% else %}Select a ward to enter a ward override{% endif %}
+            {% else %}{% if pu %}Enter results per party for {{ pu.name }}{% else %}Select a polling unit to enter results{% endif %}{% endif %}
+          </p>
+          {% if is_admin and not override and pu %}
+          <a href="{% url 'web:history' %}?polling_unit={{ pu.id }}" class="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-brand-700 hover:underline dark:text-brand-300">{% include "web/includes/icon.html" with name="history" cls="size-3.5" %} View this unit's change history</a>
+          {% endif %}
+        </div>
+
+        {% if ward and units %}
+        <div class="mt-6 overflow-hidden rounded-xl border border-slate-200 dark:border-white/10">
+          <div class="border-b border-slate-200 bg-slate-50 px-4 py-3 dark:border-white/10 dark:bg-white/5">
+            <div class="flex items-baseline justify-between gap-3">
+              <p class="text-sm font-semibold">Polling units in {{ ward.name }}</p>
+              <p class="text-xs tabular-nums text-slate-500 dark:text-slate-400"><span class="font-semibold text-brand-700 dark:text-brand-300">{{ units_reported }}</span> / {{ units|length }} have results</p>
+            </div>
+            <div class="mt-2 h-1.5 overflow-hidden rounded-full bg-slate-200 dark:bg-white/10"><div class="h-full rounded-full bg-brand-500 transition-all" style="width: {{ units_pct }}%"></div></div>
+          </div>
+          <ul class="max-h-80 divide-y divide-slate-100 overflow-y-auto text-sm dark:divide-white/5">
+            {% for u in units %}
+            <li>
+              <a {% if not override %}href="?lga={{ lga.id }}&ward={{ ward.id }}&pu={{ u.id }}"{% endif %} class="flex w-full items-center gap-3 px-4 py-2.5 text-left transition {% if override %}cursor-default{% elif u.id == pu.id %}bg-brand-50 dark:bg-brand-500/10{% else %}hover:bg-slate-50 dark:hover:bg-white/5{% endif %}">
+                <span class="flex size-5 flex-none items-center justify-center rounded-full {% if u.has_results %}bg-brand-500 text-white{% else %}border border-slate-300 dark:border-white/20{% endif %}" aria-label="{% if u.has_results %}Has results{% else %}No results yet{% endif %}">{% if u.has_results %}{% include "web/includes/icon.html" with name="check" cls="size-3.5" stroke="3" %}{% endif %}</span>
+                <span class="min-w-0 flex-1 truncate {% if not override and u.id == pu.id %}font-semibold text-brand-800 dark:text-brand-100{% endif %}">{{ u.name }}</span>
+                {% if u.has_results %}<span class="flex-none text-xs font-medium text-brand-700 dark:text-brand-300">Done</span>{% endif %}
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+      </div>
+    </section>
+
+    <section class="md:col-span-2">
+      <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-xl shadow-brand-500/5 dark:border-white/5 dark:bg-white/10 dark:shadow-2xl dark:shadow-brand-500/15 dark:backdrop-blur">
+        <div class="mb-4 flex items-center justify-between gap-3">
+          <div>
+            <p class="text-xs uppercase tracking-[0.14em] text-brand-700/80 dark:text-brand-200/70">Party Results</p>
+            <h3 class="text-lg font-semibold">{% if override %}Ward Override entry{% else %}Polling Unit entry{% endif %}</h3>
+          </div>
+          {% if override and ward %}<span class="rounded-full bg-amber-500/20 px-3 py-1 text-xs text-amber-700 dark:text-amber-200">{{ ward.name }}</span>
+          {% elif not override and pu %}<span class="max-w-[50%] truncate rounded-full bg-slate-100 px-3 py-1 text-xs text-brand-700 dark:bg-white/10 dark:text-brand-100/80">{{ pu.name }}</span>{% endif %}
+        </div>
+        {% if override %}
+        <div class="mb-3 rounded-lg border border-amber-500/40 bg-amber-50 p-2 text-xs text-amber-800 dark:bg-amber-500/10 dark:text-amber-200">Ward override active — these values replace all polling unit sums for this ward in charts and reports.</div>
+        {% endif %}
+        <form method="post" class="space-y-4" data-votes>
+          {% csrf_token %}
+          <input type="hidden" name="mode" value="{{ mode }}">
+          <input type="hidden" name="lga" value="{{ lga.id }}">
+          <input type="hidden" name="ward" value="{{ ward.id }}">
+          <input type="hidden" name="pu" value="{{ pu.id }}">
+          <div class="space-y-3">
+            {% for party in parties %}
+            <div class="flex items-center justify-between gap-3 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 dark:border-white/5 dark:bg-white/5">
+              <label for="party-{{ party.id }}" class="flex min-w-0 items-center gap-3">
+                <span class="flex size-9 flex-none items-center justify-center rounded-full text-sm font-semibold text-white ring-1 ring-white/20" style="background-color: {{ party.color }}">{{ party.abbreviation }}</span>
+                <span class="min-w-0">
+                  <span class="block text-sm font-medium text-slate-900 dark:text-white">{{ party.name }}</span>
+                  <span class="block text-xs text-slate-500 dark:text-slate-200/70">Enter total ballots for this party</span>
+                </span>
+              </label>
+              <input id="party-{{ party.id }}" type="number" min="0" inputmode="numeric" name="party_{{ party.id }}" value="{{ existing|get:party.id|default_if_none:'' }}" placeholder="0" {% if not can_save %}disabled{% endif %} data-vote
+                class="w-28 flex-none rounded-lg border border-slate-300 bg-white px-3 py-2 text-right text-sm text-slate-900 outline-none ring-brand-400/40 transition focus:border-brand-400 focus:ring-2 disabled:opacity-50 dark:border-white/10 dark:bg-white/10 dark:text-white">
+            </div>
+            {% endfor %}
+          </div>
+          <div class="flex items-center justify-between rounded-xl border border-brand-400/30 bg-brand-50 px-4 py-3 text-sm dark:border-brand-400/20 dark:bg-brand-500/5">
+            <div>
+              <p class="text-xs uppercase tracking-wide text-brand-700/80 dark:text-brand-200/80">Total ballots</p>
+              <p class="text-lg font-semibold text-slate-900 dark:text-white" data-vote-total>{{ existing_total|num }}</p>
+            </div>
+            <span class="text-brand-500 dark:text-brand-300">{% include "web/includes/icon.html" with name="check-circle" cls="size-6" %}</span>
+          </div>
+          <button type="submit" {% if not can_save %}disabled{% endif %} class="btn w-full disabled:opacity-50 {% if override %}bg-amber-500 text-amber-950 hover:bg-amber-400{% else %}bg-brand-600 text-white hover:bg-brand-500 dark:bg-brand-500 dark:text-brand-950 dark:hover:bg-brand-400{% endif %}">Save results</button>
+        </form>
+      </div>
+    </section>
+  </div>
+</div>
+{% endwith %}
+{% endblock %}

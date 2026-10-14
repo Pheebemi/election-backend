@@ -1,0 +1,53 @@
+{% extends "web/base.html" %}
+{% block title %}{{ page_title }} · Situation Room{% endblock %}
+{% block body %}
+<div class="flex min-h-screen bg-slate-50 text-slate-900 dark:bg-brand-950 dark:text-slate-50">
+  <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 flex w-64 -translate-x-full flex-col bg-brand-900 text-white transition-transform duration-200 data-[open]:translate-x-0 lg:static lg:translate-x-0">
+    {% include "web/includes/brand_stripe.html" %}
+    <div class="flex h-16 items-center gap-3 border-b border-white/10 px-4">
+      {% include "web/includes/brand_mark.html" with cls="size-9" %}
+      <span class="min-w-0 leading-tight">
+        <span class="block truncate font-bold">Situation Room</span>
+        <span class="block text-xs text-brand-200">{% if is_admin %}Admin{% else %}Data clerk{% endif %}</span>
+      </span>
+      <button type="button" data-sidebar="close" class="ml-auto text-brand-200 hover:text-white lg:hidden" aria-label="Close menu">{% include "web/includes/icon.html" with name="x" cls="size-5" %}</button>
+    </div>
+    <nav class="flex-1 space-y-1 overflow-y-auto px-3 py-4 text-sm">
+      {% for item in nav %}
+      <a href="{{ item.url }}" class="flex items-center gap-3 rounded-lg px-3 py-2.5 font-medium transition {% if item.active %}bg-white/10 text-white{% else %}text-brand-100/80 hover:bg-white/10 hover:text-white{% endif %}">
+        <span class="{% if item.active %}text-gold-400{% endif %}">{% include "web/includes/icon.html" with name=item.icon cls="size-5" %}</span>{{ item.label }}
+      </a>
+      {% endfor %}
+      <div class="my-4 border-t border-white/10"></div>
+      <a href="{% url 'web:home' %}" class="flex items-center gap-3 rounded-lg px-3 py-2.5 font-medium text-brand-100/80 transition hover:bg-white/10 hover:text-white">{% include "web/includes/icon.html" with name="external-link" cls="size-5" %}Live results page</a>
+      <a href="{% url 'web:present' %}" target="_blank" rel="noopener" class="flex items-center gap-3 rounded-lg px-3 py-2.5 font-medium text-brand-100/80 transition hover:bg-white/10 hover:text-white">{% include "web/includes/icon.html" with name="monitor-play" cls="size-5" %}Projector mode</a>
+    </nav>
+    <form method="post" action="{% url 'web:logout' %}" class="border-t border-white/10 p-3">
+      {% csrf_token %}
+      <button type="submit" class="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-brand-100/80 transition hover:bg-white/10 hover:text-white">
+        {% include "web/includes/icon.html" with name="log-out" cls="size-5" %} Log out
+        <span class="ml-auto truncate text-xs text-brand-300">{{ user.username }}</span>
+      </button>
+    </form>
+  </aside>
+  <div id="sidebar-backdrop" data-sidebar="close" class="fixed inset-0 z-40 hidden bg-slate-900/50 lg:hidden"></div>
+
+  <div class="flex min-w-0 flex-1 flex-col">
+    <header class="sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-slate-200 bg-white px-4 sm:px-6 dark:border-white/10 dark:bg-brand-950">
+      <button type="button" data-sidebar="open" class="text-slate-500 hover:text-slate-900 lg:hidden dark:text-slate-300" aria-label="Open menu">{% include "web/includes/icon.html" with name="menu" cls="size-6" %}</button>
+      <h1 class="truncate font-semibold">{{ page_title }}</h1>
+      <span class="ml-auto hidden items-center gap-2 rounded-full bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-700 sm:inline-flex dark:bg-brand-500/15 dark:text-brand-200"><span class="size-1.5 rounded-full bg-brand-500"></span>Taraba State</span>
+    </header>
+    <main class="min-w-0 flex-1 p-4 sm:p-6 lg:p-8">
+      {% if messages %}
+      <div class="mx-auto mb-6 max-w-5xl space-y-2">
+        {% for m in messages %}
+        <div class="rounded-lg border p-3 text-sm {% if m.level_tag == 'error' %}border-red-200 bg-red-50 text-red-700 dark:border-red-400/30 dark:bg-red-500/10 dark:text-red-200{% else %}border-brand-200 bg-brand-50 text-brand-800 dark:border-brand-400/30 dark:bg-brand-500/10 dark:text-brand-100{% endif %}">{{ m }}</div>
+        {% endfor %}
+      </div>
+      {% endif %}
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+</div>
+{% endblock %}

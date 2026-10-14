@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 420" fill="none">
+  <ellipse cx="240" cy="380" rx="180" ry="24" fill="#053522" opacity="0.06"/>
+
+  <!-- Ballot box -->
+  <rect x="120" y="190" width="240" height="170" rx="14" fill="#0b5a3a"/>
+  <rect x="120" y="190" width="240" height="170" rx="14" fill="url(#boxShade)"/>
+  <rect x="104" y="164" width="272" height="36" rx="10" fill="#053522"/>
+  <rect x="210" y="176" width="60" height="14" rx="7" fill="#ffd100"/>
+
+  <!-- Slot glow -->
+  <rect x="216" y="176" width="48" height="10" rx="5" fill="#053522" opacity="0.35"/>
+
+  <!-- Ballot paper going in -->
+  <g transform="rotate(-8 300 120)">
+    <rect x="260" y="60" width="96" height="126" rx="6" fill="#ffffff" stroke="#d2efdf" stroke-width="2"/>
+    <path d="M282 96l14 14 26-30" stroke="#0b5a3a" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="278" y="140" width="60" height="8" rx="4" fill="#d2efdf"/>
+    <rect x="278" y="156" width="44" height="8" rx="4" fill="#d2efdf"/>
+  </g>
+
+  <!-- Front checkmark badge -->
+  <circle cx="240" cy="275" r="34" fill="#ffd100"/>
+  <path d="M224 276l11 11 22-24" stroke="#0b5a3a" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Accent dots -->
+  <circle cx="96" cy="120" r="10" fill="#d6242a" opacity="0.85"/>
+  <circle cx="392" cy="150" r="14" fill="#ffd100" opacity="0.9"/>
+  <circle cx="70" cy="260" r="8" fill="#0b5a3a" opacity="0.5"/>
+
+  <defs>
+    <linearGradient id="boxShade" x1="120" y1="190" x2="360" y2="360" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0f7047"/>
+      <stop offset="1" stop-color="#08472e"/>
+    </linearGradient>
+  </defs>
+</svg>

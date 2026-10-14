@@ -1,0 +1,89 @@
+{% extends "web/dash/base.html" %}
+{% load portal %}
+{% block content %}
+<div class="mx-auto max-w-6xl space-y-5">
+  <div class="flex flex-wrap items-end justify-between gap-4">
+    <div>
+      <p class="text-sm font-semibold text-brand-700 dark:text-brand-300">Audit trail</p>
+      <h2 class="mt-1 text-2xl font-bold tracking-tight">{% if unit %}History · {{ unit.name }}{% else %}Every change to results{% endif %}</h2>
+      <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Each entry, change and deletion is kept with who made it and when. Nothing here can be edited.</p>
+    </div>
+    <div class="flex flex-wrap items-center gap-2">
+      {% if unit %}
+      <a href="{% url 'web:history' %}" class="btn btn-sm btn-outline">Show all changes</a>
+      {% else %}
+      <form method="get" class="flex flex-wrap items-center gap-2" data-autosubmit>
+        <select name="lga" class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-brand-600 focus:ring-2 focus:ring-brand-100 dark:border-white/10 dark:bg-slate-900 dark:text-white">
+          <option value="">All LGAs</option>
+          {% for l in lgas %}<option value="{{ l.id }}" {% if l.id == lga_id %}selected{% endif %}>{{ l.name }}</option>{% endfor %}
+        </select>
+        <select name="kind" class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-brand-600 focus:ring-2 focus:ring-brand-100 dark:border-white/10 dark:bg-slate-900 dark:text-white">
+          <option value="">Polling units and ward overrides</option>
+          <option value="pu" {% if kind == 'pu' %}selected{% endif %}>Polling units only</option>
+          <option value="ward" {% if kind == 'ward' %}selected{% endif %}>Ward overrides only</option>
+        </select>
+      </form>
+      {% endif %}
+      <a href="{{ request.get_full_path }}" class="btn btn-sm btn-outline">{% include "web/includes/icon.html" with name="refresh" %} Refresh</a>
+    </div>
+  </div>
+
+  <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white dark:border-white/10 dark:bg-white/5">
+    <div class="overflow-x-auto">
+      <table class="w-full min-w-[760px] text-sm">
+        <thead class="border-b border-slate-200 bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500 dark:border-white/10 dark:bg-white/5 dark:text-slate-400">
+          <tr><th class="px-4 py-3 font-semibold">When</th><th class="px-4 py-3 font-semibold">Where</th><th class="px-4 py-3 font-semibold">Party</th><th class="px-4 py-3 font-semibold">Votes</th><th class="px-4 py-3 font-semibold">What</th><th class="px-4 py-3 font-semibold">By</th></tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100 dark:divide-white/5">
+          {% for row in page_obj %}
+          <tr class="hover:bg-slate-50/60 dark:hover:bg-white/5">
+            <td class="whitespace-nowrap px-4 py-2.5 text-slate-500 dark:text-slate-400">{{ row.changed_at|date:"d M, H:i:s" }}</td>
+            <td class="px-4 py-2.5">
+              {% if row.kind == 'ward' %}
+              <span class="font-medium">{{ row.ward.name|default:row.place }} ward</span>
+              <span class="ml-1.5 rounded bg-amber-100 px-1.5 py-0.5 text-[10px] font-bold text-amber-800 dark:bg-amber-500/20 dark:text-amber-200">OVERRIDE</span>
+              <span class="block text-xs text-slate-400">{{ row.lga.name }}</span>
+              {% else %}
+              {% if row.polling_unit_id %}<a href="?polling_unit={{ row.polling_unit_id }}" class="text-left font-medium hover:text-brand-700 hover:underline dark:hover:text-brand-300" title="Show this polling unit's history">{{ row.polling_unit.name }}</a>
+              {% else %}<span class="font-medium">{{ row.place }}</span>{% endif %}
+              <span class="block text-xs text-slate-400">{{ row.ward.name }} ward · {{ row.lga.name }}</span>
+              {% endif %}
+            </td>
+            <td class="px-4 py-2.5 font-semibold">{{ row.party_abbreviation }}</td>
+            <td class="px-4 py-2.5">
+              {% if row.action == 'created' %}<span class="font-semibold tabular-nums">{{ row.new_votes|num }}</span>
+              {% elif row.action == 'deleted' %}<span class="tabular-nums text-slate-400 line-through">{{ row.old_votes|num }}</span>
+              {% else %}
+              <span class="inline-flex items-center gap-1.5 tabular-nums">
+                <span class="text-slate-400">{{ row.old_votes|num }}</span>
+                <span class="text-slate-400">{% include "web/includes/icon.html" with name="arrow-right" cls="size-3.5" %}</span>
+                <span class="font-semibold">{{ row.new_votes|num }}</span>
+                <span class="text-xs font-semibold {% if row.delta > 0 %}text-brand-600 dark:text-brand-300{% else %}text-red-600 dark:text-red-300{% endif %}">({% if row.delta > 0 %}+{% endif %}{{ row.delta|num }})</span>
+              </span>
+              {% endif %}
+            </td>
+            <td class="px-4 py-2.5">
+              {% if row.action == 'created' %}<span class="rounded-full bg-brand-50 px-2 py-0.5 text-xs font-semibold text-brand-700 dark:bg-brand-500/15 dark:text-brand-200">Entered</span>
+              {% elif row.action == 'updated' %}<span class="rounded-full bg-amber-50 px-2 py-0.5 text-xs font-semibold text-amber-700 dark:bg-amber-500/15 dark:text-amber-200">Changed</span>
+              {% else %}<span class="rounded-full bg-red-50 px-2 py-0.5 text-xs font-semibold text-red-700 dark:bg-red-500/15 dark:text-red-200">Deleted</span>{% endif %}
+            </td>
+            <td class="px-4 py-2.5 text-slate-600 dark:text-slate-300">{{ row.changed_by_name|default:"—" }}</td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="6" class="px-4 py-10 text-center text-slate-400">No changes recorded yet.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% if paginator.count %}
+    <div class="flex items-center justify-between border-t border-slate-200 px-4 py-3 text-sm dark:border-white/10">
+      <span class="text-slate-500 dark:text-slate-400">{{ paginator.count|num }} {{ paginator.count|plural:"change" }} · page {{ page_obj.number }} of {{ paginator.num_pages }}</span>
+      <div class="flex gap-2">
+        {% if page_obj.has_previous %}<a href="?{{ base_query }}page={{ page_obj.previous_page_number }}" class="btn btn-sm btn-outline">{% include "web/includes/icon.html" with name="chevron-left" %} Newer</a>{% else %}<span class="btn btn-sm btn-outline pointer-events-none opacity-50">{% include "web/includes/icon.html" with name="chevron-left" %} Newer</span>{% endif %}
+        {% if page_obj.has_next %}<a href="?{{ base_query }}page={{ page_obj.next_page_number }}" class="btn btn-sm btn-outline">Older {% include "web/includes/icon.html" with name="chevron-right" %}</a>{% else %}<span class="btn btn-sm btn-outline pointer-events-none opacity-50">Older {% include "web/includes/icon.html" with name="chevron-right" %}</span>{% endif %}
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

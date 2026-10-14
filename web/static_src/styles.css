@@ -1,0 +1,89 @@
+@import "tailwindcss";
+
+/* Scan the web portal's templates and Python for class names */
+@source "../templates/**/*.html";
+@source "../**/*.py";
+@source "../static/web/js/*.js";
+
+/* Dark mode follows a .dark class on <html> (set before paint, toggled by the round button). */
+@custom-variant dark (&:is(.dark *));
+
+/* Plus Jakarta Sans, served from this site - no third-party font requests. */
+@font-face {
+  font-family: 'Plus Jakarta Sans Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200 800;
+  src: url('../fonts/plus-jakarta-sans-latin-wght-normal.woff2') format('woff2-variations');
+}
+
+/*
+ * Brand tokens - the one place to edit for a recolour. Pages use brand-* /
+ * gold-* / accent-* utilities rather than raw Tailwind palette names.
+ */
+@theme {
+  --font-sans: 'Plus Jakarta Sans Variable', ui-sans-serif, system-ui, sans-serif;
+
+  --color-brand-50: #ecf8f1;
+  --color-brand-100: #d2efdf;
+  --color-brand-200: #a5dfc0;
+  --color-brand-300: #6cc79a;
+  --color-brand-400: #36a873;
+  --color-brand-500: #1a8a59;
+  --color-brand-600: #0f7047;
+  --color-brand-700: #0b5a3a;
+  --color-brand-800: #08472e;
+  --color-brand-900: #053522;
+  --color-brand-950: #03241a;
+
+  --color-gold-100: #fff3c4;
+  --color-gold-200: #ffe58a;
+  --color-gold-300: #ffd94d;
+  --color-gold-400: #ffd100;
+  --color-gold-500: #f0bd00;
+  --color-gold-700: #a37d00;
+
+  --color-accent-500: #d6242a;
+  --color-accent-600: #b81b21;
+}
+
+@layer base {
+  * { @apply border-slate-200 dark:border-white/10; }
+  body { @apply bg-white font-sans text-slate-900 antialiased; }
+  .dark body { @apply bg-brand-950 text-slate-50; }
+  [hidden] { display: none !important; }
+  /* Long place names must not push grid columns wider than the screen */
+  .grid > * { min-width: 0; }
+  select { max-width: 100%; text-overflow: ellipsis; }
+}
+
+/* Buttons and fields shared by every page */
+@utility btn {
+  @apply inline-flex h-9 shrink-0 items-center justify-center gap-2 rounded-md px-4 text-sm font-medium whitespace-nowrap transition-all outline-none focus-visible:ring-[3px] focus-visible:ring-brand-400/50 disabled:pointer-events-none disabled:opacity-50;
+  & > svg { @apply size-4 shrink-0; }
+}
+@utility btn-sm {
+  @apply h-8 gap-1.5 px-3;
+}
+@utility btn-outline {
+  @apply border border-slate-300 bg-white text-slate-700 shadow-xs hover:bg-slate-50 dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/10;
+}
+@utility field {
+  @apply w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-brand-600 focus:ring-2 focus:ring-brand-100 disabled:opacity-50 dark:border-white/10 dark:bg-white/10 dark:text-white dark:focus:ring-brand-800;
+}
+@utility panel {
+  @apply rounded-2xl border border-slate-200 bg-white p-6 dark:border-white/10 dark:bg-white/5;
+}
+
+/* Printing (the LGA summary sheet): A4, keep colours, hide screen-only controls */
+@media print {
+  @page { size: A4 portrait; margin: 0; }
+  html, body { background: #ffffff !important; }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .no-print { display: none !important; }
+}
+
+/* Projector mode (/present) */
+@keyframes present-timer { from { width: 0%; } to { width: 100%; } }
+@keyframes present-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+@keyframes present-ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }

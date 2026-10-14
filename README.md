@@ -1,79 +1,57 @@
-# Taraba Election Portal - Django Backend
+# Taraba State Election Portal
 
-Django REST API backend for the Taraba Election Portal.
+One Django project, hosted on Vercel with a Neon Postgres database:
 
-## Setup Instructions
+- **`/`** - the portal itself (app `web/`): live results with the state map and charts,
+  projector mode (`/present/`), clerk sign in, and the dashboard for entering results,
+  progress, reports and downloads, change history and clerk assignments.
+- **`/api/`** - the REST API (app `election/`), still used by the apc portal.
+- **`/admin/`** - Django admin.
 
-### 1. Install Dependencies
+The pages are server-rendered Django templates styled with Tailwind CSS
+(`web/static_src/styles.css` -> `web/static/web/css/styles.css`).
+
+## Run it locally
 
 ```bash
 pip install -r requirements.txt
-```
-
-### 2. Run Migrations
-
-```bash
-python manage.py makemigrations
 python manage.py migrate
+python manage.py setup_portal        # parties + 16 LGAs, 168 wards, 3,597 polling units
+python manage.py createsuperuser     # becomes an admin
+DJANGO_DEBUG=1 python manage.py runserver
 ```
 
-### 3. Create Superuser (Admin)
+Without `DATABASE_URL` the project uses a local `db.sqlite3`.
+
+After changing templates, rebuild the CSS and commit the result:
 
 ```bash
-python manage.py createsuperuser
+npm install
+npm run build-css
 ```
 
-When prompted, set:
-- Username: admin (or your choice)
-- Email: (optional)
-- Password: (choose a secure password)
-- Set `role` to 'admin' when asked (or create via admin panel)
+## Deploy on Vercel
 
-### 4. Create Sample Data (Optional)
+1. Import the repository into Vercel (framework preset: Other). `vercel.json` runs
+   `collectstatic`, `migrate` and `setup_portal` on every build.
+2. Add a Neon database from Vercel Storage and connect it to the project (sets `DATABASE_URL`).
+3. Set environment variables:
+   - `DJANGO_SECRET_KEY` - a long random string (required).
+   - `DJANGO_ALLOWED_HOSTS` / `DJANGO_CSRF_TRUSTED_ORIGINS` - only for extra custom domains
+     (`*.vercel.app` and `tarabaelection.pheedev.online` are already allowed).
+4. Redeploy, then create the first admin from your machine against the Neon database:
+   `DATABASE_URL=... python manage.py createsuperuser`.
 
-You can create sample data via Django admin or use management commands:
+The build fails on purpose if `DJANGO_SECRET_KEY` or the database is missing, rather than
+serving a site that would lose its data.
 
-```bash
-python manage.py shell
-```
+Party logos live in `media/party_logos/` and ship with the code. Vercel's file system is
+read-only, so add new logos by committing them, not by uploading in the admin.
 
-Then in the shell:
+## User roles
 
-```python
-from election.models import *
-
-# Create LGAs
-jalingo = LocalGovernmentArea.objects.create(name="Jalingo", code="JAL")
-wukari = LocalGovernmentArea.objects.create(name="Wukari", code="WUK")
-
-# Create Wards
-ward1 = Ward.objects.create(name="Ward 1", lga=jalingo, code="JAL-W1")
-ward2 = Ward.objects.create(name="Ward 2", lga=wukari, code="WUK-W1")
-
-# Create Polling Units
-pu1 = PollingUnit.objects.create(name="PU 001", ward=ward1, code="JAL-W1-PU001", registered_voters=500)
-pu2 = PollingUnit.objects.create(name="PU 002", ward=ward2, code="WUK-W1-PU002", registered_voters=600)
-
-# Create Parties
-pdp = PoliticalParty.objects.create(name="People's Democratic Party", abbreviation="PDP", color="#0EA44A")
-apc = PoliticalParty.objects.create(name="All Progressives Congress", abbreviation="APC", color="#64CCFF")
-lp = PoliticalParty.objects.create(name="Labour Party", abbreviation="LP", color="#00A651")
-nnpp = PoliticalParty.objects.create(name="New Nigeria People's Party", abbreviation="NNPP", color="#FF6B00")
-apga = PoliticalParty.objects.create(name="All Progressives Grand Alliance", abbreviation="APGA", color="#FFD700")
-
-# Create a clerk user
-from django.contrib.auth import get_user_model
-User = get_user_model()
-clerk = User.objects.create_user(username="clerk1", password="password123", role="clerk")
-```
-
-### 5. Run Development Server
-
-```bash
-python manage.py runserver
-```
-
-The API will be available at `http://localhost:8000/api/`
+- **Admin** (`role=admin`): every LGA, change history, clerk management.
+- **Data clerk** (`role=clerk`): only the LGAs assigned to them.
 
 ## API Endpoints
 
@@ -115,19 +93,6 @@ The API will be available at `http://localhost:8000/api/`
   ```
 - `GET /api/results/chart_data/` - Get data formatted for charts (bar, radial, line)
 - `GET /api/results/summary/` - Get summary grouped by LGA and party
-
-## User Roles
-
-- **Admin**: Full access via Django admin panel (`/admin/`)
-- **Clerk**: Can login via API and submit election results
-
-## Frontend Connection
-
-The frontend (Next.js) connects to this API. Make sure to set:
-
-```env
-NEXT_PUBLIC_API_URL=http://localhost:8000/api
-```
 
 ## Admin Panel
 

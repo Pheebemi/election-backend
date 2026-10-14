@@ -1,0 +1,19 @@
+<svg viewBox="0 0 {{ lines.width }} {{ lines.height }}" class="mt-4 h-auto w-full" data-chart>
+  {% for g in lines.grid %}
+  <line x1="{{ lines.left }}" x2="{{ lines.right }}" y1="{{ g.y }}" y2="{{ g.y }}" stroke="currentColor" class="text-slate-200 dark:text-white/10" stroke-dasharray="3 3"></line>
+  <text x="{{ lines.left|add:'-8' }}" y="{{ g.y }}" text-anchor="end" dominant-baseline="middle" font-size="11" class="fill-slate-500 dark:fill-slate-400">{{ g.label }}</text>
+  {% endfor %}
+  {% for c in lines.columns %}
+  <g data-tip="{{ c.tooltip }}" class="group">
+    <rect x="{{ c.hit_x }}" y="{{ lines.plot_top }}" width="{{ c.hit_w }}" height="{{ lines.plot_bottom|add:'-14' }}" class="fill-transparent"></rect>
+    <line x1="{{ c.x }}" x2="{{ c.x }}" y1="{{ lines.plot_top }}" y2="{{ lines.plot_bottom }}" class="stroke-transparent group-hover:stroke-slate-400/40"></line>
+    <text x="{{ c.x }}" y="{{ lines.label_y }}" transform="rotate(-35 {{ c.x }} {{ lines.label_y }})" text-anchor="end" dominant-baseline="hanging" font-size="11" class="fill-slate-500 dark:fill-slate-400">{{ c.name }}</text>
+  </g>
+  {% endfor %}
+  {% for s in lines.series %}
+  <g data-series="{{ s.abbr }}" class="pointer-events-none transition-opacity">
+    <path d="{{ s.path }}" fill="none" stroke="{{ s.color }}" stroke-width="2"></path>
+    {% for p in s.points %}<circle cx="{{ p.x }}" cy="{{ p.y }}" r="4" fill="{{ s.color }}"></circle>{% endfor %}
+  </g>
+  {% endfor %}
+</svg>

@@ -1,0 +1,12 @@
+{
+  "name": "election-portal",
+  "private": true,
+  "scripts": {
+    "build-css": "tailwindcss -i ./web/static_src/styles.css -o ./web/static/web/css/styles.css --minify",
+    "watch-css": "tailwindcss -i ./web/static_src/styles.css -o ./web/static/web/css/styles.css --watch"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.0",
+    "tailwindcss": "^4.1.0"
+  }
+}

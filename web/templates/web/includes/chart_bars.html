@@ -1,0 +1,13 @@
+<svg viewBox="0 0 {{ bars.width }} {{ bars.height }}" class="mt-4 h-auto w-full" data-chart>
+  {% for g in bars.grid %}
+  <line x1="{{ bars.left }}" x2="{{ bars.right }}" y1="{{ g.y }}" y2="{{ g.y }}" stroke="currentColor" class="text-slate-200 dark:text-white/10" stroke-dasharray="3 3"></line>
+  <text x="{{ bars.left|add:'-8' }}" y="{{ g.y }}" text-anchor="end" dominant-baseline="middle" font-size="11" class="fill-slate-500 dark:fill-slate-400">{{ g.label }}</text>
+  {% endfor %}
+  {% for b in bars.bars %}
+  <g data-tip="{{ b.tooltip }}" class="group">
+    <rect x="{{ b.hit_x }}" y="{{ bars.plot_top }}" width="{{ b.hit_w }}" height="{{ bars.plot_bottom|add:'-12' }}" class="fill-transparent group-hover:fill-slate-500/10"></rect>
+    {% for s in b.segments %}<rect x="{{ s.x }}" y="{{ s.y }}" width="{{ s.w }}" height="{{ s.h }}" fill="{{ s.color }}" data-series="{{ s.abbr }}" class="transition-opacity"></rect>{% endfor %}
+    <text x="{{ b.label_x }}" y="{{ b.label_y }}" transform="rotate(-40 {{ b.label_x }} {{ b.label_y }})" text-anchor="end" dominant-baseline="hanging" font-size="11" class="fill-slate-500 dark:fill-slate-400">{{ b.name }}</text>
+  </g>
+  {% endfor %}
+</svg>

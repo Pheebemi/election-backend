@@ -1,0 +1,15 @@
+{% load portal %}
+<ul class="space-y-[2.2vh]">
+  {% for v in votes %}
+  <li class="flex items-center gap-[1.4vw]">
+    {% include "web/includes/party_badge.html" with party=v cls="size-[6vh]" %}
+    <div class="min-w-0 flex-1">
+      <div class="flex items-baseline justify-between gap-4">
+        <span class="text-[3.2vh] font-extrabold {% if forloop.first and total %}text-gold-300{% endif %}">{{ v.abbr }}</span>
+        <span class="text-[4.2vh] font-extrabold leading-none tabular-nums">{{ v.votes|num }}<span class="ml-3 text-[2.4vh] font-semibold text-brand-200">{{ v.pct|floatformat:1 }}%</span></span>
+      </div>
+      <div class="mt-[1vh] h-[1.8vh] overflow-hidden rounded-full bg-white/10"><div class="h-full rounded-full transition-all duration-1000" style="width: {{ v.bar|stringformat:'s' }}%; background-color: {{ v.color }}"></div></div>
+    </div>
+  </li>
+  {% endfor %}
+</ul>

@@ -1,0 +1,100 @@
+{% extends "web/dash/base.html" %}
+{% load portal %}
+{% block content %}
+<div class="mx-auto max-w-5xl">
+  <div class="flex justify-end">
+    <a href="{{ request.path }}" class="btn btn-sm btn-outline">{% include "web/includes/icon.html" with name="refresh" %} Refresh</a>
+  </div>
+
+  <section class="mt-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-xl shadow-brand-500/5 dark:border-white/5 dark:bg-white/5">
+    <div class="flex items-end justify-between gap-4">
+      <div>
+        <p class="text-sm text-slate-500 dark:text-white/60">Polling units reported</p>
+        <p class="mt-1 text-3xl font-bold">{{ data.overall.reported|num }} <span class="text-lg font-medium text-slate-400 dark:text-white/40">/ {{ data.overall.total|num }}</span></p>
+      </div>
+      <p class="text-4xl font-bold text-brand-600 dark:text-brand-300">{{ data.overall.percent }}%</p>
+    </div>
+    <div class="mt-4">{% include "web/includes/progress_bar.html" with percent=data.overall.percent %}</div>
+    <p class="mt-3 text-xs text-slate-500 dark:text-white/50">{{ lgas_complete }} of {{ data.by_lga|length }} LGAs fully reported</p>
+  </section>
+
+  <section class="mt-6 space-y-2">
+    <h2 class="px-1 text-sm font-semibold text-slate-600 dark:text-white/70">By LGA</h2>
+    {% for lga in data.by_lga %}
+    <details class="group rounded-xl border border-slate-200 bg-white dark:border-white/5 dark:bg-white/5">
+      <summary class="flex w-full cursor-pointer list-none items-center gap-3 px-4 py-3 text-left [&::-webkit-details-marker]:hidden">
+        <span class="shrink-0 text-slate-400 transition-transform group-open:rotate-90">{% include "web/includes/icon.html" with name="chevron-right" %}</span>
+        <div class="w-28 shrink-0 sm:w-32">
+          <p class="truncate font-medium">{{ lga.lga }}</p>
+          {% if lga.percent >= 100 %}<p class="flex items-center gap-1 text-xs text-brand-600 dark:text-brand-300">{% include "web/includes/icon.html" with name="check-circle" cls="size-3" %}Complete</p>
+          {% elif lga.percent > 0 %}<p class="flex items-center gap-1 text-xs text-amber-600 dark:text-amber-300">{% include "web/includes/icon.html" with name="clock" cls="size-3" %}In progress</p>
+          {% else %}<p class="flex items-center gap-1 text-xs text-slate-400 dark:text-white/40">{% include "web/includes/icon.html" with name="circle-dashed" cls="size-3" %}Not started</p>{% endif %}
+        </div>
+        <div class="flex-1">{% include "web/includes/progress_bar.html" with percent=lga.percent %}</div>
+        <div class="w-24 shrink-0 text-right text-sm sm:w-28"><span class="font-semibold">{{ lga.percent }}%</span><span class="ml-2 text-xs text-slate-400 dark:text-white/40">{{ lga.reported }}/{{ lga.total }}</span></div>
+      </summary>
+      <div class="border-t border-slate-100 px-4 py-2 dark:border-white/5">
+        <p class="py-1 text-xs text-slate-400 dark:text-white/40">{{ lga.wards_complete }}/{{ lga.ward_count }} wards complete</p>
+        {% for w in lga.wards %}
+        <div class="flex items-center gap-3 py-1.5">
+          <span class="w-28 shrink-0 truncate text-sm text-slate-600 sm:w-32 dark:text-white/70">{{ w.ward }}</span>
+          <div class="flex-1">{% include "web/includes/progress_bar.html" with percent=w.percent %}</div>
+          <span class="w-20 shrink-0 text-right text-xs text-slate-400 sm:w-24 dark:text-white/40">{{ w.reported }}/{{ w.total }}</span>
+        </div>
+        {% endfor %}
+      </div>
+    </details>
+    {% endfor %}
+  </section>
+
+  {% if data.is_admin and data.by_clerk is not None %}
+  <section class="mt-6 rounded-2xl border border-slate-200 bg-white p-5 dark:border-white/5 dark:bg-white/5">
+    <h2 class="flex items-center gap-2 text-sm font-semibold text-slate-600 dark:text-white/70">{% include "web/includes/icon.html" with name="users" %} Per-clerk activity <span class="rounded-full bg-brand-500/15 px-2 py-0.5 text-xs font-medium text-brand-700 dark:text-brand-200">Admin</span></h2>
+    {% if not data.by_clerk %}<p class="mt-3 text-sm text-slate-400 dark:text-white/40">No entries recorded yet.</p>
+    {% else %}
+    <div class="mt-3 overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead><tr class="text-left text-xs text-slate-400 dark:text-white/40"><th class="pb-2 font-medium">Clerk</th><th class="pb-2 text-right font-medium">Polling units</th><th class="pb-2 text-right font-medium">Last activity</th></tr></thead>
+        <tbody>
+          {% for c in data.by_clerk %}
+          <tr class="border-t border-slate-100 dark:border-white/5"><td class="py-2 font-medium">{{ c.username }}</td><td class="py-2 text-right">{{ c.polling_units|num }}</td><td class="py-2 text-right text-slate-500 dark:text-white/50">{{ c.last_activity|ago }}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% endif %}
+  </section>
+  {% endif %}
+
+  {% if data.is_admin and recent %}
+  <section id="recent" class="mt-6 rounded-2xl border border-slate-200 bg-white p-5 dark:border-white/5 dark:bg-white/5">
+    <div class="flex flex-wrap items-center justify-between gap-2">
+      <h2 class="flex items-center gap-2 text-sm font-semibold text-slate-600 dark:text-white/70">{% include "web/includes/icon.html" with name="clock" %} Recent entries <span class="rounded-full bg-brand-500/15 px-2 py-0.5 text-xs font-medium text-brand-700 dark:text-brand-200">Admin</span></h2>
+      {% if recent.count %}<span class="text-xs text-slate-400 dark:text-white/40">{{ recent.count|num }} polling units entered</span>{% endif %}
+    </div>
+    {% if not recent.count %}<p class="mt-3 text-sm text-slate-400 dark:text-white/40">No entries recorded yet.</p>
+    {% else %}
+    <div class="mt-3 overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead><tr class="text-left text-xs text-slate-400 dark:text-white/40"><th class="pb-2 font-medium">Clerk</th><th class="pb-2 font-medium">Local Government</th><th class="pb-2 font-medium">Ward</th><th class="pb-2 font-medium">Polling Unit</th><th class="pb-2 text-right font-medium">When</th></tr></thead>
+        <tbody>
+          {% for e in recent.results %}
+          <tr class="border-t border-slate-100 dark:border-white/5"><td class="py-2 font-medium">{{ e.clerk }}</td><td class="py-2 text-slate-600 dark:text-white/70">{{ e.lga }}</td><td class="py-2 text-slate-600 dark:text-white/70">{{ e.ward }}</td><td class="py-2 text-slate-600 dark:text-white/70">{{ e.polling_unit }}</td><td class="py-2 text-right text-slate-500 dark:text-white/50">{{ e.at|ago }}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% if recent.num_pages > 1 %}
+    <div class="mt-4 flex items-center justify-between">
+      <span class="text-xs text-slate-400 dark:text-white/40">Page {{ recent.page }} of {{ recent.num_pages }}</span>
+      <div class="flex items-center gap-2">
+        {% if recent.has_prev %}<a href="?page={{ recent.page|add:'-1' }}#recent" class="btn btn-sm btn-outline">{% include "web/includes/icon.html" with name="chevron-left" %} Prev</a>{% else %}<span class="btn btn-sm btn-outline pointer-events-none opacity-40">{% include "web/includes/icon.html" with name="chevron-left" %} Prev</span>{% endif %}
+        {% if recent.has_next %}<a href="?page={{ recent.page|add:'1' }}#recent" class="btn btn-sm btn-outline">Next {% include "web/includes/icon.html" with name="chevron-right" %}</a>{% else %}<span class="btn btn-sm btn-outline pointer-events-none opacity-40">Next {% include "web/includes/icon.html" with name="chevron-right" %}</span>{% endif %}
+      </div>
+    </div>
+    {% endif %}
+    {% endif %}
+  </section>
+  {% endif %}
+</div>
+{% endblock %}

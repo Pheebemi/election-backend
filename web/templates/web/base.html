@@ -1,0 +1,27 @@
+{% load static %}<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}2027 Taraba State Election Portal — Situation Room{% endblock %}</title>
+  <meta name="description" content="2027 Taraba State Election Portal — live results situation room">
+  <link rel="icon" href="{% static 'web/img/favicon.ico' %}">
+  {# Before paint, so there is no flash of the wrong theme. Light unless dark was chosen. #}
+  <script>(function(){try{document.documentElement.classList.toggle('dark',localStorage.getItem('theme')==='dark');}catch(e){}})();</script>
+  <link rel="stylesheet" href="{% static 'web/css/styles.css' %}">
+  {% block head %}{% endblock %}
+</head>
+<body class="font-sans antialiased {% block body_class %}{% endblock %}">
+  {% block body %}{% endblock %}
+  {% block theme_toggle %}
+  <button type="button" data-theme-toggle aria-label="Toggle dark mode" title="Toggle dark mode"
+    class="no-print fixed bottom-5 right-5 z-50 flex size-11 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 shadow-lg shadow-slate-900/10 transition hover:scale-105 hover:text-brand-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400/50 dark:border-white/10 dark:bg-slate-800 dark:text-slate-100 dark:shadow-black/40 dark:hover:text-brand-300">
+    <span class="hidden dark:block">{% include "web/includes/icon.html" with name="sun" cls="size-5" %}</span>
+    <span class="dark:hidden">{% include "web/includes/icon.html" with name="moon" cls="size-5" %}</span>
+  </button>
+  {% endblock %}
+  {% include "web/includes/tooltip.html" %}
+  <script src="{% static 'web/js/portal.js' %}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

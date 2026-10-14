@@ -10,7 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import os
+import urllib.parse
 from pathlib import Path
+
+from django.core.exceptions import ImproperlyConfigured
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -19,13 +23,30 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
+def env_bool(name, default=False):
+    return os.environ.get(name, str(default)).lower() in ('1', 'true', 'yes', 'on')
+
+
+def env_list(name, default=''):
+    return [v.strip() for v in os.environ.get(name, default).split(',') if v.strip()]
+
+
+# Vercel sets VERCEL=1 on its builds and functions.
+ON_VERCEL = bool(os.environ.get('VERCEL'))
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure--=8ydf7p-5%srlpe!9b8)45@chgrw(&yiq6b4q8r+@1lulw_5+'
+SECRET_KEY = os.environ.get(
+    'DJANGO_SECRET_KEY', 'django-insecure--=8ydf7p-5%srlpe!9b8)45@chgrw(&yiq6b4q8r+@1lulw_5+')
+if ON_VERCEL and 'DJANGO_SECRET_KEY' not in os.environ:
+    raise ImproperlyConfigured('Set DJANGO_SECRET_KEY in the Vercel project settings.')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = env_bool('DJANGO_DEBUG', False)
 
-ALLOWED_HOSTS = ['electionportal.pythonanywhere.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = [
+    'localhost', '127.0.0.1',
+    '.vercel.app', 'tarabaelection.pheedev.online',
+] + env_list('DJANGO_ALLOWED_HOSTS')
 
 
 # Application definition
@@ -41,6 +62,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     'election',
+    'web',
 ]
 
 MIDDLEWARE = [
@@ -67,6 +89,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'web.context_processors.portal',
             ],
         },
     },
@@ -78,12 +101,35 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# Postgres (Neon) when DATABASE_URL is set - Vercel's Neon integration sets it.
+# Otherwise a local SQLite file (development only).
+_database_url = (os.environ.get('DATABASE_URL') or os.environ.get('POSTGRES_URL') or '').strip()
+if _database_url:
+    _db = urllib.parse.urlparse(_database_url)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': _db.path.lstrip('/'),
+            'USER': urllib.parse.unquote(_db.username or ''),
+            'PASSWORD': urllib.parse.unquote(_db.password or ''),
+            'HOST': _db.hostname,
+            'PORT': _db.port or 5432,
+            'OPTIONS': {'sslmode': 'require'},
+            # Neon's pooled endpoint (PgBouncer) can't hold server-side cursors.
+            'DISABLE_SERVER_SIDE_CURSORS': True,
+        }
     }
-}
+elif ON_VERCEL:
+    # A SQLite file on Vercel is rebuilt on every deploy and can't be written
+    # to, so fail the build instead of serving a site that loses its data.
+    raise ImproperlyConfigured('Connect a Neon database to the Vercel project (sets DATABASE_URL).')
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # Password validation
@@ -110,7 +156,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Africa/Lagos'
 
 USE_I18N = True
 
@@ -145,6 +191,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Custom User Model
 AUTH_USER_MODEL = 'election.User'
 
+# The web portal (templates in web/) signs people in with Django sessions.
+LOGIN_URL = 'web:login'
+LOGIN_REDIRECT_URL = 'web:entry'
+LOGOUT_REDIRECT_URL = 'web:login'
+
 # REST Framework settings
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -162,11 +213,8 @@ REST_FRAMEWORK = {
 from corsheaders.defaults import default_headers
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
     "http://localhost:3001",   # apc runs on a separate dev port
     "http://127.0.0.1:3001",
-    "https://tarabaelection.pheedev.online",   # main portal
     "https://apctaraba.vercel.app",   # apc portal
 ]
 
@@ -177,17 +225,18 @@ CORS_ALLOW_CREDENTIALS = True
 
 # CSRF settings for API
 CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    "https://electionportal.pythonanywhere.com",
     "https://tarabaelection.pheedev.online",   # main portal
     "https://apctaraba.vercel.app",   # apc portal
-]
+    "https://*.vercel.app",
+] + env_list('DJANGO_CSRF_TRUSTED_ORIGINS')
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-# Cookie settings for cross-origin (Vercel frontend <-> PythonAnywhere backend)
-CSRF_COOKIE_SECURE = True
-CSRF_COOKIE_SAMESITE = 'None'
+# Cookies. The web pages and the API are served from the same site, and the
+# apc frontend authenticates with a token header, so Lax is enough.
+_cookie_samesite = os.environ.get('COOKIE_SAMESITE', 'Lax')
+CSRF_COOKIE_SECURE = not DEBUG
+CSRF_COOKIE_SAMESITE = _cookie_samesite
 CSRF_COOKIE_HTTPONLY = False
 
-SESSION_COOKIE_SECURE = True
-SESSION_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SECURE = not DEBUG
+SESSION_COOKIE_SAMESITE = _cookie_samesite

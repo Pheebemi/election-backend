@@ -1,0 +1,193 @@
+{% extends "web/base.html" %}
+{% load static portal %}
+{% block body %}
+<div class="min-h-screen bg-slate-50 text-slate-900 dark:bg-brand-950 dark:text-slate-50" data-refresh="60">
+  {% include "web/includes/site_header.html" with action_template="web/includes/home_header_action.html" %}
+
+  {# Hero: built to be read from across the room on a projector #}
+  <section class="relative overflow-hidden border-b-4 border-gold-400 bg-brand-900 text-white">
+    <div class="pointer-events-none absolute -right-40 -top-40 size-[520px] rounded-full bg-brand-700/40"></div>
+    <div class="pointer-events-none absolute -bottom-32 -left-24 size-80 rounded-full bg-gold-400/10"></div>
+    <div class="relative mx-auto grid max-w-7xl gap-8 px-4 py-8 sm:px-6 lg:grid-cols-12 lg:px-8 lg:py-10" data-live="hero">
+      <div class="flex flex-col lg:col-span-5">
+        <p class="inline-flex w-fit items-center gap-2 rounded-full bg-white/10 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-gold-300">
+          <span class="size-2 animate-pulse rounded-full bg-accent-500"></span>
+          Live · Taraba State
+          <span class="font-medium normal-case tracking-normal text-brand-200">· updated {% now "H:i" %}</span>
+        </p>
+
+        <p class="mt-6 text-sm font-semibold uppercase tracking-[0.2em] text-brand-200">Total votes counted</p>
+        <p class="mt-1 text-6xl font-extrabold leading-none tabular-nums text-gold-400 sm:text-7xl xl:text-8xl">{{ board.grand_total|num }}</p>
+
+        {% if board.leader %}
+        <div class="mt-6 flex items-center gap-4 rounded-2xl bg-white/10 p-4 ring-1 ring-white/10">
+          {% include "web/includes/party_badge.html" with party=board.leader cls="size-14" %}
+          <div class="min-w-0">
+            <p class="text-2xl font-extrabold sm:text-3xl">{{ board.leader.abbr }} leads</p>
+            {% if board.runner_up %}
+            <p class="text-sm text-brand-100 sm:text-base">by <span class="font-bold tabular-nums text-gold-300">{{ board.lead|num }}</span> votes over {{ board.runner_up.abbr }}</p>
+            {% endif %}
+          </div>
+        </div>
+        {% endif %}
+
+        <ul class="mt-6 space-y-4">
+          {% for item in board.totals %}
+          <li class="flex items-center gap-3">
+            {% include "web/includes/party_badge.html" with party=item cls="size-10" %}
+            <div class="min-w-0 flex-1">
+              <div class="flex items-baseline justify-between gap-3">
+                <span class="text-lg font-bold">{{ item.abbr }}</span>
+                <span class="text-xl font-extrabold tabular-nums sm:text-2xl">{{ item.votes|num }}<span class="ml-2 text-sm font-semibold text-brand-200">{{ item.pct|floatformat:1 }}%</span></span>
+              </div>
+              <div class="mt-1.5 h-3 overflow-hidden rounded-full bg-white/10">
+                <div class="h-full rounded-full transition-all duration-700" style="width: {{ item.pct|stringformat:'s' }}%; background-color: {{ item.color }}"></div>
+              </div>
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+
+        <a href="{% url 'web:present' %}" class="mt-6 inline-flex w-fit items-center gap-2 rounded-full bg-gold-400 px-5 py-2.5 text-sm font-bold text-brand-950 shadow-lg shadow-black/20 transition hover:bg-gold-300">
+          {% include "web/includes/icon.html" with name="monitor-play" %} Open projector mode
+          <span class="hidden font-medium text-brand-800 sm:inline">· full screen, auto-cycling</span>
+        </a>
+
+        <div class="mt-auto pt-6">
+          <div class="flex items-baseline justify-between text-sm">
+            <span class="font-semibold text-brand-100">Polling units reported</span>
+            <span class="tabular-nums"><span class="text-lg font-extrabold">{{ board.stats.reported_polling_units|num }}</span><span class="text-brand-200"> / {{ board.stats.total_polling_units|num }} · {{ board.stats.reported_percent }}%</span></span>
+          </div>
+          <div class="mt-2 h-2.5 overflow-hidden rounded-full bg-white/10">
+            <div class="h-full rounded-full bg-gold-400 transition-all duration-700" style="width: {{ reported_bar }}%"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lg:col-span-7 text-slate-900 dark:text-slate-50">
+        {% include "web/includes/map.html" with svg_cls="max-h-[72vh]" label_size=20 %}
+      </div>
+    </div>
+  </section>
+
+  <main class="mx-auto max-w-7xl space-y-12 px-4 py-12 sm:px-6 lg:px-8" data-live="main">
+    {# Results by LGA #}
+    <section>
+      {% include "web/includes/section_heading.html" with eyebrow="Local Governments" title="Results by LGA" %}
+      <div class="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-8">
+        {% for lga in board.lgas %}
+        <button type="button" data-toggle-group="lga" data-target="lga-{{ forloop.counter }}"
+          class="rounded-xl border border-l-4 border-slate-200 bg-white px-3 py-3 text-left transition hover:shadow-md aria-pressed:border-brand-500 aria-pressed:ring-2 aria-pressed:ring-brand-200 dark:border-white/10 dark:bg-white/5 dark:aria-pressed:ring-brand-700"
+          {% if lga.winner %}style="border-left-color: {{ lga.winner.color }}"{% endif %} aria-pressed="false">
+          <p class="text-sm font-bold leading-tight">{{ lga.name }}</p>
+          <p class="mt-1 text-xs tabular-nums text-slate-500 dark:text-slate-400">{{ lga.total|num }} votes</p>
+          {% if lga.winner %}<p class="mt-1 text-xs font-semibold" style="color: {{ lga.winner.color }}">{{ lga.winner.abbr }} leads</p>{% endif %}
+        </button>
+        {% endfor %}
+      </div>
+      {% for lga in board.lgas %}
+      <div id="lga-{{ forloop.counter }}" class="panel mt-4" hidden>
+        <div class="mb-4 flex items-center justify-between gap-3">
+          <p class="font-bold">{{ lga.name }} <span class="font-medium text-slate-500 dark:text-slate-400">· {{ lga.total|num }} total votes</span></p>
+          <button type="button" data-close-group="lga" class="text-sm font-semibold text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white">✕ Close</button>
+        </div>
+        <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          {% for p in lga.votes %}
+          <div class="rounded-xl bg-slate-50 p-3 dark:bg-white/5">
+            <div class="flex items-center gap-2">{% include "web/includes/party_badge.html" with party=p cls="size-7" %}<span class="text-sm font-bold">{{ p.abbr }}</span></div>
+            <p class="mt-2 text-2xl font-extrabold tabular-nums">{{ p.votes|num }}</p>
+            <div class="mt-2 h-1.5 overflow-hidden rounded-full bg-slate-200 dark:bg-white/10"><div class="h-full rounded-full" style="width: {{ p.pct|stringformat:'s' }}%; background-color: {{ p.color }}"></div></div>
+            <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">{{ p.pct|floatformat:1 }}%</p>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endfor %}
+    </section>
+
+    {# Charts #}
+    <section>
+      {% include "web/includes/section_heading.html" with eyebrow="Breakdown" title="Live tallies" %}
+      <div class="grid gap-6 lg:grid-cols-3" data-series-group>
+        <div class="panel lg:col-span-2">
+          <p class="font-bold">Votes per LGA by party</p>
+          <p class="text-sm text-slate-500 dark:text-slate-400">Stacked totals across every Local Government</p>
+          {% if board.grand_total %}{% include "web/includes/chart_bars.html" %}{% include "web/includes/chart_legend.html" with parties=board.parties %}
+          {% else %}<div class="flex aspect-[16/8] items-center justify-center text-sm text-slate-400">No data available</div>{% endif %}
+        </div>
+        <div class="panel">
+          <p class="font-bold">Party share</p>
+          <p class="text-sm text-slate-500 dark:text-slate-400">Aggregated across all LGAs</p>
+          {% if board.grand_total %}{% include "web/includes/chart_radial.html" %}{% include "web/includes/chart_legend.html" with parties=board.totals %}
+          {% else %}<div class="flex aspect-square items-center justify-center text-sm text-slate-400">No data available</div>{% endif %}
+        </div>
+        <div class="panel lg:col-span-3">
+          <p class="font-bold">Party trends</p>
+          <p class="text-sm text-slate-500 dark:text-slate-400">Vote distribution across Local Government Areas</p>
+          {% if board.grand_total %}{% include "web/includes/chart_lines.html" %}{% include "web/includes/chart_legend.html" with parties=board.parties %}
+          {% else %}<div class="flex aspect-[16/5] items-center justify-center text-sm text-slate-400">No data available</div>{% endif %}
+        </div>
+      </div>
+    </section>
+
+    {# Coverage #}
+    <section>
+      {% include "web/includes/section_heading.html" with eyebrow="Coverage" title="Polling units across the state" %}
+      <div class="grid gap-4 sm:grid-cols-3">
+        {% for tile in coverage %}
+        <div class="panel text-center">
+          <p class="text-3xl font-extrabold tabular-nums text-brand-700 dark:text-brand-300">{{ tile.value|num }}</p>
+          <span class="mx-auto mt-2 block h-1 w-8 rounded-full bg-gold-400"></span>
+          <p class="mt-2 text-sm text-slate-500 dark:text-slate-400">{{ tile.label }}</p>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="mt-6 space-y-2">
+        <p class="text-sm font-semibold text-slate-500 dark:text-slate-400">Wards and polling units by Local Government</p>
+        {% for row in board.stats.by_lga %}
+        <details class="group overflow-hidden rounded-xl border border-slate-200 bg-white dark:border-white/10 dark:bg-white/5" data-keep-open="cov-{{ forloop.counter }}">
+          <summary class="flex w-full cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-left transition hover:bg-brand-50 dark:hover:bg-white/10 [&::-webkit-details-marker]:hidden">
+            <span class="flex items-center gap-2 font-semibold"><span class="text-slate-400 transition-transform group-open:rotate-90">{% include "web/includes/icon.html" with name="chevron-right" %}</span>{{ row.lga }}</span>
+            <span class="flex items-center gap-3 text-xs">
+              <span class="text-slate-500 dark:text-slate-400">{{ row.ward_count }} {{ row.ward_count|plural:"ward" }}</span>
+              <span class="rounded-full bg-brand-50 px-2.5 py-1 font-semibold text-brand-700 dark:bg-brand-500/20 dark:text-brand-200">{{ row.polling_units|num }} PUs</span>
+            </span>
+          </summary>
+          <div class="grid grid-cols-1 gap-2 border-t border-slate-100 p-3 sm:grid-cols-2 md:grid-cols-3 dark:border-white/10">
+            {% for w in row.wards %}
+            <div class="flex items-center justify-between gap-2 rounded-lg bg-slate-50 px-3 py-2 text-sm dark:bg-white/5">
+              <span class="truncate text-slate-700 dark:text-slate-200">{{ w.ward }}</span>
+              <span class="flex-none font-semibold text-brand-700 dark:text-brand-200">{{ w.polling_units|num }}</span>
+            </div>
+            {% empty %}<p class="text-sm text-slate-400">No wards recorded</p>{% endfor %}
+          </div>
+        </details>
+        {% endfor %}
+      </div>
+    </section>
+
+    {# Clerk call to action #}
+    <section class="overflow-hidden rounded-3xl bg-brand-800 text-white">
+      <div class="grid items-center gap-8 p-8 md:grid-cols-2 md:p-10">
+        <div>
+          <p class="text-sm font-semibold text-gold-300">Authorised clerks</p>
+          <h2 class="mt-2 text-2xl font-bold sm:text-3xl">Capture polling-unit results</h2>
+          <p class="mt-3 max-w-md text-brand-100">Clerks sign in to enter results by Local Government, Ward and Polling Unit. Every entry feeds these live totals.</p>
+          <div class="mt-6 flex flex-wrap gap-3">
+            <a href="{% url 'web:login' %}" class="btn bg-gold-400 font-semibold text-brand-950 hover:bg-gold-300">Clerk login {% include "web/includes/icon.html" with name="arrow-right" %}</a>
+            <a href="{% url 'web:entry' %}" class="btn border border-white/30 bg-transparent text-white hover:bg-white/10">Open dashboard</a>
+          </div>
+        </div>
+        <div class="relative hidden md:block">
+          <div class="absolute -inset-4 rounded-[2rem] bg-gradient-to-tr from-brand-700 to-gold-400/20"></div>
+          <img src="{% static 'web/img/hero-vote.svg' %}" alt="" class="relative mx-auto w-full max-w-sm">
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t-2 border-gold-400 bg-brand-900 py-6 text-center text-xs text-brand-300">
+    © {% now "Y" %} Taraba State Election Portal · Results as collated by authorised clerks
+  </footer>
+</div>
+{% endblock %}
