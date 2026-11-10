@@ -11,6 +11,18 @@ One Django project, hosted on Vercel with a Neon Postgres database:
 The pages are server-rendered Django templates styled with Tailwind CSS
 (`web/static_src/styles.css` -> `web/static/web/css/styles.css`).
 
+## Elections
+
+The portal collates two elections, **Governorship** (the default, and what the public page shows first) and
+**Presidential**. Every result, ward override and change-history entry belongs to one election; the LGAs,
+wards, polling units and parties are shared. A switch on the public page and on the dashboard changes which
+election is shown or entered (`?election=governorship|presidential`; the dashboard remembers the last choice).
+The API takes the same `?election=` (or an `X-Election` header) and defaults to Governorship.
+
+Admins add and edit parties on the dashboard (**Parties**): name, abbreviation, colour and an optional logo.
+Logos added there are stored in the database (Vercel's disk is read-only); a party can only be deleted while it
+has no results. Another election is one row in the Django admin (Elections).
+
 ## Run it locally
 
 ```bash

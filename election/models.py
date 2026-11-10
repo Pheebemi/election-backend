@@ -114,12 +114,41 @@ class PollingUnit(models.Model):
         return self.ward.lga
 
 
+class Election(models.Model):
+    """One election the portal collates (e.g. Governorship, Presidential).
+
+    Results, ward overrides and the change history each belong to one election;
+    the polling-unit structure and the parties are shared by all of them."""
+    GOVERNORSHIP = 'governorship'
+    PRESIDENTIAL = 'presidential'
+
+    slug = models.SlugField(max_length=30, unique=True)
+    name = models.CharField(max_length=60)
+    order = models.PositiveSmallIntegerField(default=0)
+
+    class Meta:
+        ordering = ['order', 'id']
+
+    def __str__(self):
+        return self.name
+
+
+def default_election():
+    """The election results belong to when none is named: Governorship (the original one)."""
+    election, _ = Election.objects.get_or_create(
+        slug=Election.GOVERNORSHIP, defaults={'name': 'Governorship', 'order': 0})
+    return election.pk
+
+
 class PoliticalParty(models.Model):
     """Political Party model"""
     name = models.CharField(max_length=100, unique=True)
     abbreviation = models.CharField(max_length=20, unique=True)
     color = models.CharField(max_length=7, default='#000000', help_text='Hex color code')
     logo = models.ImageField(upload_to='party_logos/', null=True, blank=True)
+    # Logos added from the portal live in the database (Vercel's disk is read-only).
+    logo_data = models.BinaryField(null=True, blank=True, editable=False)
+    logo_type = models.CharField(max_length=30, blank=True, editable=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
@@ -134,11 +163,15 @@ class PoliticalParty(models.Model):
     def logo_url(self):
         if self.logo and hasattr(self.logo, 'url'):
             return self.logo.url
+        if self.logo_data:
+            from django.urls import reverse
+            return reverse('web:party_logo', args=[self.pk]) + f'?v={int(self.updated_at.timestamp())}'
         return None
 
 
 class ElectionResult(models.Model):
     """Election Result model - votes per party per polling unit"""
+    election = models.ForeignKey(Election, on_delete=models.PROTECT, default=default_election, related_name='+')
     polling_unit = models.ForeignKey(PollingUnit, on_delete=models.CASCADE, related_name='results')
     party = models.ForeignKey(PoliticalParty, on_delete=models.CASCADE, related_name='results')
     votes = models.IntegerField(default=0)
@@ -149,7 +182,7 @@ class ElectionResult(models.Model):
 
     class Meta:
         ordering = ['polling_unit', 'party']
-        unique_together = ['polling_unit', 'party']
+        unique_together = ['election', 'polling_unit', 'party']
         indexes = [
             models.Index(fields=['polling_unit', 'party']),
             models.Index(fields=['party']),
@@ -175,6 +208,7 @@ class ElectionResult(models.Model):
 
 class WardResult(models.Model):
     """Ward-level result override — replaces polling unit aggregation for this ward+party when present."""
+    election = models.ForeignKey(Election, on_delete=models.PROTECT, default=default_election, related_name='+')
     ward = models.ForeignKey(Ward, on_delete=models.CASCADE, related_name='ward_results')
     party = models.ForeignKey(PoliticalParty, on_delete=models.CASCADE, related_name='ward_results')
     votes = models.IntegerField(default=0)
@@ -185,7 +219,7 @@ class WardResult(models.Model):
 
     class Meta:
         ordering = ['ward', 'party']
-        unique_together = ['ward', 'party']
+        unique_together = ['election', 'ward', 'party']
         indexes = [
             models.Index(fields=['ward', 'party']),
             models.Index(fields=['ward']),
@@ -213,6 +247,7 @@ class ResultChange(models.Model):
     WARD = 'ward'
     KIND_CHOICES = [(POLLING_UNIT, 'Polling unit'), (WARD, 'Ward override')]
 
+    election = models.ForeignKey(Election, on_delete=models.PROTECT, default=default_election, related_name='+')
     kind = models.CharField(max_length=4, choices=KIND_CHOICES)
     action = models.CharField(max_length=8, choices=ACTION_CHOICES)
     dataset = models.CharField(max_length=20, default='main', db_index=True)

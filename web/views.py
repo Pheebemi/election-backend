@@ -11,6 +11,9 @@ from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator
 from django.db import transaction
+import io
+import re
+
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
@@ -18,7 +21,8 @@ from django.utils.http import urlencode
 from django.views.decorators.http import require_http_methods
 
 from election.models import (
-    ElectionResult, LocalGovernmentArea, PoliticalParty, PollingUnit, ResultChange, User, Ward, WardResult,
+    Election, ElectionResult, LocalGovernmentArea, PoliticalParty, PollingUnit, ResultChange, User, Ward, WardResult,
+    default_election,
 )
 from election.views import visible_lga_ids
 
@@ -31,6 +35,7 @@ NAV = [
     ('web:reports', 'Reports', 'file-spreadsheet', False),
     ('web:history', 'Change history', 'history', True),
     ('web:clerks', 'Clerks', 'users', True),
+    ('web:parties', 'Parties', 'flag', True),
 ]
 
 
@@ -53,6 +58,20 @@ def dash(request, template, title, current, **context):
     return render(request, template, {'page_title': title, 'nav': nav, **context})
 
 
+def current_election(request, remember=False):
+    """The election this page is about: ``?election=<slug>``, else (signed-in pages) the one the
+    person chose last, else Governorship. Public pages never use the session, so a link
+    without ``?election=`` always means Governorship."""
+    slug = request.POST.get('election') or request.GET.get('election')
+    if not slug and remember:
+        slug = request.session.get('election')
+    election = Election.objects.filter(slug=slug).first() or Election.objects.get(pk=default_election())
+    if remember:
+        request.session['election'] = election.slug
+    request.election, request.election_slug = election, election.slug
+    return election
+
+
 def user_lgas(user):
     lgas = LocalGovernmentArea.objects.filter(dataset=DATASET).order_by('name')
     ids = visible_lga_ids(user)
@@ -73,6 +92,7 @@ def pick(queryset, value):
 # ---------------------------------------------------------------------------
 
 def home(request):
+    current_election(request)
     board = services.results_board(request)
     st = board['stats']
     return render(request, 'web/home.html', {
@@ -91,6 +111,7 @@ def home(request):
 
 
 def present(request):
+    current_election(request)
     board = services.results_board(request)
     latest = services.latest(request, limit=20)
     return render(request, 'web/present.html', {
@@ -108,6 +129,7 @@ class LoginView(auth_views.LoginView):
 
 @login_required
 def print_lga(request):
+    current_election(request, remember=True)
     report = services.lga_report(request, request.GET.get('id'))
     parties = report['parties']
     totals = report['totals']
@@ -140,13 +162,14 @@ def print_lga(request):
 @login_required
 @require_http_methods(['GET', 'POST'])
 def entry(request):
+    election = current_election(request, remember=True)
     data = request.POST if request.method == 'POST' else request.GET
     override = data.get('mode') == 'ward'
     lgas = user_lgas(request.user)
     lga = pick(lgas, data.get('lga'))
     wards = Ward.objects.filter(lga=lga).order_by('name') if lga else Ward.objects.none()
     ward = pick(wards, data.get('ward'))
-    units = list(services.polling_units(ward)) if ward else []
+    units = list(services.polling_units(ward, election)) if ward else []
     pu = next((u for u in units if str(u.id) == str(data.get('pu'))), units[0] if units else None)
     parties = list(PoliticalParty.objects.all())
 
@@ -168,19 +191,20 @@ def entry(request):
                 with transaction.atomic():
                     for party, v in votes.items():
                         model.objects.update_or_create(
-                            **{field: target, 'party': party},
+                            **{field: target, 'party': party, 'election': election},
                             defaults={'votes': v, 'entered_by': request.user},
                         )
                 messages.success(request, 'Results saved successfully!')
-        query = {'lga': lga.id if lga else '', 'ward': ward.id if ward else '', 'pu': pu.id if pu else ''}
+        query = {'lga': lga.id if lga else '', 'ward': ward.id if ward else '', 'pu': pu.id if pu else '',
+                 'election': election.slug}
         if override:
             query['mode'] = 'ward'
         return redirect(f"{reverse('web:entry')}?{urlencode(query)}")
 
     if override and ward:
-        existing = dict(WardResult.objects.filter(ward=ward).values_list('party_id', 'votes'))
+        existing = dict(WardResult.objects.filter(election=election, ward=ward).values_list('party_id', 'votes'))
     elif pu:
-        existing = dict(ElectionResult.objects.filter(polling_unit=pu).values_list('party_id', 'votes'))
+        existing = dict(ElectionResult.objects.filter(election=election, polling_unit=pu).values_list('party_id', 'votes'))
     else:
         existing = {}
     reported = sum(1 for u in units if u.has_results)
@@ -194,6 +218,7 @@ def entry(request):
 
 @login_required
 def progress(request):
+    current_election(request, remember=True)
     data = services.progress(request)
     recent = None
     if data.get('is_admin'):
@@ -214,6 +239,7 @@ def _report_scope(request):
 
 @login_required
 def reports(request):
+    current_election(request, remember=True)
     lgas, lga, wards, ward, scope = _report_scope(request)
     query = urlencode({k: v for k, v in (('lga', lga and lga.id), ('ward', ward and ward.id)) if v})
     return dash(request, 'web/dash/reports.html', 'Reports & downloads', 'web:reports',
@@ -222,6 +248,7 @@ def reports(request):
 
 @login_required
 def export(request, fmt):
+    election = current_election(request, remember=True)
     _lgas, lga, _wards, ward, scope = _report_scope(request)
     data = services.export(request, lga=lga and lga.id, ward=ward and ward.id)
     if fmt == 'xlsx':
@@ -232,13 +259,15 @@ def export(request, fmt):
         response = HttpResponse(exports.csv_text(data), content_type='text/csv; charset=utf-8')
     else:
         raise Http404
-    response['Content-Disposition'] = f'attachment; filename="{exports.file_name(scope, fmt)}"'
+    name = exports.file_name(election.name + ' ' + scope, fmt)
+    response['Content-Disposition'] = f'attachment; filename="{name}"'
     return response
 
 
 @admin_required
 def history(request):
-    qs = (ResultChange.objects.filter(dataset=DATASET)
+    election = current_election(request, remember=True)
+    qs = (ResultChange.objects.filter(dataset=DATASET, election=election)
           .select_related('lga', 'ward', 'polling_unit'))
     unit = None
     filters = {}
@@ -310,3 +339,109 @@ def clerks(request):
     saved = int(request.GET['saved']) if (request.GET.get('saved') or '').isdigit() else None
     return dash(request, 'web/dash/clerks.html', 'Clerk assignments', 'web:clerks',
                 lgas=lgas, clerks=rows, form_errors=form_errors, form_data=form_data, saved=saved)
+
+
+# ---------------------------------------------------------------------------
+# Parties (admins add and edit them here; both elections share them)
+# ---------------------------------------------------------------------------
+
+HEX_COLOUR = re.compile(r'^#[0-9a-fA-F]{6}$')
+MAX_LOGO_BYTES = 2 * 1024 * 1024
+
+
+def read_logo(upload):
+    """A party logo as (PNG bytes, 'image/png'), shrunk to fit 256 px; ValueError says what is wrong."""
+    if upload.size > MAX_LOGO_BYTES:
+        raise ValueError('The logo is too large (2 MB at most).')
+    from PIL import Image
+    try:
+        image = Image.open(upload)
+        image.load()
+    except Exception:
+        raise ValueError('The logo must be a PNG, JPG or WEBP picture.')
+    if image.format not in ('PNG', 'JPEG', 'WEBP'):
+        raise ValueError('The logo must be a PNG, JPG or WEBP picture.')
+    image = image.convert('RGBA')
+    image.thumbnail((256, 256))
+    out = io.BytesIO()
+    image.save(out, 'PNG', optimize=True)
+    return out.getvalue(), 'image/png'
+
+
+def party_logo(request, pk):
+    """A party's stored logo (public: it appears on the public scoreboard)."""
+    party = get_object_or_404(PoliticalParty, pk=pk)
+    if not party.logo_data:
+        raise Http404
+    response = HttpResponse(bytes(party.logo_data), content_type=party.logo_type or 'image/png')
+    response['Cache-Control'] = 'public, max-age=86400'
+    response['X-Content-Type-Options'] = 'nosniff'
+    return response
+
+
+def party_form_errors(request, party=None):
+    """Clean the submitted party fields; returns (values, errors)."""
+    name = ' '.join((request.POST.get('name') or '').split())
+    abbr = (request.POST.get('abbreviation') or '').strip().upper()
+    colour = (request.POST.get('color') or '').strip()
+    errors = []
+    if not name:
+        errors.append('The party name is required.')
+    if not abbr:
+        errors.append('The abbreviation is required.')
+    if not HEX_COLOUR.match(colour):
+        errors.append('Pick a colour.')
+    others = PoliticalParty.objects.exclude(pk=party.pk) if party else PoliticalParty.objects.all()
+    if name and others.filter(name__iexact=name).exists():
+        errors.append('A party with that name already exists.')
+    if abbr and others.filter(abbreviation__iexact=abbr).exists():
+        errors.append('A party with that abbreviation already exists.')
+    if len(abbr) > 20:
+        errors.append('The abbreviation is too long (20 characters at most).')
+    return {'name': name, 'abbreviation': abbr, 'color': colour}, errors
+
+
+@admin_required
+@require_http_methods(['GET', 'POST'])
+def parties(request):
+    errors, form = [], {'color': '#1d6fb8'}
+    if request.method == 'POST':
+        action = request.POST.get('action')
+        if action == 'delete':
+            party = get_object_or_404(PoliticalParty, pk=request.POST.get('party'))
+            if ElectionResult.objects.filter(party=party).exists() or WardResult.objects.filter(party=party).exists():
+                messages.error(request, f'{party.abbreviation} has results, so it cannot be deleted.')
+            else:
+                party.delete()
+                messages.success(request, f'Deleted {party.abbreviation}.')
+            return redirect('web:parties')
+        party = get_object_or_404(PoliticalParty, pk=request.POST.get('party')) if action == 'update' else None
+        values, errors = party_form_errors(request, party)
+        logo = request.FILES.get('logo')
+        logo_bytes = None
+        if logo and not errors:
+            try:
+                logo_bytes = read_logo(logo)
+            except ValueError as exc:
+                errors.append(str(exc))
+        if not errors:
+            party = party or PoliticalParty()
+            for key, value in values.items():
+                setattr(party, key, value)
+            if logo_bytes:
+                party.logo_data, party.logo_type = logo_bytes
+                party.logo = None
+            if request.POST.get('remove_logo'):
+                party.logo_data, party.logo_type, party.logo = None, '', None
+            party.save()
+            messages.success(request, f'{"Updated" if action == "update" else "Added"} {party.abbreviation}.')
+            return redirect('web:parties')
+        form = values
+        if action == 'update':
+            messages.error(request, ' '.join(errors))
+            return redirect('web:parties')
+    rows = []
+    for party in PoliticalParty.objects.all():
+        n = ElectionResult.objects.filter(party=party).count() + WardResult.objects.filter(party=party).count()
+        rows.append({'party': party, 'logo': party.logo_url, 'results': n})
+    return dash(request, 'web/dash/parties.html', 'Parties', 'web:parties', rows=rows, errors=errors, form=form)

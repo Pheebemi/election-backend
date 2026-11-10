@@ -1,6 +1,6 @@
 {% extends "web/base.html" %}
 {% load portal %}
-{% block title %}Projector · Taraba State Election Portal{% endblock %}
+{% block title %}Projector · {{ election.name }} · Taraba State Election Portal{% endblock %}
 {% block theme_toggle %}{% endblock %}
 {% block body %}
 <div class="relative flex h-screen flex-col overflow-hidden bg-brand-950 text-white" data-present>
@@ -12,7 +12,7 @@
       {% include "web/includes/brand_mark.html" with cls="size-[6vh] text-[2.2vh]" %}
       <div class="leading-tight">
         <p class="text-[2.6vh] font-bold">Taraba State Election Portal</p>
-        <p class="text-[1.8vh] text-brand-200">Situation Room · Live results</p>
+        <p class="text-[1.8vh] text-brand-200">Situation Room · {{ election.name }} · Live results</p>
       </div>
     </div>
     <div class="flex items-center gap-[1.5vw] text-[1.9vh]" data-live="present-status">
@@ -26,7 +26,7 @@
     <section data-slide class="h-full [animation:present-in_600ms_ease-out]">
       <div class="grid h-full grid-cols-12 items-center gap-[3vw]">
         <div class="col-span-5">
-          <p class="text-[2.2vh] font-semibold uppercase tracking-[0.25em] text-brand-200">Taraba State · total votes</p>
+          <p class="text-[2.2vh] font-semibold uppercase tracking-[0.25em] text-brand-200">{{ election.name }} · total votes</p>
           <p class="mt-[1vh] text-[13vh] font-extrabold leading-none tabular-nums text-gold-400">{{ board.grand_total|num }}</p>
           {% if board.leader and board.runner_up %}
           <div class="mt-[4vh] flex items-center gap-[1.2vw] rounded-2xl bg-white/10 p-[2.5vh]">

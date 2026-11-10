@@ -11,7 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 
 from .models import (
-    ResultChange,
+    Election, ResultChange,
     User, LocalGovernmentArea, Ward, PollingUnit,
     PoliticalParty, ElectionResult, WardResult
 )
@@ -35,6 +35,13 @@ def request_dataset(request):
         or request.query_params.get('dataset')
         or 'main'
     )
+
+
+def request_election(request):
+    """Which election this request is about: ``X-Election`` header or ``?election=<slug>``.
+    Defaults to Governorship, the portal's original election."""
+    slug = request.headers.get('X-Election') or request.query_params.get('election') or Election.GOVERNORSHIP
+    return Election.objects.filter(slug=slug).first() or Election.objects.get(slug=Election.GOVERNORSHIP)
 
 
 def visible_lga_ids(user):
@@ -174,14 +181,15 @@ class PollingUnitViewSet(viewsets.ReadOnlyModelViewSet):
             queryset = queryset.filter(ward__lga_id=lga_id)
         # Lets the entry form tick polling units that already have results.
         return queryset.annotate(
-            has_results=Exists(ElectionResult.objects.filter(polling_unit=OuterRef('pk')))
+            has_results=Exists(ElectionResult.objects.filter(
+                polling_unit=OuterRef('pk'), election=request_election(self.request)))
         )
     
     @action(detail=True, methods=['get'])
     def results(self, request, pk=None):
         """Get all results for a polling unit"""
         polling_unit = self.get_object()
-        results = polling_unit.results.select_related('party', 'entered_by').all()
+        results = polling_unit.results.filter(election=request_election(request)).select_related('party', 'entered_by')
         serializer = ElectionResultSerializer(results, many=True)
         return Response(serializer.data)
 
@@ -190,6 +198,7 @@ class PollingUnitViewSet(viewsets.ReadOnlyModelViewSet):
         """Public coverage stats for the landing page: total polling units plus a
         per-LGA → ward breakdown of polling unit counts."""
         dataset = request_dataset(request)
+        election = request_election(request)
         ward_counts = {
             row['ward_id']: row['pu_count']
             for row in PollingUnit.objects.filter(dataset=dataset)
@@ -197,7 +206,7 @@ class PollingUnitViewSet(viewsets.ReadOnlyModelViewSet):
         }
 
         reported_by_lga = dict(
-            ElectionResult.objects.filter(dataset=dataset)
+            ElectionResult.objects.filter(dataset=dataset, election=election)
             .values('polling_unit__ward__lga_id')
             .annotate(n=Count('polling_unit', distinct=True))
             .values_list('polling_unit__ward__lga_id', 'n')
@@ -218,7 +227,7 @@ class PollingUnitViewSet(viewsets.ReadOnlyModelViewSet):
 
         total_pus = PollingUnit.objects.filter(dataset=dataset).count()
         reported_pus = (
-            ElectionResult.objects.filter(dataset=dataset)
+            ElectionResult.objects.filter(dataset=dataset, election=election)
             .values('polling_unit').distinct().count()
         )
 
@@ -239,11 +248,12 @@ class PollingUnitViewSet(viewsets.ReadOnlyModelViewSet):
         Returns overall + per-LGA/ward completion for everyone logged in; the
         per-clerk breakdown is included only for admins."""
         dataset = request_dataset(request)
+        election = request_election(request)
         ids = visible_lga_ids(request.user)  # None = all (admin), else assigned set
 
         pu_qs = PollingUnit.objects.filter(dataset=dataset)
         lga_qs = LocalGovernmentArea.objects.filter(dataset=dataset)
-        result_qs = ElectionResult.objects.filter(dataset=dataset)
+        result_qs = ElectionResult.objects.filter(dataset=dataset, election=election)
         if ids is not None:
             pu_qs = pu_qs.filter(ward__lga_id__in=ids)
             lga_qs = lga_qs.filter(id__in=ids)
@@ -305,7 +315,7 @@ class PollingUnitViewSet(viewsets.ReadOnlyModelViewSet):
                     'last_activity': row['last'],
                 }
                 for row in ElectionResult.objects.filter(
-                    dataset=dataset, entered_by__isnull=False
+                    dataset=dataset, election=election, entered_by__isnull=False
                 ).values('entered_by__username').annotate(
                     pus=Count('polling_unit', distinct=True),
                     last=Max('updated_at'),
@@ -321,12 +331,13 @@ class PollingUnitViewSet(viewsets.ReadOnlyModelViewSet):
         For the projector ticker: place names and time only, never who entered it.
         ``?limit=`` (1..50, default 15)."""
         dataset = request_dataset(request)
+        election = request_election(request)
         try:
             limit = min(50, max(1, int(request.query_params.get('limit', 15))))
         except (TypeError, ValueError):
             limit = 15
         rows = list(
-            ElectionResult.objects.filter(dataset=dataset)
+            ElectionResult.objects.filter(dataset=dataset, election=election)
             .values('polling_unit')
             .annotate(last=Max('updated_at'))
             .order_by('-last')[:limit]
@@ -354,6 +365,7 @@ class PollingUnitViewSet(viewsets.ReadOnlyModelViewSet):
         One row per polling unit (its most recent submission), newest first.
         Query params: ?page= (1-based) and ?page_size= (5..50, default 15)."""
         dataset = request_dataset(request)
+        election = request_election(request)
         try:
             page = max(1, int(request.query_params.get('page', 1)))
         except (TypeError, ValueError):
@@ -367,7 +379,7 @@ class PollingUnitViewSet(viewsets.ReadOnlyModelViewSet):
         # dedup via GROUP BY rather than DISTINCT ON).
         base = (
             ElectionResult.objects
-            .filter(dataset=dataset, entered_by__isnull=False)
+            .filter(dataset=dataset, election=election, entered_by__isnull=False)
             .values('polling_unit')
             .annotate(last=Max('updated_at'))
             .order_by('-last')
@@ -382,7 +394,7 @@ class PollingUnitViewSet(viewsets.ReadOnlyModelViewSet):
         picked = {}
         for r in (
             ElectionResult.objects
-            .filter(dataset=dataset, polling_unit_id__in=pu_ids)
+            .filter(dataset=dataset, election=election, polling_unit_id__in=pu_ids)
             .select_related('polling_unit__ward__lga', 'entered_by')
         ):
             if r.polling_unit_id not in picked and r.updated_at == last_by_pu.get(r.polling_unit_id):
@@ -430,7 +442,8 @@ class ElectionResultViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     
     def get_queryset(self):
-        queryset = super().get_queryset().filter(dataset=request_dataset(self.request))
+        queryset = super().get_queryset().filter(
+            dataset=request_dataset(self.request), election=request_election(self.request))
         ids = visible_lga_ids(self.request.user)
         if ids is not None:
             queryset = queryset.filter(polling_unit__ward__lga_id__in=ids)
@@ -459,7 +472,7 @@ class ElectionResultViewSet(viewsets.ModelViewSet):
         pu = serializer.validated_data.get('polling_unit')
         if pu is not None:
             self._assert_lga_allowed(pu.ward.lga_id)
-        serializer.save(entered_by=self.request.user)
+        serializer.save(entered_by=self.request.user, election=request_election(self.request))
 
     @action(detail=False, methods=['post'])
     def bulk_create(self, request):
@@ -499,6 +512,7 @@ class ElectionResultViewSet(viewsets.ModelViewSet):
                 continue
             
             result, created = ElectionResult.objects.update_or_create(
+                election=request_election(request),
                 polling_unit=polling_unit,
                 party=party,
                 defaults={
@@ -524,13 +538,14 @@ class ElectionResultViewSet(viewsets.ModelViewSet):
     def summary(self, request):
         """Get summary of results grouped by LGA and party, with ward overrides applied."""
         dataset = request_dataset(request)
+        election = request_election(request)
         ward_overrides = {
             (wr.ward_id, wr.party_id): wr.votes
-            for wr in WardResult.objects.filter(dataset=dataset)
+            for wr in WardResult.objects.filter(dataset=dataset, election=election)
         }
         pu_totals = {
             (row['polling_unit__ward_id'], row['party_id']): row['total']
-            for row in ElectionResult.objects.filter(dataset=dataset).values(
+            for row in ElectionResult.objects.filter(dataset=dataset, election=election).values(
                 'polling_unit__ward_id', 'party_id'
             ).annotate(total=Sum('votes'))
         }
@@ -569,6 +584,7 @@ class ElectionResultViewSet(viewsets.ModelViewSet):
         Returns parties (column order), one row per polling unit with its votes
         per party, and the ward overrides in scope."""
         lgas = self._scoped_lgas(request)
+        election = request_election(request)
         lga_id, ward_id = request.query_params.get('lga'), request.query_params.get('ward')
         wards = Ward.objects.filter(lga__in=lgas)
         if lga_id:
@@ -580,7 +596,7 @@ class ElectionResultViewSet(viewsets.ModelViewSet):
 
         votes = {}
         last = {}
-        for r in ElectionResult.objects.filter(polling_unit__ward__in=wards).values(
+        for r in ElectionResult.objects.filter(election=election, polling_unit__ward__in=wards).values(
             'polling_unit_id', 'party_id', 'votes', 'updated_at', 'entered_by__username'
         ):
             votes.setdefault(r['polling_unit_id'], {})[r['party_id']] = r['votes']
@@ -603,7 +619,7 @@ class ElectionResultViewSet(viewsets.ModelViewSet):
             })
 
         overrides = {}
-        for wr in WardResult.objects.filter(ward__in=wards).select_related('ward__lga', 'party'):
+        for wr in WardResult.objects.filter(election=election, ward__in=wards).select_related('ward__lga', 'party'):
             # Only the parties actually overridden: the rest keep their polling-unit sums.
             row = overrides.setdefault(wr.ward_id, {'lga': wr.ward.lga.name, 'ward': wr.ward.name, 'votes': {}})
             row['votes'][wr.party.abbreviation] = wr.votes
@@ -613,6 +629,7 @@ class ElectionResultViewSet(viewsets.ModelViewSet):
 
         return Response({
             'generated_at': timezone.now(),
+            'election': {'slug': election.slug, 'name': election.name},
             'parties': [{'abbreviation': p.abbreviation, 'name': p.name, 'color': p.color} for p in parties],
             'polling_units': rows,
             'ward_overrides': override_rows,
@@ -627,18 +644,19 @@ class ElectionResultViewSet(viewsets.ModelViewSet):
         except (LocalGovernmentArea.DoesNotExist, ValueError, TypeError):
             return Response({'error': 'LGA not found'}, status=status.HTTP_404_NOT_FOUND)
 
+        election = request_election(request)
         parties = list(PoliticalParty.objects.all())
         wards = list(lga.wards.order_by('name'))
-        overrides = {(w, p): v for w, p, v in WardResult.objects.filter(ward__lga=lga)
+        overrides = {(w, p): v for w, p, v in WardResult.objects.filter(election=election, ward__lga=lga)
                      .values_list('ward_id', 'party_id', 'votes')}
         pu_sums = {
             (r['polling_unit__ward_id'], r['party_id']): r['total']
-            for r in ElectionResult.objects.filter(polling_unit__ward__lga=lga)
+            for r in ElectionResult.objects.filter(election=election, polling_unit__ward__lga=lga)
             .values('polling_unit__ward_id', 'party_id').annotate(total=Sum('votes'))
         }
         pu_total = dict(PollingUnit.objects.filter(ward__lga=lga).values('ward_id')
                         .annotate(n=Count('id')).values_list('ward_id', 'n'))
-        pu_reported = dict(ElectionResult.objects.filter(polling_unit__ward__lga=lga)
+        pu_reported = dict(ElectionResult.objects.filter(election=election, polling_unit__ward__lga=lga)
                            .values('polling_unit__ward_id')
                            .annotate(n=Count('polling_unit', distinct=True))
                            .values_list('polling_unit__ward_id', 'n'))
@@ -655,6 +673,7 @@ class ElectionResultViewSet(viewsets.ModelViewSet):
         totals = {p.abbreviation: sum(r['votes'][p.abbreviation] for r in ward_rows) for p in parties}
         return Response({
             'generated_at': timezone.now(),
+            'election': {'slug': election.slug, 'name': election.name},
             'lga': {'id': lga.id, 'name': lga.name},
             'parties': [{'abbreviation': p.abbreviation, 'name': p.name, 'color': p.color} for p in parties],
             'totals': totals,
@@ -668,17 +687,18 @@ class ElectionResultViewSet(viewsets.ModelViewSet):
     def chart_data(self, request):
         """Get data formatted for charts - Public access for landing page. Ward overrides take priority."""
         dataset = request_dataset(request)
+        election = request_election(request)
         lgas = LocalGovernmentArea.objects.filter(dataset=dataset)
         parties = PoliticalParty.objects.all()
 
         # Bulk fetch to avoid N+1 queries
         ward_overrides = {
             (wr.ward_id, wr.party_id): wr.votes
-            for wr in WardResult.objects.filter(dataset=dataset)
+            for wr in WardResult.objects.filter(dataset=dataset, election=election)
         }
         pu_totals = {
             (row['polling_unit__ward_id'], row['party_id']): row['total']
-            for row in ElectionResult.objects.filter(dataset=dataset).values(
+            for row in ElectionResult.objects.filter(dataset=dataset, election=election).values(
                 'polling_unit__ward_id', 'party_id'
             ).annotate(total=Sum('votes'))
         }
@@ -706,7 +726,7 @@ class ElectionResultViewSet(viewsets.ModelViewSet):
                 'party': party.abbreviation,
                 'votes': total,
                 'fill': party.color,
-                'logo_url': request.build_absolute_uri(party.logo.url) if party.logo else None,
+                'logo_url': request.build_absolute_uri(party.logo_url) if party.logo_url else None,
             })
 
         return Response({
@@ -723,7 +743,8 @@ class WardResultViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        queryset = super().get_queryset().filter(dataset=request_dataset(self.request))
+        queryset = super().get_queryset().filter(
+            dataset=request_dataset(self.request), election=request_election(self.request))
         ids = visible_lga_ids(self.request.user)
         if ids is not None:
             queryset = queryset.filter(ward__lga_id__in=ids)
@@ -742,7 +763,7 @@ class WardResultViewSet(viewsets.ModelViewSet):
             if ids is not None and ward.lga_id not in ids:
                 from rest_framework.exceptions import PermissionDenied
                 raise PermissionDenied('You are not assigned to this LGA.')
-        serializer.save(entered_by=self.request.user)
+        serializer.save(entered_by=self.request.user, election=request_election(self.request))
 
     @action(detail=False, methods=['post'])
     def bulk_create(self, request):
@@ -777,7 +798,7 @@ class WardResultViewSet(viewsets.ModelViewSet):
                 continue
 
             result, created = WardResult.objects.update_or_create(
-                ward=ward, party=party,
+                election=request_election(request), ward=ward, party=party,
                 defaults={'votes': votes, 'entered_by': request.user, 'updated_at': timezone.now()}
             )
             (created_results if created else updated_results).append(result)
@@ -891,7 +912,8 @@ class ResultChangeViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [IsAdmin]
 
     def get_queryset(self):
-        qs = ResultChange.objects.filter(dataset=request_dataset(self.request))
+        qs = ResultChange.objects.filter(
+            dataset=request_dataset(self.request), election=request_election(self.request))
         for param, field in (('lga', 'lga_id'), ('ward', 'ward_id'), ('polling_unit', 'polling_unit_id'), ('kind', 'kind')):
             value = self.request.query_params.get(param)
             if value:

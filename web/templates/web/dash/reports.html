@@ -41,7 +41,7 @@
       <p class="text-sm font-semibold">3. Print an LGA summary</p>
       <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">A one-page briefing sheet: party totals, the leader, and every ward's result and reporting progress.</p>
       <div class="mt-4">
-        {% if lga %}<a href="{% url 'web:print_lga' %}?id={{ lga.id }}" target="_blank" rel="noopener" class="btn btn-outline">{% include "web/includes/icon.html" with name="printer" %} Print {{ lga.name }} summary</a>
+        {% if lga %}<a href="{% url 'web:print_lga' %}?id={{ lga.id }}&election={{ election.slug }}" target="_blank" rel="noopener" class="btn btn-outline">{% include "web/includes/icon.html" with name="printer" %} Print {{ lga.name }} summary</a>
         {% else %}<span class="btn btn-outline pointer-events-none opacity-50">{% include "web/includes/icon.html" with name="printer" %} Choose an LGA to print</span>{% endif %}
       </div>
     </section>

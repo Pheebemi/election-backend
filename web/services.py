@@ -33,7 +33,8 @@ def call(request, viewset, action, **params):
             query[key] = str(value)
     sub.GET = query
     # The web portal always shows the main dataset, whatever the browser sends.
-    sub.META = {**request.META, 'QUERY_STRING': query.urlencode(), 'HTTP_X_DATASET': DATASET}
+    sub.META = {**request.META, 'QUERY_STRING': query.urlencode(), 'HTTP_X_DATASET': DATASET,
+                'HTTP_X_ELECTION': getattr(request, 'election_slug', 'governorship')}
     # Like the router: an @action's own settings (e.g. AllowAny) apply.
     view = viewset.as_view({'get': action}, **getattr(getattr(viewset, action), 'kwargs', {}))
     response = view(sub)
@@ -187,9 +188,9 @@ def state_map(lgas):
             'count': len(shapes)}
 
 
-def polling_units(ward):
-    """A ward's polling units, ticked when they have results."""
+def polling_units(ward, election):
+    """A ward's polling units, ticked when they have results in ``election``."""
     from django.db.models import Exists, OuterRef
     from election.models import ElectionResult, PollingUnit
     return PollingUnit.objects.filter(ward=ward).order_by('name').annotate(
-        has_results=Exists(ElectionResult.objects.filter(polling_unit=OuterRef('pk'))))
+        has_results=Exists(ElectionResult.objects.filter(polling_unit=OuterRef('pk'), election=election)))

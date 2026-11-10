@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from .models import (
-    User, LocalGovernmentArea, Ward, PollingUnit,
+    User, Election, LocalGovernmentArea, Ward, PollingUnit,
     PoliticalParty, ElectionResult, WardResult,
     ApcLocalGovernmentArea, ApcWard, ApcPollingUnit,
     ApcElectionResult, ApcWardResult, ResultChange,
@@ -76,11 +76,16 @@ class RecordsWhoChangedMixin:
             obj.delete()
 
 
+@admin.register(Election)
+class ElectionAdmin(admin.ModelAdmin):
+    list_display = ['name', 'slug', 'order']
+
+
 @admin.register(ResultChange)
 class ResultChangeAdmin(admin.ModelAdmin):
     """Read-only change history of results (both portals)."""
-    list_display = ['changed_at', 'dataset', 'place', 'party_abbreviation', 'old_votes', 'new_votes', 'action', 'changed_by_name']
-    list_filter = ['dataset', 'action', 'kind', 'lga']
+    list_display = ['changed_at', 'election', 'dataset', 'place', 'party_abbreviation', 'old_votes', 'new_votes', 'action', 'changed_by_name']
+    list_filter = ['election', 'dataset', 'action', 'kind', 'lga']
     search_fields = ['place', 'changed_by_name', 'party_abbreviation']
     date_hierarchy = 'changed_at'
 
@@ -137,8 +142,8 @@ class PoliticalPartyAdmin(admin.ModelAdmin):
 @admin.register(ElectionResult)
 class ElectionResultAdmin(RecordsWhoChangedMixin, MainScopedMixin, admin.ModelAdmin):
     """Admin interface for Election Result"""
-    list_display = ['polling_unit', 'party', 'votes', 'entered_by', 'created_at']
-    list_filter = ['party', 'polling_unit__ward__lga', 'created_at']
+    list_display = ['polling_unit', 'election', 'party', 'votes', 'entered_by', 'created_at']
+    list_filter = ['election', 'party', 'polling_unit__ward__lga', 'created_at']
     search_fields = [
         'polling_unit__name', 'party__name', 'party__abbreviation',
         'entered_by__username'
@@ -149,8 +154,8 @@ class ElectionResultAdmin(RecordsWhoChangedMixin, MainScopedMixin, admin.ModelAd
 
 @admin.register(WardResult)
 class WardResultAdmin(RecordsWhoChangedMixin, MainScopedMixin, admin.ModelAdmin):
-    list_display = ['ward', 'party', 'votes', 'entered_by', 'updated_at']
-    list_filter = ['ward__lga', 'party']
+    list_display = ['ward', 'election', 'party', 'votes', 'entered_by', 'updated_at']
+    list_filter = ['election', 'ward__lga', 'party']
     search_fields = ['ward__name', 'party__name']
     readonly_fields = ['created_at', 'updated_at']
 
@@ -184,8 +189,8 @@ class ApcPollingUnitAdmin(ApcScopedMixin, admin.ModelAdmin):
 
 @admin.register(ApcElectionResult)
 class ApcElectionResultAdmin(RecordsWhoChangedMixin, ApcScopedMixin, admin.ModelAdmin):
-    list_display = ['polling_unit', 'party', 'votes', 'entered_by', 'created_at']
-    list_filter = ['party', 'polling_unit__ward__lga', 'created_at']
+    list_display = ['polling_unit', 'election', 'party', 'votes', 'entered_by', 'created_at']
+    list_filter = ['election', 'party', 'polling_unit__ward__lga', 'created_at']
     search_fields = [
         'polling_unit__name', 'party__name', 'party__abbreviation',
         'entered_by__username'
@@ -195,7 +200,7 @@ class ApcElectionResultAdmin(RecordsWhoChangedMixin, ApcScopedMixin, admin.Model
 
 @admin.register(ApcWardResult)
 class ApcWardResultAdmin(RecordsWhoChangedMixin, ApcScopedMixin, admin.ModelAdmin):
-    list_display = ['ward', 'party', 'votes', 'entered_by', 'updated_at']
-    list_filter = ['ward__lga', 'party']
+    list_display = ['ward', 'election', 'party', 'votes', 'entered_by', 'updated_at']
+    list_filter = ['election', 'ward__lga', 'party']
     search_fields = ['ward__name', 'party__name']
     readonly_fields = ['created_at', 'updated_at']

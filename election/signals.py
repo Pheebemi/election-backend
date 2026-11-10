@@ -26,7 +26,7 @@ def _record(instance, action, old, new):
     kind, lga, ward, pu, place = _place(instance)
     user = getattr(instance, '_changed_by', None) or instance.entered_by
     ResultChange.objects.create(
-        kind=kind, action=action, dataset=instance.dataset,
+        kind=kind, action=action, dataset=instance.dataset, election_id=instance.election_id,
         lga=lga, ward=ward, polling_unit=pu, party=instance.party,
         place=place[:255], party_abbreviation=instance.party.abbreviation,
         old_votes=old, new_votes=new,

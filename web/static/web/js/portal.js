@@ -184,4 +184,10 @@
     var form = e.target.closest('form[data-lga-picker]');
     if (form) count(form);
   });
+
+  // ---- "Are you sure?" on destructive buttons ------------------------------
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-confirm]');
+    if (b && !window.confirm(b.getAttribute('data-confirm'))) e.preventDefault();
+  });
 })();

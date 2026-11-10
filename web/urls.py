@@ -17,4 +17,6 @@ urlpatterns = [
     path('dashboard/reports/export.<str:fmt>', views.export, name='export'),
     path('dashboard/history/', views.history, name='history'),
     path('dashboard/clerks/', views.clerks, name='clerks'),
+    path('dashboard/parties/', views.parties, name='parties'),
+    path('party-logo/<int:pk>/', views.party_logo, name='party_logo'),
 ]

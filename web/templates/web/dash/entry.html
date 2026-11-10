@@ -92,6 +92,7 @@
         <div class="mb-3 rounded-lg border border-amber-500/40 bg-amber-50 p-2 text-xs text-amber-800 dark:bg-amber-500/10 dark:text-amber-200">Ward override active — these values replace all polling unit sums for this ward in charts and reports.</div>
         {% endif %}
         <form method="post" class="space-y-4" data-votes>
+          <input type="hidden" name="election" value="{{ election.slug }}">
           {% csrf_token %}
           <input type="hidden" name="mode" value="{{ mode }}">
           <input type="hidden" name="lga" value="{{ lga.id }}">

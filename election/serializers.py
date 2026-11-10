@@ -92,12 +92,10 @@ class PoliticalPartySerializer(serializers.ModelSerializer):
 
     def get_logo_url(self, obj):
         request = self.context.get('request')
-        if obj.logo and hasattr(obj.logo, 'url'):
-            url = obj.logo.url
-            if request is not None:
-                return request.build_absolute_uri(url)
-            return url
-        return None
+        url = obj.logo_url
+        if url and request is not None:
+            return request.build_absolute_uri(url)
+        return url
 
 
 class ElectionResultSerializer(serializers.ModelSerializer):

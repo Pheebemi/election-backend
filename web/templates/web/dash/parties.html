@@ -1,0 +1,57 @@
+{% extends "web/dash/base.html" %}
+{% load portal %}
+{% block content %}
+<div class="mx-auto max-w-5xl">
+  <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-white/5 dark:bg-white/5">
+    <details {% if errors %}open{% endif %} class="group">
+      <summary class="flex cursor-pointer list-none flex-wrap items-center justify-between gap-3 [&::-webkit-details-marker]:hidden">
+        <div>
+          <p class="font-semibold">Add a party</p>
+          <p class="text-xs text-slate-500 dark:text-white/50">A new party appears at once in both elections: on the entry form, the charts and the downloads.</p>
+        </div>
+        <span class="btn btn-sm bg-brand-700 text-white hover:bg-brand-800">{% include "web/includes/icon.html" with name="flag" %}<span class="group-open:hidden">New party</span><span class="hidden group-open:inline">Close</span></span>
+      </summary>
+      <form method="post" enctype="multipart/form-data" class="mt-5 space-y-4">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="create">
+        {% if errors %}<div class="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700 dark:border-red-400/30 dark:bg-red-500/10 dark:text-red-200">{% for e in errors %}<p>{{ e }}</p>{% endfor %}</div>{% endif %}
+        <div class="grid gap-4 sm:grid-cols-4">
+          <label class="space-y-1.5 text-sm font-medium sm:col-span-2"><span>Party name</span><input name="name" class="field" required value="{{ form.name }}" placeholder="Labour Party"></label>
+          <label class="space-y-1.5 text-sm font-medium"><span>Abbreviation</span><input name="abbreviation" class="field uppercase" required maxlength="20" value="{{ form.abbreviation }}" placeholder="LP"></label>
+          <label class="space-y-1.5 text-sm font-medium"><span>Colour</span><input name="color" type="color" class="h-10 w-full cursor-pointer rounded-lg border border-slate-300 bg-white p-1 dark:border-white/10 dark:bg-slate-900" value="{{ form.color }}"></label>
+        </div>
+        <label class="block space-y-1.5 text-sm font-medium"><span>Logo <span class="font-normal text-slate-400">(optional · PNG, JPG or WEBP · shown as a round badge)</span></span><input name="logo" type="file" accept="image/png,image/jpeg,image/webp" class="field"></label>
+        <div class="flex justify-end"><button type="submit" class="btn bg-brand-700 text-white hover:bg-brand-800">Add party</button></div>
+      </form>
+    </details>
+  </section>
+
+  <div class="mt-6 space-y-3">
+    {% for r in rows %}
+    <form method="post" enctype="multipart/form-data" class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-white/5 dark:bg-white/5">
+      {% csrf_token %}
+      <input type="hidden" name="party" value="{{ r.party.id }}">
+      <div class="flex flex-wrap items-center gap-3">
+        {% if r.logo %}<img src="{{ r.logo }}" alt="" class="size-12 rounded-full bg-white object-contain ring-2 ring-slate-200 dark:ring-white/20">{% else %}<span class="flex size-12 items-center justify-center rounded-full text-xs font-bold text-white" style="background-color: {{ r.party.color }}">{{ r.party.abbreviation }}</span>{% endif %}
+        <div class="min-w-0 flex-1 grid gap-3 sm:grid-cols-4">
+          <input name="name" class="field sm:col-span-2" value="{{ r.party.name }}" aria-label="Party name">
+          <input name="abbreviation" class="field uppercase" value="{{ r.party.abbreviation }}" maxlength="20" aria-label="Abbreviation">
+          <input name="color" type="color" class="h-10 w-full cursor-pointer rounded-lg border border-slate-300 bg-white p-1 dark:border-white/10 dark:bg-slate-900" value="{{ r.party.color }}" aria-label="Colour">
+        </div>
+      </div>
+      <div class="mt-3 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex flex-wrap items-center gap-3 text-xs text-slate-500 dark:text-white/50">
+          <label class="inline-flex items-center gap-2">Replace logo <input name="logo" type="file" accept="image/png,image/jpeg,image/webp" class="text-xs"></label>
+          {% if r.logo %}<label class="inline-flex items-center gap-1.5"><input type="checkbox" name="remove_logo" value="1" class="size-3.5"> Remove logo</label>{% endif %}
+          <span>{{ r.results }} result{{ r.results|pluralize }}</span>
+        </div>
+        <div class="flex gap-2">
+          <button type="submit" name="action" value="update" class="btn btn-sm bg-brand-700 text-white hover:bg-brand-800">Save</button>
+          <button type="submit" name="action" value="delete" class="btn btn-sm btn-outline text-red-600" {% if r.results %}disabled title="Has results, so it cannot be deleted"{% else %}data-confirm="Delete {{ r.party.abbreviation }}?"{% endif %}>Delete</button>
+        </div>
+      </div>
+    </form>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

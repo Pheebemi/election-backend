@@ -1,0 +1,9 @@
+{# Governorship | Presidential. Needs the "elections" list from the context processor. #}
+{% if elections %}
+<div class="inline-flex rounded-full bg-slate-200/70 p-1 text-sm font-semibold dark:bg-white/10 {{ cls }}" role="group" aria-label="Election">
+  {% for e in elections %}
+  <a href="{{ e.url }}" {% if e.active %}aria-current="true"{% endif %}
+     class="rounded-full px-4 py-1.5 transition {% if e.active %}bg-brand-700 text-white shadow dark:bg-gold-400 dark:text-brand-950{% else %}text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white{% endif %}">{{ e.name }}</a>
+  {% endfor %}
+</div>
+{% endif %}
